@@ -37,7 +37,7 @@ export default function Layout({
                     </NavbarItem>
                     <NavbarItem>
                         <Link href="#" aria-current="page" className="text-stale-50">
-                            Prespuestos
+                            Gastos
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
@@ -47,7 +47,7 @@ export default function Layout({
                     </NavbarItem>
                     <NavbarItem>
                         <Link href="#" aria-current="page" className="text-stale-50">
-                            Ingresos
+                            Presupuestos
                         </Link>
                     </NavbarItem>
 
@@ -63,7 +63,12 @@ export default function Layout({
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
-            {children}
+            <div className="pt-16 min-h-screen flex justify-center bg-gray-900">
+                <div className="w-full max-w-4xl p-8 bg-gray-800 rounded-lg">
+                    {children}
+                </div>
+            </div>
+            
         </>
     );
 }
