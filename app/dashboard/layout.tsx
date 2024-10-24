@@ -2,8 +2,16 @@
 
 import StorageManager from "@/utils/storage/manager";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function Layout() {
+  const router = useRouter();
+
+  const logout = () => {
+    StorageManager.removeSelectedUser();
+    router.push("/");
+  }
+
   return (
     <Navbar position="static">
       <NavbarBrand>
@@ -37,7 +45,7 @@ export default function Layout() {
         {StorageManager.getSelectedUser()}
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button as={Link} color="primary" href="#" variant="flat" onClick={logout}>
             Salir
           </Button>
         </NavbarItem>

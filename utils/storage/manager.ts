@@ -16,4 +16,8 @@ export default class StorageManager  {
     static isUserLogged() {
         return StorageManager.getSelectedUser() !== null;
     }
+
+    static removeSelectedUser() {
+        window.localStorage.removeItem(USER_KEY);
+    }
 }
