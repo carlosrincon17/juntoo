@@ -7,7 +7,8 @@ const USER_KEY = "userName";
 export default class StorageManager  {
 
     static selectUser(userName: StorageUsers) {
-        localStorage.setItem(USER_KEY, userName);
+        if (typeof window !== "undefined")
+            localStorage.setItem(USER_KEY, userName);
     }
 
     static getSelectedUser() {
@@ -15,10 +16,11 @@ export default class StorageManager  {
     }
 
     static isUserLogged() {
-        return StorageManager.getSelectedUser() !== null;
+        return typeof window !== "undefined" && StorageManager.getSelectedUser() !== null;
     }
 
     static removeSelectedUser() {
-        localStorage.removeItem(USER_KEY);
+        if (typeof window !== "undefined")
+            localStorage.removeItem(USER_KEY);
     }
 }
