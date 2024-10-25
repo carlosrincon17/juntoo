@@ -1,5 +1,6 @@
+import { getAttribute } from "@/app/lib/objects";
 import { Expense } from "@/app/types/expense";
-import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, getKeyValue } from "@nextui-org/react";
+import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 
 export default function ExpensesTable(props: { expenses: Expense[] }) {
     const { expenses } = props;
@@ -13,24 +14,24 @@ export default function ExpensesTable(props: { expenses: Expense[] }) {
 
     const rows = [...expenses];
 
-    const renderCell = (expense:  Expense, columnKey: string) => {
-        const value = getKeyValue(expense, columnKey);
+    const renderCell = (expense: Expense, columnKey: string) => {
         if (columnKey === 'category') {
             return (
                 <div>
                     <Chip color="primary" size="sm" variant="flat">
-                        {value as string}
+                        {expense.category?.name}
                     </Chip>
                 </div>
             );
         }
         if (columnKey === 'value') {
-            return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(value);
+            return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(expense.value || 0);
         }
         if (columnKey === 'createdAt') {
-            return new Date(value as Date).toLocaleDateString('es-CO');
+            return new Date(expense.createdAt as Date).toLocaleDateString('es-CO');
         }
-        return value;
+        const value = getAttribute(expense, columnKey);
+        return value as string;
     };
 
     return (
@@ -41,7 +42,7 @@ export default function ExpensesTable(props: { expenses: Expense[] }) {
             <TableBody items={rows} >
                 {(item) => (
                     <TableRow key={item.id} className="hover:bg-stone-800">
-                        {(columnKey) => <TableCell className="text-gray-100">{renderCell(item, columnKey as string)}</TableCell>}
+                        {(columnKey) => <TableCell className="text-gray-100">{renderCell(item as Expense, columnKey as string)}</TableCell>}
                     </TableRow>
                 )}
             </TableBody>
