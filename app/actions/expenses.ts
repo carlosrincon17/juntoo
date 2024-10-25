@@ -6,10 +6,9 @@ import { Expense } from "../types/expense";
 
 export async function addExpense(expense: Expense) {
     await db.insert(ExpensesTable).values({
-        category_id: expense.category?.id,
-        value: expense.value,
-        createdBy: expense.createdBy,
-        createdAt: expense.createdAt,
+        createdBy: expense.createdBy ?? "",
+        value: expense.value ?? 0,
+        category_id: expense.category_id,
     });
 }   
 
