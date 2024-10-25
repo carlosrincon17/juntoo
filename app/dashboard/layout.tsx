@@ -5,6 +5,7 @@ import { logout, getUser } from "../actions/auth";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ROUTES_LIST } from "@/utils/navigation/routes-constants";
+import { Toaster } from "react-hot-toast";
 
 export default function Layout({
     children,
@@ -102,7 +103,7 @@ export default function Layout({
                     {children}
                 </div>
             </div>
-            
+            <div><Toaster/></div>
         </>
     );
 }
