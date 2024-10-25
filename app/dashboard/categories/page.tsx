@@ -79,8 +79,8 @@ export default function Page() {
                                     label="Valor"
                                     placeholder="0"
                                     labelPlacement="inside"
-                                    value={expense.value as string}
-                                    onChange={(e) => setExpense({...expense, value: e.target.value as number})}
+                                    value={`${expense.value}`}
+                                    onChange={(e) => setExpense({...expense, value: parseInt(e.target.value, 10)})}
                                     endContent={
                                         <div className="pointer-events-none flex items-center">
                                             <span className="text-default-400 text-small">$COP</span>
