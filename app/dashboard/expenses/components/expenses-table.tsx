@@ -41,8 +41,8 @@ export default function ExpensesTable(props: { expenses: Expense[] }) {
             </TableHeader>
             <TableBody items={rows} >
                 {(item) => (
-                    <TableRow key={item.id} className="hover:bg-stone-800">
-                        {(columnKey) => <TableCell className="text-gray-100">{renderCell(item as Expense, columnKey as string)}</TableCell>}
+                    <TableRow key={item.id} className="hover:bg-gray-100">
+                        {(columnKey) => <TableCell>{renderCell(item as Expense, columnKey as string)}</TableCell>}
                     </TableRow>
                 )}
             </TableBody>
