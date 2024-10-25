@@ -48,10 +48,10 @@ export const ExpensesTable = pgTable(
     'expenses',
     {
         id: serial('id').primaryKey(),
-        category_id: integer("category_id").references(() => CategoryTable.id),
+        category_id: integer("category_id").references(() => CategoryTable.id).notNull(),
         value: bigint({mode: 'number'}).notNull(),
         createdBy: text('createdBy').notNull(),
-        createdAt: date('createdAt').defaultNow().notNull(),
+        createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
     }
 );
 

@@ -16,6 +16,7 @@ export default function Page() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [expense, setExpense] = useState<Expense>({
         value: 0,
+        category_id: 0,
     });
     const [user, setUser] = useState("--");
 
@@ -44,7 +45,7 @@ export default function Page() {
     }
 
     const onAddExpense = async (category: Category) => {
-        setExpense({category, createdBy: user, value: 0});
+        setExpense({category, createdBy: user, value: 0, category_id: category.id});
         onOpen()
     }
     
