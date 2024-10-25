@@ -3,7 +3,7 @@
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import { logout, getUser } from "../actions/auth";
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ROUTES_LIST } from "@/utils/navigation/routes-constants";
 
 export default function Layout({

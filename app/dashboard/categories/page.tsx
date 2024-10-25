@@ -9,8 +9,8 @@ import { CustomLoading } from "@/app/components/customLoading";
 export default function Page() {
 
     const [categories, setCategories] = useState<Category[]>([]);
-    const [page, setPage] = useState(0);
-    const [perPage, setPerPage] = useState(10);
+    const page = 0;
+    const perPage = 10;
     const [loading, setLoading] = useState(true);
 
     async function getCategoriesData() {
@@ -21,7 +21,7 @@ export default function Page() {
     
     useEffect(() => {
         getCategoriesData();
-    }, []);
+    }, [page, perPage]);
 
     return (
         <div>

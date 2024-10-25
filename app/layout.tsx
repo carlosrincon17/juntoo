@@ -4,8 +4,8 @@ import { Providers } from "./providers";
 import { Inter } from 'next/font/google';
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
+    subsets: ['latin'],
+    variable: '--font-inter',
 });
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
             <body>
                 <Providers>
                     <main className={`${inter.variable} font-sans`}>
-                      {children}
+                        {children}
                     </main>
                 </Providers>
             </body>
