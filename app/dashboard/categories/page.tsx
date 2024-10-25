@@ -3,22 +3,20 @@
 import { useEffect, useState } from "react";
 import { getCategories } from "./actions/categories";
 import { Category } from "@/app/types/category";
-import CategoryList from "./components/ category-list";
+import CategoryList from "./components/category-list";
 import { CustomLoading } from "@/app/components/customLoading";
-import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { Expense } from "@/app/types/expense";
-import { getUser } from "@/app/actions/auth";
+import { useDisclosure } from "@nextui-org/react";
 import { addExpense } from "@/app/actions/expenses";
 import toast from "react-hot-toast";
+import NewExpenseModal from "./components/new-expense-modal";
+import { Expense } from "@/app/types/expense";
+import { getUser } from "@/app/actions/auth";
 
 export default function Page() {
 
     const [categories, setCategories] = useState<Category[]>([]);
-    const [expense, setExpense] = useState<Expense>({
-        value: 0,
-        category_id: 0,
-    });
-    const [user, setUser] = useState("--");
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    const [user, setUser] = useState<string>('--');
 
     const page = 0;
     const perPage = 10;
@@ -36,8 +34,14 @@ export default function Page() {
         setUser(userData);
     }
 
-    const saveExpense = async (onClose: () => void) => {
-        await addExpense(expense);
+    const saveExpense = async (onClose: () => void, expense: Expense) => {
+        const expenseToAdd: Expense = {
+            ...expense,
+            category_id: selectedCategory?.id || 0,
+            category: selectedCategory,
+            createdBy: user,
+        };
+        await addExpense(expenseToAdd);
         toast.success(`Agregado $ ${expense.value} por ${expense.category?.name}.`, {
             position: "bottom-center",
         });
@@ -45,12 +49,15 @@ export default function Page() {
     }
 
     const onAddExpense = async (category: Category) => {
-        setExpense({category, createdBy: user, value: 0, category_id: category.id});
+        setSelectedCategory(category);
         onOpen()
     }
-    
+
     useEffect(() => {
         getUserData();
+    }, []);
+    
+    useEffect(() => {
         getCategoriesData();
     }, [page, perPage]);
 
@@ -58,48 +65,7 @@ export default function Page() {
         <div>
             {loading && <CustomLoading /> }
             <CategoryList categories={categories} onAddExpense={(category: Category) => onAddExpense(category)}/>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex gap-4">
-                                <h2 className="text-lg font-extralight"> {expense.category?.name}</h2>
-                                <Chip color="primary" size="sm" variant="flat">
-                                    {expense.category?.parent}
-                                </Chip>
-                            </ModalHeader>
-                            <ModalBody>
-                                <Input
-                                    autoFocus
-                                    type="number"
-                                    label="Valor"
-                                    placeholder="0"
-                                    labelPlacement="inside"
-                                    value={`${expense.value}`}
-                                    onChange={(e) => setExpense({...expense, value: parseInt(e.target.value, 10)})}
-                                    endContent={
-                                        <div className="pointer-events-none flex items-center">
-                                            <span className="text-default-400 text-small">$COP</span>
-                                        </div>
-                                    }
-                                />
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button variant="flat" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={() => saveExpense(onClose)}>
-                                    Add Expense
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+            <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange} onSaveExpense={saveExpense} category={selectedCategory} />
         </div>
     )
 }
