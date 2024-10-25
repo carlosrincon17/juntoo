@@ -22,3 +22,20 @@ export const UsersTable = pgTable(
         };
     },
 );
+
+
+export const CategoryTable = pgTable(
+    'categories',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        parent: text('parent').notNull(),
+        icon: text('icon').notNull(),
+        color: text('color').notNull(),
+    },
+    (categories) => {
+        return {
+            uniqueIdx: uniqueIndex('category_unique_idx').on(categories.name),
+        };
+    },
+);

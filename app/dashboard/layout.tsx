@@ -1,20 +1,24 @@
 'use client'
 
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import { logout, getUser } from "../actions/auth";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ROUTES_LIST } from "@/utils/navigation/routes-constants";
 
 export default function Layout({
     children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+    const pathName = usePathname();
     const [user, setUser] = useState("--");
 
     async function getUserData() {
         const userData = await getUser();
         setUser(userData);
     }
+
     useEffect(() => {
         getUserData();
     }, []);
@@ -23,34 +27,53 @@ export default function Layout({
         logout()
     }
 
+    const checkIsActive = (path: string) => {
+        return pathName === path;
+    }
+
+    const getNamBarItems = () => {
+        return ROUTES_LIST.map((route) => {
+            return (
+                <NavbarItem key={route.path} isActive={checkIsActive(route.path)}>
+                    <Link href={route.path} aria-current="page" className="text-stale-50">
+                        {route.label}
+                    </Link>
+                </NavbarItem>
+            )
+        })
+    }
+
+    const getCurrentRoute = () => {
+        return ROUTES_LIST.find((route) => route.path === pathName);
+    }
+
+    const getParentRoute = () => {
+        return ROUTES_LIST.find((route) => route.path === getCurrentRoute()?.parent);
+    }
+
     return (
         <>
-            <Navbar position="static">
+            <Navbar position="static" isBordered classNames={{
+                item: [
+                    "flex",
+                    "relative",
+                    "h-full",
+                    "items-center",
+                    "data-[active=true]:after:content-['']",
+                    "data-[active=true]:after:absolute",
+                    "data-[active=true]:after:bottom-0",
+                    "data-[active=true]:after:left-0",
+                    "data-[active=true]:after:right-0",
+                    "data-[active=true]:after:h-[2px]",
+                    "data-[active=true]:after:rounded-[2px]",
+                    "data-[active=true]:after:bg-primary",
+                ],
+            }}> 
                 <NavbarBrand>
                     <p className="font-bold text-inherit">Cashly</p>
                 </NavbarBrand>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                    <NavbarItem isActive>
-                        <Link href="/dashboard" aria-current="page" className="text-stale-50">
-                            Dashboard
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link href="#" aria-current="page" className="text-stale-50">
-                            Gastos
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link href="#" aria-current="page" className="text-stale-50">
-                            Ingresos
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link href="#" aria-current="page" className="text-stale-50">
-                            Presupuestos
-                        </Link>
-                    </NavbarItem>
-
+                    {getNamBarItems()}
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <NavbarItem className="hidden lg:flex">
@@ -63,8 +86,19 @@ export default function Layout({
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
-            <div className="pt-16 min-h-screen flex justify-center bg-gray-900">
-                <div className="w-full max-w-4xl p-8 bg-gray-800 rounded-lg">
+            <div className="min-h-screen flex justify-center bg-slate-100">
+                <div className="w-full max-w-5xl p-8 bg-slate-50 text-stone-800">
+                    <Breadcrumbs underline="hover" color="primary">
+                        {getParentRoute() && 
+                            <BreadcrumbItem href={getParentRoute()?.path}>
+                                {getParentRoute()?.label}
+                            </BreadcrumbItem>
+                        }
+                        <BreadcrumbItem href={getCurrentRoute()?.path} isCurrent>{getCurrentRoute()?.label}</BreadcrumbItem>
+                    </Breadcrumbs>
+                    <div className="mt-6 mb-10 ">
+                        <h1 className="text-3xl">{getCurrentRoute()?.label}</h1>
+                    </div>
                     {children}
                 </div>
             </div>
