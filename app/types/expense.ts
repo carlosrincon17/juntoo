@@ -8,3 +8,9 @@ export type Expense = {
     createdBy?: string;
     createdAt?: Date;
 }
+
+export type CategoryExpense = {
+    categoryName: string;
+    totalExpenses: number;
+  }
+  
