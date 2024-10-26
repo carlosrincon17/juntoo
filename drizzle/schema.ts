@@ -36,6 +36,7 @@ export const CategoryTable = pgTable(
         parent: text('parent').notNull(),
         icon: text('icon').notNull(),
         color: text('color').notNull(),
+        transactionType: text('transaction_type').notNull(),
     },
     (categories) => {
         return {
