@@ -28,7 +28,7 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
             const groupedCategoryList = groupedCategories[parentCategory];
             return (
                 <div className="mb-10" key={parentCategory}>
-                    <div className="grid gap-4 flex-row grid-cols-4 mt-4">
+                    <div className="grid gap-4 flex-row lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-3 mt-4">
                         {getCategories(groupedCategoryList as Category[])}
                     </div>
                 </div>
