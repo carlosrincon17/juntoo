@@ -13,7 +13,6 @@ export default function ExpensesBreackdown(props: { totalExpenses: number }) {
 
     const getCategoriesData = async () => {
         const categoriesData = await getTopCategoriesWithMostExpenses();
-        console.log(categoriesData)
         setLoading(false);
         setCategoryExpenses(categoriesData);
     }

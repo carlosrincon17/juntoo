@@ -3,7 +3,8 @@
 import { CategoryTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
 import { CategoryExpense, Expense } from "../types/expense";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { ExpensesFilters } from "../types/filters";
 
 export async function addExpense(expense: Expense) {
     await db.insert(ExpensesTable).values({
@@ -37,11 +38,18 @@ export async function getTopCategoriesWithMostExpenses(): Promise<CategoryExpens
     return topCategoriesWithMostExpenses as CategoryExpense[];
 }
 
-export async function getTotalsExpenses(): Promise<number> {
+export async function getTotalsExpenses(filters: ExpensesFilters): Promise<number> {
+    console.log(filters)
     const totalExpenses = await db
         .select({
             totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
         })
-        .from(ExpensesTable)    
+        .from(ExpensesTable)
+        .where(
+            and(
+                gte(ExpensesTable.createdAt, filters.startDate),
+                lte(ExpensesTable.createdAt, filters.endDate)
+            )
+        )
     return totalExpenses[0].totalExpenses as number;
 }

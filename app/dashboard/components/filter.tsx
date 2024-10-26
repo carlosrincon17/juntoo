@@ -1,45 +1,76 @@
 'use client'
 
-import { Select, SelectItem } from '@nextui-org/react';
-import React from 'react'
+import { Select, SelectItem, SharedSelection } from '@nextui-org/react';
+import React, { useEffect, useState } from 'react'
 
 
-export default function ExpenseFilter() {
-    const years = [{  label: '2024', value: 2024 }];
+export default function ExpenseFilter(props: { onChange: (year: number, month: number) => void }) {
+    
+    const { onChange } = props;
+
+    const years = [{  label: '2024', key: 2024 }];
     const months = [
-        { label: 'Enero', value: 1 },
-        { label: 'Febrero', value: 2 },
-        { label: 'Marzo', value: 3 },
-        { label: 'Abril', value: 4 },
-        { label: 'Mayo', value: 5 },
-        { label: 'Junio', value: 6 },
-        { label: 'Julio', value: 7 },
-        { label: 'Agosto', value: 8 },
-        { label: 'Septiembre', value: 9 },
-        { label: 'Octubre', value: 10 },
-        { label: 'Noviembre', value: 11 },
-        { label: 'Diciembre', value: 12 }
+        { label: 'Enero', key: 1 },
+        { label: 'Febrero', key: 2 },
+        { label: 'Marzo', key: 3 },
+        { label: 'Abril', key: 4 },
+        { label: 'Mayo', key: 5 },
+        { label: 'Junio', key: 6 },
+        { label: 'Julio', key: 7 },
+        { label: 'Agosto', key: 8 },
+        { label: 'Septiembre', key: 9 },
+        { label: 'Octubre', key: 10 },
+        { label: 'Noviembre', key: 11 },
+        { label: 'Diciembre', key: 12 }
     ];
+
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+
+    const handleYearChange = (year: SharedSelection) => {
+        setSelectedYear(parseInt(year.currentKey as string, 10));
+        onChange(selectedYear, selectedMonth);
+    }
+
+    const handleMonthChange = (month: SharedSelection) => {
+        const newSelectedMonth = parseInt(month.currentKey as string, 10);
+        setSelectedMonth(newSelectedMonth);
+        onChange(selectedYear, newSelectedMonth);
+    }
+
+    useEffect(() => { 
+        onChange(selectedYear, selectedMonth);
+    }, []);
 
     return (
         <div className="w-full mb-16 flex justify-center gap-4">
             <Select
                 size='md'
-                items={years}
-                label="Year"
+                label="Año"
+                selectedKeys={[selectedYear.toString()]}
                 className='max-w-xs text-green-100'
-
-
+                disallowEmptySelection
+                onSelectionChange={handleYearChange}
             >
-                {(year) => <SelectItem key={year.value} value={year.value}>{year.label}</SelectItem>}
+                {years.map((year) => (
+                    <SelectItem key={year.key}>
+                        {year.label}
+                    </SelectItem>
+                ))}
             </Select>
             <Select
                 size='md'
-                items={months}
-                label="Month"
+                label="Mes"
+                selectedKeys={[selectedMonth.toString()]}
                 className='max-w-xs'
+                disallowEmptySelection
+                onSelectionChange={handleMonthChange}
             >
-                {(month) => <SelectItem key={month.value} value={month.value}>{month.label}</SelectItem>}
+                {months.map((month) => (
+                    <SelectItem key={month.key}>
+                        {month.label}
+                    </SelectItem>
+                ))}
             </Select>
         </div>
     )

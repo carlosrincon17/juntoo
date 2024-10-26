@@ -18,13 +18,11 @@ export default function Page() {
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [user, setUser] = useState<string>('--');
 
-    const page = 0;
-    const perPage = 10;
     const [loading, setLoading] = useState(true);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     const getCategoriesData = async () => {
-        const categoriesData = await getCategories(page, perPage);
+        const categoriesData = await getCategories();
         setLoading(false);
         setCategories(categoriesData);
     }
@@ -59,7 +57,7 @@ export default function Page() {
     
     useEffect(() => {
         getCategoriesData();
-    }, [page, perPage]);
+    }, []);
 
     return (
         <div>

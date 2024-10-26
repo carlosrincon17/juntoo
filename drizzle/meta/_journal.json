@@ -8,6 +8,34 @@
       "when": 1729803941310,
       "tag": "0000_seed-categories",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1729896068195,
+      "tag": "0001_seed-new-categories",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729907735791,
+      "tag": "0002_update-category-colors",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729908298215,
+      "tag": "0003_update-category-colors-2",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1729909003498,
+      "tag": "0004_add-more-categories",
+      "breakpoints": true
     }
   ]
 }
