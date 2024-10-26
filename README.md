@@ -1,4 +1,4 @@
-# Family Finance
+# Cashly - npm install --save-dev @semantic-release/git @semantic-release/changelogFamily Finance
 
 ![Next.js](https://img.shields.io/badge/Next.js-12.1.6-blue)
 ![Vercel](https://img.shields.io/badge/Deployment-Vercel-blue)
