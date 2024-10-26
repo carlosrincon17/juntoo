@@ -36,6 +36,13 @@
       "when": 1729909003498,
       "tag": "0004_add-more-categories",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1729909943052,
+      "tag": "0005_add-type-expense",
+      "breakpoints": true
     }
   ]
 }

@@ -5,17 +5,20 @@ import { db } from "@/utils/storage/db";
 import { CategoryExpense, Expense } from "../types/expense";
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
+import { TransactionType } from "@/utils/enums/transaction-type";
 
 export async function addExpense(expense: Expense) {
     await db.insert(ExpensesTable).values({
         createdBy: expense.createdBy ?? "",
         value: expense.value ?? 0,
         category_id: expense.category_id,
+        transactionType: TransactionType.Outcome
     });
 }   
 
 export async function getExpenses(page: number, perPage: number): Promise<Expense[]> {
     return await db.query.ExpensesTable.findMany({
+        where: eq(ExpensesTable.transactionType, TransactionType.Outcome),
         limit: perPage,
         offset: page * perPage,
         with: {
@@ -32,6 +35,7 @@ export async function getTopCategoriesWithMostExpenses(): Promise<CategoryExpens
         })
         .from(ExpensesTable)
         .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(eq(ExpensesTable.transactionType, TransactionType.Outcome))
         .groupBy(CategoryTable.parent)
         .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
         .limit(5)

@@ -52,6 +52,7 @@ export const ExpensesTable = pgTable(
         value: bigint({mode: 'number'}).notNull(),
         createdBy: text('createdBy').notNull(),
         createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
+        transactionType: text('transactionType').notNull(),
     }
 );
 

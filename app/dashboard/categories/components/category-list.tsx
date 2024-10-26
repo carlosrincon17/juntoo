@@ -1,10 +1,19 @@
+'use client'
+
 import { Category } from "@/app/types/category";
 import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 
 export default function CategoryList(props: { categories: Category[], onAddExpense: (category: Category) => void }) {
     const { categories, onAddExpense } = props;
 
-    const groupedCategories = Object.groupBy(categories, (category) => category.parent);
+    const groupedCategories = categories.reduce((acc, category) => {
+        const key = category.parent;
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(category);
+        return acc;
+    }, {} as Record<string, Category[]>);
 
     const colors: Record<string, string> = {
         "indigo": "bg-gradient-to-b from-indigo-500 to-indigo-700",
