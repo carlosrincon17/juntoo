@@ -7,7 +7,8 @@ import {
     uniqueIndex,
     integer,
     timestamp,
-    bigint
+    bigint,
+    boolean
 } from 'drizzle-orm/pg-core';
  
 export const UsersTable = pgTable(
@@ -54,6 +55,29 @@ export const ExpensesTable = pgTable(
         createdBy: text('createdBy').notNull(),
         createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
         transactionType: text('transaction_type').notNull(),
+        budget_id: integer("budget_id").references(() => BudgetsTable.id),
+    }
+);
+
+export const SavingsTable = pgTable(
+    'savings',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        value: bigint({mode: 'number'}).notNull(),
+        owner: text('owner').notNull(),
+    }
+);
+
+
+export const BudgetsTable = pgTable(
+    'budgets',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        value: bigint({mode: 'number'}).notNull(),
+        isActive: boolean('is_active').notNull(),
+        createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
     }
 );
 
@@ -61,5 +85,12 @@ export const expenseCategoryRelationship = relations(ExpensesTable, ({ one }) =>
     category: one(CategoryTable, {
         fields: [ExpensesTable.category_id],
         references: [CategoryTable.id],
+    }),
+}));
+
+export const expenseBudgetRelationship = relations(ExpensesTable, ({ one }) => ({
+    category: one(BudgetsTable, {
+        fields: [ExpensesTable.category_id],
+        references: [BudgetsTable.id],
     }),
 }));
