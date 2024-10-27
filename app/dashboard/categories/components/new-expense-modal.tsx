@@ -14,10 +14,11 @@ export default function NewExpenseModal(props: {
     const [expense, setExpense] = useState<Expense>({
         value: 0,
         category_id: 0,
+        budgetId: null
     });
 
     useEffect(() => {
-        setExpense({ value: 0, category_id: 0});
+        setExpense({ value: 0, category_id: 0, budgetId: null});
     }, [isOpen]);
     
     return (
