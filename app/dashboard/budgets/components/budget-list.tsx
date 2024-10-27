@@ -2,7 +2,7 @@
 
 import { Budget } from "@/app/types/budget";
 import { Listbox, ListboxItem } from "@nextui-org/react";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getBudgets } from "../actions/bugdets";
 import { ItemCounter } from "./item-counter";
 import { formatCurrency } from "@/app/lib/currency";
@@ -23,22 +23,22 @@ export default function BudgetList() {
     }, []);
 
     return (
-      <div className="full-width">
-        <Listbox
-        className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
-        itemClasses={{
-          base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
-        }}
-      >
-          {activeBudgets.map((budget) => (
-            <ListboxItem key={budget.id} value={budget.id}
-              startContent={<FaCircle className={budget.isActive ? "text-green-500": "text-gray-500"} />}
-              endContent={<ItemCounter value={formatCurrency(budget.value)} />}
+        <div className="full-width">
+            <Listbox
+                className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
+                itemClasses={{
+                    base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
+                }}
             >
-              {budget.name}
-            </ListboxItem>
-          ))}
-        </Listbox>
-      </div>
+                {activeBudgets.map((budget) => (
+                    <ListboxItem key={budget.id} value={budget.id}
+                        startContent={<FaCircle className={budget.isActive ? "text-green-500": "text-gray-500"} />}
+                        endContent={<ItemCounter value={formatCurrency(budget.value)} />}
+                    >
+                        {budget.name}
+                    </ListboxItem>
+                ))}
+            </Listbox>
+        </div>
     )
 }
