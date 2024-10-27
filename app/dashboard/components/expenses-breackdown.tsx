@@ -1,25 +1,29 @@
 import { getTopCategoriesWithMostExpenses } from "@/app/actions/expenses";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
+import { getTransactionTypeLabel } from "@/app/lib/labels";
 import { CategoryExpense } from "@/app/types/expense";
+import { ExpensesFilters } from "@/app/types/filters";
+import { TransactionType } from "@/utils/enums/transaction-type";
 import { Card, CardBody, Progress, Spacer } from "@nextui-org/react";
 import { Fragment, useEffect, useState } from "react";
 
-export default function ExpensesBreackdown(props: { totalExpenses: number }) {
-    const { totalExpenses } = props;
+export default function ExpensesBreackdown(props: { totalExpenses: number, expensesFilter: ExpensesFilters, transactionType: TransactionType }) {
+    const { totalExpenses, expensesFilter, transactionType } = props;
 
-    const [categoryExpenses, setCategoryExpenses] = useState<CategoryExpense[]>([]);
+    const [transactionSummary, setTransactionSummary] = useState<CategoryExpense[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const getCategoriesData = async () => {
-        const categoriesData = await getTopCategoriesWithMostExpenses();
+    const color = transactionType === TransactionType.Income ? 'primary' : 'danger';
+    const getTransactionListData = async () => {
+        const transactionsData = await getTopCategoriesWithMostExpenses(expensesFilter, transactionType);
         setLoading(false);
-        setCategoryExpenses(categoriesData);
+        setTransactionSummary(transactionsData);
     }
 
     useEffect(() => {
-        getCategoriesData();
-    }, []);
+        getTransactionListData();
+    }, [expensesFilter]);
 
     return (
         <div>
@@ -27,8 +31,8 @@ export default function ExpensesBreackdown(props: { totalExpenses: number }) {
                 <CustomLoading /> :
                 <Card>
                     <CardBody className="p-6">
-                        <h3 className="text-2xl font-semibold mb-4">Categories</h3>
-                        {categoryExpenses.map((category, index) => (
+                        <h3 className="text-2xl font-semibold mb-4">Resumen de {getTransactionTypeLabel(transactionType, true)} </h3>
+                        {transactionSummary.map((category, index) => (
                             <Fragment key={category.categoryName}>
                                 <div className="flex justify-between items-center mb-2">
                                     <span>{category.categoryName}</span>
@@ -36,10 +40,10 @@ export default function ExpensesBreackdown(props: { totalExpenses: number }) {
                                 </div>
                                 <Progress 
                                     value={(category.totalExpenses  / totalExpenses) * 100} 
-                                    color={"primary"}
+                                    color={color}
                                     className="h-2 mb-3"
                                 />
-                                {index < categoryExpenses.length - 1 && <Spacer y={2} />}
+                                {index < transactionSummary.length - 1 && <Spacer y={2} />}
                             </Fragment>
                         ))}
                     </CardBody>

@@ -10,18 +10,18 @@ export const ROUTES: Record<string, Routes> = {
         path: "/dashboard",
     },
     CATEGORIES: {
-        label: "Categories",
+        label: "Categorias",
         path: "/dashboard/categories",
         parent: "/dashboard",
     },
     EXPENSES: {
-        label: "Expenses",
+        label: "Gastos",
         path: "/dashboard/expenses",
         parent: "/dashboard",
     },
     INCOMES: {
-        label: "Incomes",
-        path: "/dashboard/incomes",
+        label: "Presupuesto",
+        path: "/dashboard/budgets",
         parent: "/dashboard",
     },
 }

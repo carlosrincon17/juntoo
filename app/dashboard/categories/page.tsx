@@ -41,11 +41,11 @@ export default function Page() {
             category_id: selectedCategory?.id || 0,
             category: selectedCategory,
             createdBy: user,
+            transactionType: selectedCategory?.transactionType,
         };
         await addExpense(expenseToAdd);
-        toast.success(`Agregado $ ${expense.value} por ${expense.category?.name}.`, {
-            position: "bottom-center",
-        });
+        const typeLabel = selectedCategoryTransactionType === TransactionType.Outcome ? 'gasto' : 'ingreso';
+        toast.success(`Agregado ${typeLabel} de $ ${expenseToAdd.value} por ${expenseToAdd.category?.name}.`);
         onClose();
     }
 

@@ -4,4 +4,5 @@ export type Category = {
     parent: string;
     icon: string;
     color: string;
+    transactionType?: string;
 }

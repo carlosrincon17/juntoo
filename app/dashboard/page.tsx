@@ -6,9 +6,18 @@ import Kpi from "./components/kpi"
 import { getTotalsExpenses } from "../actions/expenses";
 import ExpenseFilter from "./components/filter";
 import { ExpensesFilters } from "../types/filters";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/utils/navigation/routes-constants";
+import { TotalExpenses } from "../types/expense";
+import { TransactionType } from "@/utils/enums/transaction-type";
 
 export default function Page() {
-    const [totalExpenses, setTotalExpenses] = useState(0);
+    const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
+        totalExpenses: 0,
+        totalIncomes: 0,
+    });
+    const [expensesFilter, setExpensesFilter] = useState<ExpensesFilters | null>(null);
+    const router = useRouter();
 
     const getTotalExpensesData = async (filters: ExpensesFilters) => {
         const totalExpensesData = await getTotalsExpenses(filters);
@@ -22,20 +31,44 @@ export default function Page() {
             startDate,
             endDate
         });
+        setExpensesFilter({
+            startDate,
+            endDate
+        });
     }
 
     return (
         <div>
             <ExpenseFilter onChange={onChangeFilters}/>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="grid grid-cols-1 gap-4">
-                    <Kpi title="Gastos" value={totalExpenses} customClasses={["from-red-400", "to-pink-500"]}/>
-                    <Kpi title="Ingresos" value={10000000} customClasses={["from-green-400", "to-blue-500"]}/>
-                </div>
-                <div className="col-span-2 gap-4">
-                    <ExpensesBreackdown totalExpenses={totalExpenses}/>
-                </div>
-            </div>
+            {expensesFilter &&
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Kpi 
+                            title="Gastos" 
+                            value={totalExpenses.totalExpenses} 
+                            customClasses={["from-red-400", "to-pink-500"]} 
+                            isPressable={true} 
+                            onPress={() => router.push(ROUTES.EXPENSES.path)}
+                        />
+                        <Kpi 
+                            title="Ingresos" 
+                            value={totalExpenses.totalIncomes} 
+                            customClasses={["from-green-400", "to-blue-500"]}
+                            isPressable={true} 
+                            onPress={() => router.push(ROUTES.INCOMES.path)}
+                        />
+                        <Kpi 
+                            title="Balance" 
+                            value={totalExpenses.totalIncomes - totalExpenses.totalExpenses} 
+                            customClasses={["from-blue-400", "to-cyan-500"]}
+                        />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
+                        <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Income}/>
+                    </div>
+                </>
+            }
         </div>
     )
 }

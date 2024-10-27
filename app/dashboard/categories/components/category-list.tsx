@@ -47,7 +47,7 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
                         <h3 className="font-light text-xl">{category.name}</h3>
                     </CardBody>
                     <CardFooter className="flex flex-col-reverse items-end">
-                        <Chip className="text-small font-light bg-gray-100 " size="sm">{category.parent}</Chip>
+                        <Chip className="text-extra-small font-light text-gray-950 bg-gray-200 " size="sm">{category.parent}</Chip>
                     </CardFooter>
                 </Card>
             )
