@@ -60,9 +60,9 @@ export default function NewExpenseModal(props: {
                                 onChange={(e) => setExpense({...expense, budgetId: parseInt(e.target.value, 10)})}
                             >
                                 {budgets.map((budget) => (
-                                <SelectItem key={budget.id}>
-                                    {budget.name}
-                                </SelectItem>
+                                    <SelectItem key={budget.id}>
+                                        {budget.name}
+                                    </SelectItem>
                                 ))}
                             </Select>
                         </ModalBody>
