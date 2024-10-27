@@ -20,7 +20,7 @@ export const ROUTES: Record<string, Routes> = {
         parent: "/dashboard",
     },
     BUDGETS: {
-        label: "Presupuesto",
+        label: "Presupuestos",
         path: "/dashboard/budgets",
         parent: "/dashboard",
     },
