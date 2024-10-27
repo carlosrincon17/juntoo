@@ -11,8 +11,9 @@ export default function Home() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex items-center justify-center min-h-screen flex-col">
+            <h1 className="text-center text-4xl font-bold text-gray-900">Cashly</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
                 <div className="flex flex-col items-center p-8 bg-gradient-to-br rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer w-48 h-48 from-teal-500 to bg-cyan-700"
                     onClick={() => selectUser(StorageUsers.Carlos)}>
                     <div className="text-2xl font-bold text-white mb-4">Carlos</div>
