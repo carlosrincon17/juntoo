@@ -21,6 +21,10 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
         "emerald": "bg-gradient-to-b from-emerald-500 to-emerald-700",
         "amber": "bg-gradient-to-b from-amber-500 to-amber-700",
         "sky": "bg-gradient-to-b from-sky-500 to-sky-700",
+        "rose": "bg-gradient-to-b from-rose-500 to-rose-700",
+        "cyan": "bg-gradient-to-b from-cyan-500 to-cyan-700",
+        "violet": "bg-gradient-to-b from-violet-500 to-violet-700",
+        "green": "bg-gradient-to-b from-green-400 to-green-600",
     }
 
     const getParentCategories = () => {

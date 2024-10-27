@@ -5,57 +5,22 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1729803941310,
-      "tag": "0000_seed-categories",
+      "when": 1730055637509,
+      "tag": "0000_uneven_agent_zero",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1729896068195,
-      "tag": "0001_seed-new-categories",
+      "when": 1730055678826,
+      "tag": "0001_set-categories",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1729907735791,
-      "tag": "0002_update-category-colors",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1729908298215,
-      "tag": "0003_update-category-colors-2",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1729909003498,
-      "tag": "0004_add-more-categories",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1729909943052,
-      "tag": "0005_add-type-expense",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1729913285595,
-      "tag": "0006_add-type-category",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1729913556206,
-      "tag": "0007_set-income-categories",
+      "when": 1730056867767,
+      "tag": "0002_set-budgets",
       "breakpoints": true
     }
   ]
