@@ -55,7 +55,7 @@ export const ExpensesTable = pgTable(
         createdBy: text('createdBy').notNull(),
         createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
         transactionType: text('transaction_type').notNull(),
-        budget_id: integer("budget_id").references(() => BudgetsTable.id),
+        budgetId: integer("budget_id").references(() => BudgetsTable.id),
     }
 );
 
@@ -89,7 +89,7 @@ export const expenseCategoryRelationship = relations(ExpensesTable, ({ one }) =>
 }));
 
 export const expenseBudgetRelationship = relations(ExpensesTable, ({ one }) => ({
-    category: one(BudgetsTable, {
+    budget: one(BudgetsTable, {
         fields: [ExpensesTable.category_id],
         references: [BudgetsTable.id],
     }),

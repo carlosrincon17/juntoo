@@ -1,4 +1,6 @@
+import { TransactionType } from "@/utils/enums/transaction-type";
 import { Category } from "./category";
+import { Budget } from "./budget";
 
 export type Expense = {
     id?: number;
@@ -8,6 +10,8 @@ export type Expense = {
     createdBy?: string;
     createdAt?: Date;
     transactionType?: string;
+    budgetId: number | null;
+    budget?: Budget | null;
 }
 
 export type CategoryExpense = {
