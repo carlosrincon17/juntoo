@@ -12,6 +12,8 @@ import NewExpenseModal from "./components/new-expense-modal";
 import { Expense } from "@/app/types/expense";
 import { getUser } from "@/app/actions/auth";
 import { TransactionType } from "@/utils/enums/transaction-type";
+import { getBudgets } from "../budgets/actions/bugdets";
+import { Budget } from "@/app/types/budget";
 
 export default function Page() {
 
@@ -19,6 +21,7 @@ export default function Page() {
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [user, setUser] = useState<string>('--');
     const [selectedCategoryTransactionType, setSelectedCategoryTransactionType] = useState<TransactionType>(TransactionType.Outcome);
+    const [budgets, setBudgets] = useState<Budget[]>([]);
 
     const [loading, setLoading] = useState(true);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -33,6 +36,11 @@ export default function Page() {
     const getUserData = async () => {
         const userData = await getUser();
         setUser(userData);
+    }
+
+    const getBudgetsData = async () => {
+        const budgetsData = await getBudgets();
+        setBudgets(budgetsData);
     }
 
     const saveExpense = async (onClose: () => void, expense: Expense) => {
@@ -56,6 +64,7 @@ export default function Page() {
 
     useEffect(() => {
         getUserData();
+        getBudgetsData();
     }, []);
     
     useEffect(() => {
@@ -82,7 +91,13 @@ export default function Page() {
                 <CustomLoading className="mt-16"/> :
                 <div>
                     <CategoryList categories={categories} onAddExpense={(category: Category) => onAddExpense(category)}/>
-                    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange} onSaveExpense={saveExpense} category={selectedCategory} />
+                    <NewExpenseModal
+                        budgets={budgets}
+                        isOpen={isOpen} 
+                        onOpenChange={onOpenChange} 
+                        onSaveExpense={saveExpense} 
+                        category={selectedCategory}
+                    />
                 </div>
             }
             

@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/navigation/routes-constants";
 import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
+import { Divider } from "@nextui-org/react";
+import BudgetsSummary from "./components/budgets-summary";
 
 export default function Page() {
     const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
@@ -67,6 +69,8 @@ export default function Page() {
                         <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
                         <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Income}/>
                     </div>
+                    <Divider className="my-6" />
+                    <BudgetsSummary />
                 </>
             }
         </div>

@@ -5,3 +5,5 @@ export type Budget = {
     isActive: boolean;
     createdAt?: Date;
 }
+
+export type BudgetWithExpenses = Budget & {totalExpenses: number}

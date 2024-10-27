@@ -18,6 +18,7 @@ export async function addExpense(expense: Expense) {
         value: expense.value ?? 0,
         category_id: expense.category_id,
         transactionType: expense.transactionType || TransactionType.Outcome,
+        budgetId: expense.budgetId,
     });
 }   
 

@@ -1,7 +1,8 @@
+import { Budget } from "@/app/types/budget";
 import { Category } from "@/app/types/category";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export default function NewExpenseModal(props: {
@@ -9,8 +10,9 @@ export default function NewExpenseModal(props: {
     onOpenChange: (isOpen: boolean) => void,
     onSaveExpense: (onClose: () => void, expense: Expense) => void,
     category: Category | null,
+    budgets: Budget[],
 }) {
-    const { isOpen, onOpenChange, onSaveExpense, category } = props;
+    const { isOpen, onOpenChange, onSaveExpense, category, budgets } = props;
     const [expense, setExpense] = useState<Expense>({
         value: 0,
         category_id: 0,
@@ -52,6 +54,17 @@ export default function NewExpenseModal(props: {
                                     </div>
                                 }
                             />
+                            <Select 
+                                label="Presupuesto" 
+                                size="lg"
+                                onChange={(e) => setExpense({...expense, budgetId: parseInt(e.target.value, 10)})}
+                            >
+                                {budgets.map((budget) => (
+                                <SelectItem key={budget.id}>
+                                    {budget.name}
+                                </SelectItem>
+                                ))}
+                            </Select>
                         </ModalBody>
                         <ModalFooter>
                             <Button variant="flat" onPress={onClose}>
