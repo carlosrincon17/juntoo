@@ -1,4 +1,3 @@
-import { TransactionType } from "@/utils/enums/transaction-type";
 import { Category } from "./category";
 import { Budget } from "./budget";
 
