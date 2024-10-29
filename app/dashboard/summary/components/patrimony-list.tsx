@@ -8,8 +8,11 @@ import { FaCircle } from "react-icons/fa";
 import { getPatrimonies } from "../actions/patrimonies";
 import { Patrimony } from "@/app/types/patrimony";
 
-export default function PatrimonyList() {
+export default function PatrimonyList(props: {
+    onSelectPatrimony: (patrimony: Patrimony) => void}
+) {
 
+    const { onSelectPatrimony } = props;
     const [patrimonies, setPatrimonies] = useState<Patrimony[]>([]);
 
 
@@ -30,12 +33,13 @@ export default function PatrimonyList() {
                     base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                 }}
             >
-                {patrimonies.map((debt) => (
-                    <ListboxItem key={debt.id} value={debt.id}
+                {patrimonies.map((patrimony) => (
+                    <ListboxItem key={patrimony.id} value={patrimony.id}
                         startContent={<FaCircle className="text-green-500" />}
-                        endContent={<ItemCounter value={formatCurrency(debt.value)} />}
+                        endContent={<ItemCounter value={formatCurrency(patrimony.value)} />}
+                        onClick={() => onSelectPatrimony(patrimony)}
                     >
-                        {debt.name}
+                        {patrimony.name}
                     </ListboxItem>
                 ))}
             </Listbox>

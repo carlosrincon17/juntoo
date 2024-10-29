@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import Kpi from "../components/kpi";
 import { getTotalSavings } from "../savings/actions/savings";
-import { Divider } from "@nextui-org/react";
+import { Divider, useDisclosure } from "@nextui-org/react";
 import { getTotalDebts } from "./actions/debts";
 import DebtsList from "./components/debts-list";
 import PatrimonyList from "./components/patrimony-list";
 import { getTotalPatrimonies } from "./actions/patrimonies";
+import PatrimonyManagerModal from "./components/patrimony-manager";
+import { Patrimony } from "@/app/types/patrimony";
 
 
 export default function Page() {
@@ -15,6 +17,12 @@ export default function Page() {
     const [totalSavings, setTotalSavings] = useState<number>(0);
     const [totalDebts, setTotalDebts] = useState<number>(0);
     const [totalPatrimonies, setTotalPatrimonies] = useState<number>(0);
+    const [selectedPatrimony, setSelectedPatrimony] = useState<Patrimony>({
+        id: 0,
+        name: "",
+        value: 0
+    });
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     const getTotalSavingsData = async () => {
         const totalSavingsData = await getTotalSavings();
@@ -29,6 +37,11 @@ export default function Page() {
     const getTotalDebtsData = async () => {
         const totalDebtsData = await getTotalDebts();
         setTotalDebts(totalDebtsData);
+    }
+
+    const onSelectPatrimony = (patrimony: Patrimony) => {
+        setSelectedPatrimony(patrimony);
+        onOpen()
     }
 
     useEffect(() => {
@@ -73,7 +86,8 @@ export default function Page() {
                 </div>
                 <div>
                     <h3 className="text-2xl font-light mb-4">Patrimonio</h3>
-                    <PatrimonyList />
+                    <PatrimonyList onSelectPatrimony={(patrimony) => onSelectPatrimony(patrimony)} />
+                    <PatrimonyManagerModal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onOpen} patrimony={selectedPatrimony}/>
                 </div>
             </div>
         </div>
