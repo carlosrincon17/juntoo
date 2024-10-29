@@ -2,18 +2,18 @@ import { Patrimony } from "@/app/types/patrimony";
 import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { updatePatrimony } from "../actions/patrimonies";
 import toast from "react-hot-toast";
+import ToastCustom from "@/app/components/toastCustom";
 
 export default function PatrimonyManagerModal(props: {
     isOpen: boolean, 
     patrimony: Patrimony
     onOpenChange: (isOpen: boolean) => void,
-    onClose: () => void,
 }) {
-    const { isOpen, patrimony, onOpenChange, onClose } = props;
+    const { isOpen, patrimony, onOpenChange } = props;
 
-    const onSavePatrimony = async () => {
+    const onSavePatrimony = async (onClose: () => void) => {
         await updatePatrimony(patrimony);
-        toast.success("Patrimonio actualizado");
+        toast.custom((t) => <ToastCustom message="Tu patrimonio se actualizó correctamente" toast={t}/>);
         onClose();
     }
     
@@ -50,7 +50,7 @@ export default function PatrimonyManagerModal(props: {
                             <Button variant="flat" onPress={onClose}>
                                     Cerrar
                             </Button>
-                            <Button color="primary" onPress={onSavePatrimony}>
+                            <Button color="primary" onPress={() => onSavePatrimony(onClose)}>
                                     Guardar
                             </Button>
                         </ModalFooter>

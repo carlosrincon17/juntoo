@@ -2,18 +2,18 @@ import { Savings } from "@/app/types/saving";
 import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { updateSavings } from "../actions/savings";
+import ToastCustom from "@/app/components/toastCustom";
 
 export default function SavingsManagerModal(props: {
     isOpen: boolean, 
     savings: Savings
     onOpenChange: (isOpen: boolean) => void,
-    onClose: () => void,
 }) {
-    const { isOpen, savings, onOpenChange, onClose } = props;
+    const { isOpen, savings, onOpenChange } = props;
 
-    const onSaveSavings = async () => {
+    const onSaveSavings = async (onClose: () => void) => {
         await updateSavings(savings);
-        toast.success("Ahorros actualizado");
+        toast.custom((t) => <ToastCustom message="Tus ahorros se actualizaron correctamente" toast={t}/>);
         onClose();
     }
     
@@ -50,7 +50,7 @@ export default function SavingsManagerModal(props: {
                             <Button variant="flat" onPress={onClose}>
                                     Cerrar
                             </Button>
-                            <Button color="primary" onPress={onSaveSavings}>
+                            <Button color="primary" onPress={() => onSaveSavings(onClose)}>
                                     Guardar
                             </Button>
                         </ModalFooter>

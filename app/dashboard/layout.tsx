@@ -103,7 +103,7 @@ export default function Layout({
                     {children}
                 </div>
             </div>
-            <div><Toaster position="bottom-center"/></div>
+            <div><Toaster position="top-right"/></div>
         </>
     );
 }

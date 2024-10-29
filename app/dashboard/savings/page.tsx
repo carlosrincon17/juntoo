@@ -59,7 +59,7 @@ export default function Page() {
                                 </div>
                             ))}
                         </div>
-                        <SavingsManagerModal isOpen={isOpen} savings={selectedSavings} onOpenChange={onOpenChange} onClose={onOpen} />
+                        <SavingsManagerModal isOpen={isOpen} savings={selectedSavings} onOpenChange={onOpenChange} />
                     </div>
             }
         </div>

@@ -10,6 +10,7 @@ import PatrimonyList from "./components/patrimony-list";
 import { getTotalPatrimonies } from "./actions/patrimonies";
 import PatrimonyManagerModal from "./components/patrimony-manager";
 import { Patrimony } from "@/app/types/patrimony";
+import Feedback from "./components/feedback";
 
 
 export default function Page() {
@@ -45,7 +46,7 @@ export default function Page() {
     }
 
     const getBalance = () => {
-        return (totalSavings + totalPatrimonies) - totalDebts;
+        return (+totalSavings + +totalPatrimonies) - +totalDebts;
     }
 
     useEffect(() => {
@@ -91,9 +92,13 @@ export default function Page() {
                 <div>
                     <h3 className="text-2xl font-light mb-4">Patrimonio</h3>
                     <PatrimonyList onSelectPatrimony={(patrimony) => onSelectPatrimony(patrimony)} />
-                    <PatrimonyManagerModal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onOpen} patrimony={selectedPatrimony}/>
+                    <PatrimonyManagerModal isOpen={isOpen} onOpenChange={onOpenChange} patrimony={selectedPatrimony}/>
                 </div>
             </div>
+            <Divider className="my-6" />
+            {totalSavings && totalDebts && totalPatrimonies && 
+                <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
+            }
         </div>
     )
 }
