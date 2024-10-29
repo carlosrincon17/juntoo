@@ -22,6 +22,27 @@
       "when": 1730056867767,
       "tag": "0002_set-budgets",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1730174122856,
+      "tag": "0003_set-savings",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1730176101426,
+      "tag": "0004_yielding_hitman",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1730176406673,
+      "tag": "0005_set-debts",
+      "breakpoints": true
     }
   ]
 }

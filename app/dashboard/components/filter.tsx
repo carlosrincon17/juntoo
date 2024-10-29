@@ -43,7 +43,7 @@ export default function ExpenseFilter(props: { onChange: (year: number, month: n
     }, []);
 
     return (
-        <div className="w-full mb-16 flex justify-center gap-4">
+        <div className="w-full mb-8 flex justify-center gap-4">
             <Select
                 size='md'
                 label="Año"

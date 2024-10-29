@@ -6,11 +6,11 @@ export default function Kpi(props: { title: string, value: number, customClasses
 
     return (
         <Card className={["bg-gradient-to-br", ...customClasses].join(" ")} isPressable={isPressable} onPress={onPress}>
-            <CardBody className="p-6">
-                <div className="flex mb-4">
+            <CardBody className="p-4">
+                <div className="flex mb-2">
                     <h3 className="text-2xl font-extralight text-white">{title}</h3>
                 </div>
-                <p className="text-2xl font-semibold text-white mb-2">{formatCurrency(value)}</p>
+                <p className="text-2xl font-semibold text-white">{formatCurrency(value)}</p>
                 <div className="flex items-center text-white">
                 </div>
             </CardBody>
