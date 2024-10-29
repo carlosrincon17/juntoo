@@ -44,6 +44,10 @@ export default function Page() {
         onOpen()
     }
 
+    const getBalance = () => {
+        return (totalSavings + totalPatrimonies) - totalDebts;
+    }
+
     useEffect(() => {
         getTotalSavingsData();
         getTotalDebtsData();
@@ -56,7 +60,7 @@ export default function Page() {
             <div className="mb-6">
                 <Kpi 
                     title="Balance" 
-                    value={totalSavings + totalPatrimonies - totalDebts} 
+                    value={getBalance()} 
                     customClasses={["from-cyan-500", "to-blue-300", "text-black"]} 
                 />
             </div>
