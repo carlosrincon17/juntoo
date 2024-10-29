@@ -33,11 +33,6 @@ export const ROUTES: Record<string, Routes> = {
         path: "/dashboard/savings", 
         parent: "/dashboard",
     },
-    DEBTS: {
-        label: "Deudas",
-        path: "/dashboard/debts", 
-        parent: "/dashboard",
-    },
 }
 
 export const ROUTES_LIST = [
@@ -47,5 +42,4 @@ export const ROUTES_LIST = [
     ROUTES.EXPENSES,
     ROUTES.BUDGETS,
     ROUTES.SAVINGS,
-    ROUTES.DEBTS,
 ]

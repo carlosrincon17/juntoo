@@ -5,21 +5,21 @@ import { useEffect, useState } from "react";
 import { ItemCounter } from "./item-counter";
 import { formatCurrency } from "@/app/lib/currency";
 import { FaCircle } from "react-icons/fa";
-import { Debts } from "@/app/types/debts";
-import { getDebts } from "../actions/debts";
+import { getPatrimonies } from "../actions/patrimonies";
+import { Patrimony } from "@/app/types/patrimony";
 
-export default function BudgetList() {
+export default function PatrimonyList() {
 
-    const [debts, setDebts] = useState<Debts[]>([]);
+    const [patrimonies, setPatrimonies] = useState<Patrimony[]>([]);
 
 
-    const getDebtsData = async () => {
-        const debtsData = await getDebts();
-        setDebts(debtsData);
+    const getPatrimoniesData = async () => {
+        const patrimoniesData = await getPatrimonies();
+        setPatrimonies(patrimoniesData);
     }
 
     useEffect(() => {
-        getDebtsData();
+        getPatrimoniesData();
     }, []);
 
     return (
@@ -30,9 +30,9 @@ export default function BudgetList() {
                     base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                 }}
             >
-                {debts.map((debt) => (
+                {patrimonies.map((debt) => (
                     <ListboxItem key={debt.id} value={debt.id}
-                        startContent={<FaCircle className="text-red-500" />}
+                        startContent={<FaCircle className="text-green-500" />}
                         endContent={<ItemCounter value={formatCurrency(debt.value)} />}
                     >
                         {debt.name}

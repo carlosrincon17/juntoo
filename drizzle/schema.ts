@@ -91,6 +91,15 @@ export const DebtsTable = pgTable(
     }
 );
 
+export const PatrimoniesTable = pgTable(
+    'patrimonies',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        value: bigint({mode: 'number'}).notNull(),
+    }
+);
+
 export const expenseCategoryRelationship = relations(ExpensesTable, ({ one }) => ({
     category: one(CategoryTable, {
         fields: [ExpensesTable.category_id],
