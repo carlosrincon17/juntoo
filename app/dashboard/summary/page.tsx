@@ -11,6 +11,8 @@ import { getTotalPatrimonies } from "./actions/patrimonies";
 import PatrimonyManagerModal from "./components/patrimony-manager";
 import { Patrimony } from "@/app/types/patrimony";
 import Feedback from "./components/feedback";
+import { Debts } from "@/app/types/debts";
+import DebtManagerModal from "./components/debts-manager";
 
 
 export default function Page() {
@@ -23,7 +25,13 @@ export default function Page() {
         name: "",
         value: 0
     });
+    const [selectedDebt, setSelectedDebt] = useState<Debts>({
+        id: 0,
+        name: "",
+        value: 0
+    });
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const {isOpen: isOpenDebt, onOpen: onOpenDebt, onOpenChange: onOpenDebtChange} = useDisclosure();
 
     const getTotalSavingsData = async () => {
         const totalSavingsData = await getTotalSavings();
@@ -43,6 +51,10 @@ export default function Page() {
     const onSelectPatrimony = (patrimony: Patrimony) => {
         setSelectedPatrimony(patrimony);
         onOpen()
+    }
+    const onSelectDebt = (debt: Debts) => {
+        setSelectedDebt(debt);
+        onOpenDebt();
     }
 
     const getBalance = () => {
@@ -87,7 +99,8 @@ export default function Page() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <h3 className="text-2xl font-light mb-4">Deudas</h3>
-                    <DebtsList />
+                    <DebtsList onSelectDebt={(debt) => onSelectDebt(debt)} />
+                    <DebtManagerModal isOpen={isOpenDebt} onOpenChange={onOpenDebtChange} debt={selectedDebt}/>
                 </div>
                 <div>
                     <h3 className="text-2xl font-light mb-4">Patrimonio</h3>

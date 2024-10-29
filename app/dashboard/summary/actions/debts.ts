@@ -3,7 +3,7 @@
 import { Debts } from "@/app/types/debts";
 import { DebtsTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 
 export async function getDebts(): Promise<Debts[]> {
@@ -17,4 +17,11 @@ export async function getTotalDebts(): Promise<number> {
         })
         .from(DebtsTable)
     return totalDebts[0].totalDebts as number;
+}
+
+export async function updateDebt(debt: Debts): Promise<void> {
+    await db.update(DebtsTable)
+        .set(debt)
+        .where(eq(DebtsTable.id, debt.id))
+    return;
 }

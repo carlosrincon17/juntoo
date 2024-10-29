@@ -8,10 +8,12 @@ import { FaCircle } from "react-icons/fa";
 import { Debts } from "@/app/types/debts";
 import { getDebts } from "../actions/debts";
 
-export default function DebtsList() {
+export default function DebtsList(props: {
+    onSelectDebt: (debt: Debts) => void
+}) {
 
+    const { onSelectDebt } = props;
     const [debts, setDebts] = useState<Debts[]>([]);
-
 
     const getDebtsData = async () => {
         const debtsData = await getDebts();
@@ -34,6 +36,7 @@ export default function DebtsList() {
                     <ListboxItem key={debt.id} value={debt.id}
                         startContent={<FaCircle className="text-red-500" />}
                         endContent={<ItemCounter value={formatCurrency(debt.value)} />}
+                        onClick={() => onSelectDebt(debt)}
                     >
                         {debt.name}
                     </ListboxItem>
