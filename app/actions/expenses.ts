@@ -3,7 +3,7 @@
 import { CategoryTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
 import { CategoryExpense, Expense, TotalExpenses } from "../types/expense";
-import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 
@@ -26,11 +26,22 @@ export async function getExpenses(page: number, perPage: number): Promise<Expens
     return await db.query.ExpensesTable.findMany({
         where: eq(ExpensesTable.transactionType, TransactionType.Outcome),
         limit: perPage,
-        offset: page * perPage,
+        offset: (page -1) * perPage,
         with: {
             category: true,
         }
     });
+}
+
+export async function getCountExpenses(transactionType: TransactionType): Promise<number> {
+    const counterResult = await db.select({
+        count: count(ExpensesTable.id)
+    }).from(
+        ExpensesTable
+    ).where(
+        eq(ExpensesTable.transactionType, transactionType)
+    );
+    return counterResult[0].count as number;
 }
 
 export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters, transactionType: TransactionType): Promise<CategoryExpense[]> {

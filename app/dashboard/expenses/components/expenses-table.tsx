@@ -1,9 +1,15 @@
 import { getAttribute } from "@/app/lib/objects";
 import { Expense } from "@/app/types/expense";
-import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Chip, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 
-export default function ExpensesTable(props: { expenses: Expense[] }) {
-    const { expenses } = props;
+export default function ExpensesTable(props: { 
+    expenses: Expense[],
+    perPage: number,
+    currentPage: number,
+    countExpenses: number,
+    onPageChange: (page: number) => void
+}) {
+    const { expenses, onPageChange, currentPage, countExpenses } = props;
 
     const columns = [
         { key: 'createdBy', label: 'Creado por' },
@@ -35,17 +41,30 @@ export default function ExpensesTable(props: { expenses: Expense[] }) {
     };
 
     return (
-        <Table color="primary" className="w-full">
-            <TableHeader columns={columns}>
-                {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-            </TableHeader>
-            <TableBody items={rows} >
-                {(item) => (
-                    <TableRow key={item.id} className="hover:bg-gray-100">
-                        {(columnKey) => <TableCell>{renderCell(item as Expense, columnKey as string)}</TableCell>}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <div>
+            <Table color="primary" className="w-full">
+                <TableHeader columns={columns}>
+                    {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+                </TableHeader>
+                <TableBody items={rows} >
+                    {(item) => (
+                        <TableRow key={item.id} className="hover:bg-gray-100">
+                            {(columnKey) => <TableCell>{renderCell(item as Expense, columnKey as string)}</TableCell>}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+            <div className="flex justify-center mt-6">
+                <Pagination
+                    color="primary"
+                    isCompact
+                    total={countExpenses}
+                    page={currentPage} 
+                    size='sm'
+                    onChange={(page) => onPageChange(page)} 
+                />
+            </div>
+        </div>
+        
     );
 }
