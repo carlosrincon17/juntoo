@@ -12,7 +12,9 @@ import PatrimonyManagerModal from "./components/patrimony-manager";
 import { Patrimony } from "@/app/types/patrimony";
 import Feedback from "./components/feedback";
 import { Debts } from "@/app/types/debts";
-import DebtManagerModal from "./components/debts-manager";;
+import DebtManagerModal from "./components/debts-manager";
+import { ROUTES } from "@/utils/navigation/routes-constants";
+import { useRouter } from "next/navigation";
 
 
 export default function Page() {
@@ -30,6 +32,8 @@ export default function Page() {
         name: "",
         value: 0
     });
+    const router = useRouter();
+
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const {isOpen: isOpenDebt, onOpen: onOpenDebt, onOpenChange: onOpenDebtChange} = useDisclosure();
 
@@ -82,7 +86,9 @@ export default function Page() {
                 <Kpi 
                     title="Ahorros" 
                     value={totalSavings} 
-                    customClasses={["from-cyan-400", "to-green-500"]} 
+                    customClasses={["from-cyan-400", "to-green-500"]}
+                    isPressable
+                    onPress={() => router.push(ROUTES.SAVINGS.path)}
                 />
                 <Kpi 
                     title="Deudas" 
