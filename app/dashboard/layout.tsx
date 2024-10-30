@@ -1,6 +1,6 @@
 'use client'
 
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Breadcrumbs, BreadcrumbItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem} from "@nextui-org/react";
 import { logout, getUser } from "../actions/auth";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -14,6 +14,7 @@ export default function Layout({
 }>) {
     const pathName = usePathname();
     const [user, setUser] = useState("--");
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     async function getUserData() {
         const userData = await getUser();
@@ -44,6 +45,23 @@ export default function Layout({
         })
     }
 
+    const getToggleNamBarItems = () => {
+        return ROUTES_LIST.map((route) => {
+            return (
+                <NavbarMenuItem key={route.path} isActive={checkIsActive(route.path)}>
+                    <Link
+                        color={checkIsActive(route.path) ? "primary" : "foreground"}
+                        className="w-full"
+                        size="lg"
+                        href={route.path}
+                    >
+                    {route.label}
+                    </Link>
+                </NavbarMenuItem>
+            )
+        })
+    }
+
     const getCurrentRoute = () => {
         return ROUTES_LIST.find((route) => route.path === pathName);
     }
@@ -54,7 +72,10 @@ export default function Layout({
 
     return (
         <>
-            <Navbar position="static" isBordered classNames={{
+            <Navbar position="static" 
+                isBordered 
+                onMenuOpenChange={setIsMenuOpen}
+                classNames={{
                 item: [
                     "flex",
                     "relative",
@@ -70,9 +91,18 @@ export default function Layout({
                     "data-[active=true]:after:bg-primary",
                 ],
             }}> 
-                <NavbarBrand>
-                    <p className="font-bold text-inherit">Cashly</p>
-                </NavbarBrand>
+                <NavbarContent>
+                    <NavbarMenuToggle
+                        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                        className="sm:hidden"
+                    />
+                    <NavbarBrand>
+                        <p className="font-bold text-inherit">Cashly</p>
+                    </NavbarBrand>
+                </NavbarContent>
+                <NavbarMenu>
+                    {getToggleNamBarItems()}
+                </NavbarMenu>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
                     {getNamBarItems()}
                 </NavbarContent>
