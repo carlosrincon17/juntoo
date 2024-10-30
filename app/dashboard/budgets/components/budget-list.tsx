@@ -1,21 +1,32 @@
 'use client'
 
-import { Budget } from "@/app/types/budget";
+import { BudgetWithExpenses } from "@/app/types/budget";
 import { Listbox, ListboxItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { getBudgets } from "../actions/bugdets";
+import { getBudgetsActiveWithExpenses } from "../actions/bugdets";
 import { ItemCounter } from "./item-counter";
 import { formatCurrency } from "@/app/lib/currency";
 import { FaCircle } from "react-icons/fa";
 
 export default function BudgetList() {
 
-    const [activeBudgets, setActiveBudgets] = useState<Budget[]>([]);
+    const [activeBudgets, setActiveBudgets] = useState<BudgetWithExpenses[]>([]);
 
 
     const getBudgetsData = async () => {
-        const budgets = await getBudgets();
+        const budgets = await getBudgetsActiveWithExpenses();
         setActiveBudgets(budgets);
+    }
+
+    const getColorBudget = (budget: BudgetWithExpenses) => {
+        const totalAvailable = budget.value - budget.totalExpenses;
+        const limitOrange = budget.value * 0.5;
+        const limitRed = budget.value * 0.2;
+        if (totalAvailable < limitRed)
+            return "text-red-700";
+        if (totalAvailable < limitOrange)
+            return "text-orange-700";
+        return "text-green-700";
     }
 
     useEffect(() => {
@@ -32,10 +43,15 @@ export default function BudgetList() {
             >
                 {activeBudgets.map((budget) => (
                     <ListboxItem key={budget.id} value={budget.id}
-                        startContent={<FaCircle className={budget.isActive ? "text-green-500": "text-gray-500"} />}
-                        endContent={<ItemCounter value={formatCurrency(budget.value)} />}
+                        startContent={<FaCircle className={getColorBudget(budget)} />}
+                        endContent={
+                            <div className={getColorBudget(budget)}>
+                                <ItemCounter value={formatCurrency(budget.value - budget.totalExpenses)}/>
+                            </div>
+                        }
+                        className="text-small"
                     >
-                        {budget.name}
+                        <span className="text-medium"> {budget.name} </span> <span className="text-small font-light text-default-400">({formatCurrency(budget.value)})</span>
                     </ListboxItem>
                 ))}
             </Listbox>

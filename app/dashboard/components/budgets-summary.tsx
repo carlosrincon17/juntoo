@@ -35,12 +35,9 @@ export default function BudgetsSummary() {
             <Card className="p-6">
                 <CardHeader className="grid grid-cols-1 md:grid-cols-2 justify-between items-center">
                     <h3 className="text-2xl font-semibold">Presupuestos</h3>
-                    <span className="text-default-400">
-                        {budgets.length} presupuestos
-                    </span>
                 </CardHeader>
                 <CardBody className="p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="grid grid-cols-1 gap-6">
                         {budgets.map((budget) => (
                             <div key={budget.id} className="grid grid-cols-1 md:grid-cols-2 justify-between items-center">
                                 <span>{budget.name} <span className="text-small font-light">({formatCurrency(budget.value)})</span></span>

@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
  
 export async function signUp(user: StorageUsers) {
     await createSession(user);
-    redirect("/dashboard");
+    redirect("/dashboard/categories");
 }
 
 export async function logout() {

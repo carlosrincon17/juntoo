@@ -12,7 +12,7 @@ import PatrimonyManagerModal from "./components/patrimony-manager";
 import { Patrimony } from "@/app/types/patrimony";
 import Feedback from "./components/feedback";
 import { Debts } from "@/app/types/debts";
-import DebtManagerModal from "./components/debts-manager";
+import DebtManagerModal from "./components/debts-manager";;
 
 
 export default function Page() {
@@ -112,6 +112,7 @@ export default function Page() {
             {totalSavings && totalDebts && totalPatrimonies && 
                 <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
             }
+            <Divider className="my-6" />
         </div>
     )
 }

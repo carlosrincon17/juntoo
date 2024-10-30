@@ -5,6 +5,11 @@ type Routes = {
 }
 
 export const ROUTES: Record<string, Routes> = {
+    CATEGORIES: {
+        label: "Nuevo Gasto",
+        path: "/dashboard/categories",
+        parent: "/dashboard",
+    },
     DASHBOARD: {
         label: "Dashboard",
         path: "/dashboard",
@@ -12,11 +17,6 @@ export const ROUTES: Record<string, Routes> = {
     SUMMARY: {
         label: "Consolidado",
         path: "/dashboard/summary",
-    },
-    CATEGORIES: {
-        label: "Categorias",
-        path: "/dashboard/categories",
-        parent: "/dashboard",
     },
     EXPENSES: {
         label: "Gastos",
@@ -36,9 +36,9 @@ export const ROUTES: Record<string, Routes> = {
 }
 
 export const ROUTES_LIST = [
+    ROUTES.CATEGORIES,
     ROUTES.DASHBOARD,
     ROUTES.SUMMARY,
-    ROUTES.CATEGORIES,
     ROUTES.EXPENSES,
     ROUTES.BUDGETS,
     ROUTES.SAVINGS,
