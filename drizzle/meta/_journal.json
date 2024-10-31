@@ -57,6 +57,13 @@
       "when": 1730374724230,
       "tag": "0007_remove-expenses",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1730375264910,
+      "tag": "0008_remove-expenses-added-categories",
+      "breakpoints": true
     }
   ]
 }
