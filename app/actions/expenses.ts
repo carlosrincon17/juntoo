@@ -6,6 +6,7 @@ import { CategoryExpense, Expense, TotalExpenses } from "../types/expense";
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
+import { addDaysToCurrentDate } from "../lib/dates";
 
 const totalsFilters = {
     totalExpenses: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Outcome} then ${ExpensesTable.value} else 0 end) as bigint)`,
@@ -13,12 +14,14 @@ const totalsFilters = {
 }
 
 export async function addExpense(expense: Expense) {
+    const date = addDaysToCurrentDate();
     await db.insert(ExpensesTable).values({
         createdBy: expense.createdBy ?? "",
         value: expense.value ?? 0,
         category_id: expense.category_id,
         transactionType: expense.transactionType || TransactionType.Outcome,
         budgetId: expense.budgetId,
+        createdAt: date,
     });
 }   
 
