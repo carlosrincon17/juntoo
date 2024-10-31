@@ -12,6 +12,7 @@ import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import BalanceChart from "./components/balance-chart";
 import ExpenseByUserChart from "./components/expenses-by-user";
+import { Card, CardBody } from "@nextui-org/react";
 
 export default function Page() {
     const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
@@ -42,7 +43,7 @@ export default function Page() {
     return (
         <div>
             <ExpenseFilter onChange={onChangeFilters}/>
-            {expensesFilter &&
+            {expensesFilter?.endDate && totalExpenses.totalExpenses ?
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <Kpi 
@@ -69,11 +70,21 @@ export default function Page() {
                         <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
                         <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Income}/>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                         <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
                         <ExpenseByUserChart expensesFilter={expensesFilter}/>
                     </div>
                 </>
+                : 
+                <div>
+                    <Card>
+                        <CardBody className="p-4">
+                            <div className="flex mb-2 p-12 justify-center items-center">
+                                <h3 className="text-2xl font-extralight text-gray-900">Upps... no encontramos ningún gasto</h3>
+                            </div>
+                        </CardBody>
+                    </Card>
+                </div>
             }
         </div>
     )

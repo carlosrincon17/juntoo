@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardBody } from "@nextui-org/react";
 import { Chart } from "chart.js/auto";
 import { useEffect } from "react";
@@ -9,13 +11,16 @@ export default function BalanceChart(props: {
 }) {
     Chart.register(ChartDataLabels);
     const { totalExpenses, totalIncomes } = props;
-    const ctx = document.getElementById('balance-chart') as HTMLCanvasElement;
-
+    const chartId = "balance-chart";
     useEffect(() => {
         if(
             totalExpenses
             && totalIncomes
         ){
+            if(Chart.getChart(chartId)) {
+                Chart.getChart(chartId)?.destroy()
+            }
+            const ctx = document.getElementById(chartId) as HTMLCanvasElement;
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -52,7 +57,7 @@ export default function BalanceChart(props: {
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-2xl font-semibold mb-4"> Como se ven? </h3>
+                <h3 className="text-xl font-light mb-4"> Como se ven? </h3>
                 <canvas id="balance-chart"></canvas>
             </CardBody>
         </Card>

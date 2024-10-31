@@ -15,7 +15,7 @@ export default function ExpenseByUserChart(props: {
     const { expensesFilter } = props;
     const [expensesByUser, setExpensesByUser] = useState<UserExpense[]>([]);
 
-    const ctx = document.getElementById('expenses-by-user-chart') as HTMLCanvasElement;
+    const chartId = 'expenses-by-user-chart';
 
     async function getExpensesByUserData(){
         const expensesByUserData = await getExpensesByUser(expensesFilter);
@@ -25,16 +25,21 @@ export default function ExpenseByUserChart(props: {
     useEffect(() => {
         if(expensesFilter.startDate && expensesFilter.endDate){
             getExpensesByUserData();
-        }}
-    , [expensesFilter.startDate, expensesFilter.endDate]);
+        }
+    }, [expensesFilter.startDate, expensesFilter.endDate]);
 
     useEffect(() => {
         if(
             expensesByUser.length > 0
         ) {
+            if(Chart.getChart(chartId)) {
+                Chart.getChart(chartId)?.destroy()
+            }
+            const ctx = document.getElementById(chartId) as HTMLCanvasElement;
             const labels = expensesByUser.map(expense => expense.userName);
             const values = expensesByUser.map(expense => expense.totalExpenses);
             const totalExpenses = expensesByUser.reduce((acc, expense) => acc + expense.totalExpenses, 0);
+            
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -71,7 +76,7 @@ export default function ExpenseByUserChart(props: {
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-2xl font-semibold mb-4"> Como se ven? </h3>
+                <h3 className="text-xl font-light mb-4"> Quien los está gastando? </h3>
                 <canvas id="expenses-by-user-chart"></canvas>
             </CardBody>
         </Card>
