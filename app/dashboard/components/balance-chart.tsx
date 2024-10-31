@@ -38,7 +38,8 @@ export default function BalanceChart(props: {
                             },
                             color: '#fff',
                             font: {
-                                weight: 'bold'
+                                weight: 'bold',
+                                size: 16
                             }
                         }
                     },

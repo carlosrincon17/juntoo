@@ -2,7 +2,7 @@
 
 import { CategoryTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
-import { CategoryExpense, Expense, TotalExpenses } from "../types/expense";
+import { CategoryExpense, Expense, TotalExpenses, UserExpense } from "../types/expense";
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
@@ -81,4 +81,22 @@ export async function getTotalsExpenses(filters: ExpensesFilters): Promise<Total
             )
         )
     return totalExpenses[0] as TotalExpenses;
+}
+
+export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserExpense[]> {
+    const expensesByUser = await db
+        .select({
+            userName: ExpensesTable.createdBy,
+            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
+        })
+        .from(ExpensesTable)
+        .where(
+            and(
+                gte(ExpensesTable.createdAt, filters.startDate),
+                lte(ExpensesTable.createdAt, filters.endDate),
+                eq(ExpensesTable.transactionType, TransactionType.Outcome)
+            )
+        )
+        .groupBy(ExpensesTable.createdBy)
+    return expensesByUser as UserExpense[];
 }

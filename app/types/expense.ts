@@ -18,6 +18,12 @@ export type CategoryExpense = {
     totalExpenses: number;
 }
 
+export type UserExpense = {
+    userName: string;
+    totalExpenses: number;
+}
+
+
 export type TotalExpenses = {
     totalExpenses: number;
     totalIncomes: number;
