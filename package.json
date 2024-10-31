@@ -21,6 +21,8 @@
     "@react-aria/i18n": "^3.12.3",
     "@vercel/postgres": "^0.10.0",
     "add": "^2.0.6",
+    "chart.js": "^4.4.6",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "drizzle-orm": "^0.35.3",
     "framer-motion": "^11.11.9",
     "next": "15.0.1",

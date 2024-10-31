@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/navigation/routes-constants";
 import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
+import BalanceChart from "./components/balance-chart";
 
 export default function Page() {
     const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
@@ -66,6 +67,9 @@ export default function Page() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                         <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
                         <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Income}/>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
                     </div>
                 </>
             }
