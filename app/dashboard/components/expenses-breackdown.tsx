@@ -31,7 +31,7 @@ export default function ExpensesBreackdown(props: { totalExpenses: number, expen
                 <CustomLoading /> :
                 <Card>
                     <CardBody className="p-6">
-                        <h3 className="text-2xl font-semibold mb-4">Resumen de {getTransactionTypeLabel(transactionType, true)} </h3>
+                        <h3 className="text-xl font-light mb-4">Resumen de {getTransactionTypeLabel(transactionType, true)} </h3>
                         {transactionSummary.map((category, index) => (
                             <Fragment key={category.categoryName}>
                                 <div className="flex justify-between items-center mb-2">

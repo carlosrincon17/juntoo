@@ -45,13 +45,16 @@ export default function BudgetList() {
                     <ListboxItem key={budget.id} value={budget.id}
                         startContent={<FaCircle className={getColorBudget(budget)} />}
                         endContent={
-                            <div className={getColorBudget(budget)}>
-                                <ItemCounter value={formatCurrency(budget.value - budget.totalExpenses)}/>
+                            <div className="flex flex-wrap items-center">
+                                <span className="text-small font-light text-default-400 ml-2">({formatCurrency(budget.value)})</span>
+                                <span className={getColorBudget(budget)}>
+                                    <ItemCounter value={formatCurrency(budget.value - budget.totalExpenses)}/>
+                                </span>
                             </div>
                         }
-                        className="text-small"
+                        className="text-small flex flex-wrap"
                     >
-                        <span className="text-medium"> {budget.name} </span> <span className="text-small font-light text-default-400">({formatCurrency(budget.value)})</span>
+                        <span className="text-medium"> {budget.name}</span>
                     </ListboxItem>
                 ))}
             </Listbox>
