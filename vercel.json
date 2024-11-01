@@ -2,7 +2,7 @@
     "crons": [
         {
             "path": "/api/savings",
-            "schedule": "1 * * * *"
+            "schedule": "* 6 * * *"
         }
     ]
 }
