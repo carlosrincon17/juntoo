@@ -57,7 +57,6 @@ export default function ExpenseByUserChart(props: {
                     plugins: {
                         datalabels: {
                             formatter: (value) => {
-                                console.log(value, totalExpenses);
                                 const percentage = (value / totalExpenses * 100).toFixed(1) + '%';
                                 return percentage;
                             },
