@@ -1,6 +1,6 @@
 import { db } from "@/utils/storage/db";
 
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
+export const dynamic = 'force-dynamic';
  
 export async function GET(request: Request) {
     const savingsAccount =  await db.query.SavingsTable.findMany();
