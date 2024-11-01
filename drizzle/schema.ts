@@ -66,6 +66,7 @@ export const SavingsTable = pgTable(
         name: text('name').notNull(),
         value: bigint({mode: 'number'}).notNull(),
         owner: text('owner').notNull(),
+        currency: text('currency').notNull().default('COP'),
     }
 );
 

@@ -64,6 +64,20 @@
       "when": 1730375264910,
       "tag": "0008_remove-expenses-added-categories",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1730484028240,
+      "tag": "0009_added-missing-categories",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1730484419348,
+      "tag": "0010_loving_mac_gargan",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "savings" ADD COLUMN "currency" text DEFAULT 'COP' NOT NULL;

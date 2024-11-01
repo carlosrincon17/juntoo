@@ -122,7 +122,7 @@ export default function Layout({
                     <Breadcrumbs underline="hover" color="primary">
                         {getParentRoute() && 
                             <BreadcrumbItem href={getParentRoute()?.path}>
-                                {getParentRoute()?.label}
+                                {getParentRoute()?.labelBreadcrumb || getParentRoute()?.label}
                             </BreadcrumbItem>
                         }
                         <BreadcrumbItem href={getCurrentRoute()?.path} isCurrent>{getCurrentRoute()?.label}</BreadcrumbItem>

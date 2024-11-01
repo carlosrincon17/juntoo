@@ -1,3 +1,5 @@
+'use client'
+
 import { generateFeedback} from "@/app/actions/ai";
 import { CustomLoading } from "@/app/components/customLoading";
 import { Card, CardBody } from "@nextui-org/react";
@@ -25,9 +27,12 @@ export default function Feedback(props: {
         setFeedback(feedbackJson);
         setLoading(false);
     }
+
     useEffect(() => {
-        getCashlyFeedback();
-    }, []);
+        if (patrimonies && savings && debts) {
+            getCashlyFeedback();
+        }
+    }, [patrimonies, savings, debts]);
 
     return (
         <Card className="flex justify-center items-center  bg-gradient-to-br from-blue-100 to-purple-100 p-4 mb-6">

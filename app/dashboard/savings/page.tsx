@@ -55,7 +55,7 @@ export default function Page() {
                                     onClick={() => onClickSavings(saving)}
                                 >
                                     <h2 className="text-2xl font-light mb-2">{saving.owner} <span className="text-small font-light">({saving.name})</span></h2>
-                                    <p className="font-bold text-right">Total: {formatCurrency(saving.value)}</p>
+                                    <p className="text-right"> {formatCurrency(saving.value)} {saving.currency}</p>
                                 </div>
                             ))}
                         </div>

@@ -19,6 +19,7 @@
     "@next/font": "^14.2.15",
     "@nextui-org/react": "^2.4.8",
     "@react-aria/i18n": "^3.12.3",
+    "@upstash/redis": "^1.34.3",
     "@vercel/postgres": "^0.10.0",
     "add": "^2.0.6",
     "chart.js": "^4.4.6",

@@ -2,6 +2,7 @@ type Routes = {
     label: string;
     path: string;
     parent?: string;
+    labelBreadcrumb?: string;
 }
 
 export const ROUTES: Record<string, Routes> = {
@@ -11,12 +12,14 @@ export const ROUTES: Record<string, Routes> = {
         parent: "/dashboard",
     },
     DASHBOARD: {
-        label: "Dashboard",
+        label: "Tu mes",
         path: "/dashboard",
+        labelBreadcrumb: "Inicio",
     },
     SUMMARY: {
         label: "Consolidado",
         path: "/dashboard/summary",
+        parent: "/dashboard",
     },
     EXPENSES: {
         label: "Gastos",

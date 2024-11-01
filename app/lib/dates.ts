@@ -15,3 +15,8 @@ export const addDaysToCurrentDate = (days = 1) => {
     currentDate.setDate(currentDate.getDate() + days);
     return currentDate;
 }
+
+export const formatDateToISOString = (date: Date): string => {
+    const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
+    return utcDate.toISOString().split('.')[0] + '.000';
+}

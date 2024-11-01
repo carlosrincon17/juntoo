@@ -15,11 +15,16 @@ import { Debts } from "@/app/types/debts";
 import DebtManagerModal from "./components/debts-manager";
 import { ROUTES } from "@/utils/navigation/routes-constants";
 import { useRouter } from "next/navigation";
+import { Currency } from "@/utils/enums/currency";
+import { convertUsdToCop } from "@/app/actions/trm";
 
 
 export default function Page() {
     
     const [totalSavings, setTotalSavings] = useState<number>(0);
+    const [totalSavingsCOP, setTotalSavingsCOP] = useState<number>(0);
+    const [totalSavingsUsdInCop, setTotalSavingsUsdInCop] = useState<number>(0);
+
     const [totalDebts, setTotalDebts] = useState<number>(0);
     const [totalPatrimonies, setTotalPatrimonies] = useState<number>(0);
     const [selectedPatrimony, setSelectedPatrimony] = useState<Patrimony>({
@@ -39,7 +44,13 @@ export default function Page() {
 
     const getTotalSavingsData = async () => {
         const totalSavingsData = await getTotalSavings();
-        setTotalSavings(totalSavingsData);
+        setTotalSavingsCOP(totalSavingsData);
+    }
+
+    const getTotalSavingsUSDData = async () => {
+        const totalSavingsUSDData = await getTotalSavings(Currency.USD);
+        const savingsUsdInCop = await convertUsdToCop(totalSavingsUSDData);
+        setTotalSavingsUsdInCop(savingsUsdInCop);
     }
 
     const getTotalPatrimoniesData = async () => {
@@ -65,8 +76,16 @@ export default function Page() {
         return (+totalSavings + +totalPatrimonies) - +totalDebts;
     }
 
+    useEffect(() => { 
+        console.log(totalSavingsCOP, totalSavingsUsdInCop); 
+        if (totalSavingsCOP && totalSavingsUsdInCop) {
+            setTotalSavings(+totalSavingsCOP + totalSavingsUsdInCop);
+        }
+    }, [totalSavingsCOP, totalSavingsUsdInCop]);
+
     useEffect(() => {
         getTotalSavingsData();
+        getTotalSavingsUSDData();
         getTotalDebtsData();
         getTotalPatrimoniesData();
     }, []);
@@ -115,9 +134,7 @@ export default function Page() {
                 </div>
             </div>
             <Divider className="my-6" />
-            {totalSavings && totalDebts && totalPatrimonies && 
-                <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
-            }
+            <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
             <Divider className="my-6" />
         </div>
     )

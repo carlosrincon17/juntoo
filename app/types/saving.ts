@@ -3,4 +3,5 @@ export type Savings = {
     name: string;
     value: number;
     owner: string;
+    currency?: string;
 }
