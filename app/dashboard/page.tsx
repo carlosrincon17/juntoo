@@ -13,6 +13,7 @@ import { TransactionType } from "@/utils/enums/transaction-type";
 import BalanceChart from "./components/balance-chart";
 import ExpenseByUserChart from "./components/expenses-by-user";
 import { Card, CardBody } from "@nextui-org/react";
+import IncomeBreakdown from "./components/Incomes-brackdown";
 
 export default function Page() {
     const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
@@ -73,6 +74,7 @@ export default function Page() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                         <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
                         <ExpenseByUserChart expensesFilter={expensesFilter}/>
+                        <IncomeBreakdown expensesFilter={expensesFilter}/>
                     </div>
                 </>
                 : 

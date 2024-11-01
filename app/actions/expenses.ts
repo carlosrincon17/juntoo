@@ -100,3 +100,24 @@ export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserE
         .groupBy(ExpensesTable.createdBy)
     return expensesByUser as UserExpense[];
 }
+
+export async function getIncomesByCategory(filters: ExpensesFilters): Promise<CategoryExpense[]> {
+    const incomesByCategory = await db
+        .select({
+            categoryName: CategoryTable.name,
+            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
+        })
+        .from(ExpensesTable)
+        .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(
+            and(
+                gte(ExpensesTable.createdAt, filters.startDate),
+                lte(ExpensesTable.createdAt, filters.endDate),
+                eq(ExpensesTable.transactionType, TransactionType.Income)
+            )
+        )
+        .groupBy(CategoryTable.name)
+        .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
+        .limit(3)
+    return incomesByCategory as CategoryExpense[];
+}
