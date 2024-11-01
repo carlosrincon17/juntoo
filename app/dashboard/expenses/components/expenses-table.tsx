@@ -38,7 +38,7 @@ export default function ExpensesTable(props: {
             return (
                 <div>
                     <Chip color={color} size="sm" variant="flat">
-                       <span > { expenseType}</span>
+                        <span > { expenseType}</span>
                     </Chip>
                 </div>
             );
