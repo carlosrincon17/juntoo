@@ -1,5 +1,6 @@
 import { getAttribute } from "@/app/lib/objects";
 import { Expense } from "@/app/types/expense";
+import { TransactionType } from "@/utils/enums/transaction-type";
 import { Chip, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 
 export default function ExpensesTable(props: { 
@@ -13,6 +14,7 @@ export default function ExpensesTable(props: {
 
     const columns = [
         { key: 'createdBy', label: 'Creado por' },
+        { key: 'transactionType', label: 'Tipo' },
         { key: 'category', label: 'Categoría' },
         { key: 'value', label: 'Valor' },
         { key: 'createdAt', label: 'Creado en' },
@@ -26,6 +28,17 @@ export default function ExpensesTable(props: {
                 <div>
                     <Chip color="primary" size="sm" variant="flat">
                         {expense.category?.name}
+                    </Chip>
+                </div>
+            );
+        }
+        if(columnKey === 'transactionType') {
+            const color = expense.transactionType === TransactionType.Income ? 'success' : 'danger';
+            const expenseType = expense.transactionType === TransactionType.Income ? 'Ingreso' : 'Gasto';
+            return (
+                <div>
+                    <Chip color={color} size="sm" variant="flat">
+                       <span > { expenseType}</span>
                     </Chip>
                 </div>
             );

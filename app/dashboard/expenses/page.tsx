@@ -5,7 +5,6 @@ import { Expense } from "@/app/types/expense";
 import { useEffect, useState } from "react";
 import ExpensesTable from "./components/expenses-table";
 import { CustomLoading } from "@/app/components/customLoading";
-import { TransactionType } from "@/utils/enums/transaction-type";
 
 export default function Page() {
 
@@ -17,7 +16,7 @@ export default function Page() {
 
     const getExpensesData = async () => {
         const expensesData = await getExpenses(page, perPage);
-        const countExpensesData = await getCountExpenses(TransactionType.Outcome);
+        const countExpensesData = await getCountExpenses();
         setLoading(false);
         setExpenses(expensesData);
         setCountExpenses((countExpensesData / perPage) + 1);

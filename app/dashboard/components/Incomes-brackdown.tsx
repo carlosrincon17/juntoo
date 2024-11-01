@@ -46,7 +46,7 @@ export default function IncomeBreakdown(props: {
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Total Ingreesos',
+                        label: 'Total Ingresos',
                         data: values,
                         borderWidth: 1,
                     }],

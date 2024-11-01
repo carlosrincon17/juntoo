@@ -27,7 +27,6 @@ export async function addExpense(expense: Expense) {
 
 export async function getExpenses(page: number, perPage: number): Promise<Expense[]> {
     return await db.query.ExpensesTable.findMany({
-        where: eq(ExpensesTable.transactionType, TransactionType.Outcome),
         limit: perPage,
         offset: (page -1) * perPage,
         with: {
@@ -36,14 +35,12 @@ export async function getExpenses(page: number, perPage: number): Promise<Expens
     });
 }
 
-export async function getCountExpenses(transactionType: TransactionType): Promise<number> {
+export async function getCountExpenses(): Promise<number> {
     const counterResult = await db.select({
         count: count(ExpensesTable.id)
     }).from(
         ExpensesTable
-    ).where(
-        eq(ExpensesTable.transactionType, transactionType)
-    );
+    )
     return counterResult[0].count as number;
 }
 

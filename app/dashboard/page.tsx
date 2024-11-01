@@ -59,7 +59,7 @@ export default function Page() {
                             value={totalExpenses.totalIncomes} 
                             customClasses={["from-green-400", "to-blue-500"]}
                             isPressable={true} 
-                            onPress={() => router.push(ROUTES.INCOMES.path)}
+                            onPress={() => router.push(ROUTES.EXPENSES.path)}
                         />
                         <Kpi 
                             title="Balance" 
