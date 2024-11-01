@@ -38,7 +38,8 @@ export default function ExpenseByUserChart(props: {
             const ctx = document.getElementById(chartId) as HTMLCanvasElement;
             const labels = expensesByUser.map(expense => expense.userName);
             const values = expensesByUser.map(expense => expense.totalExpenses);
-            const totalExpenses = expensesByUser.reduce((acc, expense) => acc + expense.totalExpenses, 0);
+            const totalExpenses = expensesByUser.reduce(
+                (acc, expense) => +acc + +expense.totalExpenses, +0);
             
             new Chart(ctx, {
                 type: 'doughnut',
@@ -56,8 +57,8 @@ export default function ExpenseByUserChart(props: {
                     plugins: {
                         datalabels: {
                             formatter: (value) => {
-                                const total = totalExpenses;
-                                const percentage = (value / total * 100).toFixed(1) + '%';
+                                console.log(value, totalExpenses);
+                                const percentage = (value / totalExpenses * 100).toFixed(1) + '%';
                                 return percentage;
                             },
                             color: '#fff',
