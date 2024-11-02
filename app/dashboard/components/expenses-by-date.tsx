@@ -50,6 +50,15 @@ export default function ExpensesByDate(props: {
                     }],
                 },
                 options: {
+                    scales: {
+                        x: {
+                            type: 'category',
+                            offset: true,
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
                     plugins: {
                         datalabels: {
                             formatter: (value) => {
@@ -61,7 +70,8 @@ export default function ExpensesByDate(props: {
                                 size: 16
                             },
                             display: false
-                        }
+                        },
+                        
                     },
                     responsive: true,
                 },

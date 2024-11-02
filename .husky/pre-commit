@@ -1,2 +1,2 @@
-pnpm exec tsc --noEmit
+pnpm exec tsc
 pnpm lint-fix
