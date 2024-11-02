@@ -28,4 +28,9 @@ export type TotalExpenses = {
     totalExpenses: number;
     totalIncomes: number;
 }
+
+export type ExpenseByDate = {
+    date: string;
+    totalExpenses: number;
+}
   

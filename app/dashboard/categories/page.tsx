@@ -91,7 +91,7 @@ export default function Page() {
                 </Button>
             </ButtonGroup>
             {loading ? 
-                <CustomLoading className="mt-24" /> :
+                <CustomLoading className="pt-12" /> :
                 <div>
                     <CategoryList categories={categories} onAddExpense={(category: Category) => onAddExpense(category)}/>
                     <NewExpenseModal

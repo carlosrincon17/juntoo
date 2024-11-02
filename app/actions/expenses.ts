@@ -2,8 +2,8 @@
 
 import { CategoryTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
-import { CategoryExpense, Expense, TotalExpenses, UserExpense } from "../types/expense";
-import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense } from "../types/expense";
+import { and, count, desc, eq, gte, lte, not, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { addDaysToCurrentDate } from "../lib/dates";
@@ -14,7 +14,7 @@ const totalsFilters = {
 }
 
 export async function addExpense(expense: Expense) {
-    const date = addDaysToCurrentDate();
+    const date = addDaysToCurrentDate(0);
     await db.insert(ExpensesTable).values({
         createdBy: expense.createdBy ?? "",
         value: expense.value ?? 0,
@@ -127,4 +127,25 @@ export async function getIncomesByCategory(filters: ExpensesFilters): Promise<Ca
         .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
         .limit(3)
     return incomesByCategory as CategoryExpense[];
+}
+
+export async function getExpensesByDate(filters: ExpensesFilters): Promise<ExpenseByDate[]> {
+    const expensesByDate = await db
+        .select({
+            date: sql<string>`EXTRACT(DAY FROM "createdAt")`,
+            totalExpenses: sql<number>`COALESCE(SUM(${ExpensesTable.value}), 0)`,
+        })
+        .from(ExpensesTable)
+        .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(
+            and(
+                eq(ExpensesTable.transactionType, TransactionType.Outcome),
+                gte(ExpensesTable.createdAt, filters.startDate),
+                lte(ExpensesTable.createdAt, filters.endDate),
+                not(eq(CategoryTable.parent, 'Deudas'))
+            )
+        )
+        .groupBy(sql<string>`EXTRACT(DAY FROM "createdAt")`)
+        .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
+    return expensesByDate as ExpenseByDate[];
 }

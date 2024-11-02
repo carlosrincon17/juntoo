@@ -20,3 +20,7 @@ export const formatDateToISOString = (date: Date): string => {
     const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
     return utcDate.toISOString().split('.')[0] + '.000';
 }
+
+export const getUTCDate = (date: Date) => {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
+}

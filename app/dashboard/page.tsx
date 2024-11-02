@@ -15,6 +15,7 @@ import ExpenseByUserChart from "./components/expenses-by-user";
 import { Card, CardBody } from "@nextui-org/react";
 import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
+import ExpensesByDate from "./components/expenses-by-date";
 
 export default function Page() {
     const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
@@ -50,7 +51,7 @@ export default function Page() {
             {
                 loading ?
                     <div className="flex justify-center items-center">
-                        <CustomLoading />
+                        <CustomLoading className="mt-24" />
                     </div> :
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
@@ -83,6 +84,9 @@ export default function Page() {
                                 <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
                                 <ExpenseByUserChart expensesFilter={expensesFilter}/>
                                 <IncomeBreakdown expensesFilter={expensesFilter}/>
+                            </div>
+                            <div className="grid grid-cols-1 gap-4 mt-6">
+                                <ExpensesByDate expensesFilter={expensesFilter}/>
                             </div>
                         </>
                         : 
