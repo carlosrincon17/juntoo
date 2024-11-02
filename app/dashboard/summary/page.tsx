@@ -17,6 +17,7 @@ import { ROUTES } from "@/utils/navigation/routes-constants";
 import { useRouter } from "next/navigation";
 import { Currency } from "@/utils/enums/currency";
 import { convertUsdToCop } from "@/app/actions/trm";
+import { CustomLoading } from "@/app/components/customLoading";
 
 
 export default function Page() {
@@ -24,6 +25,7 @@ export default function Page() {
     const [totalSavings, setTotalSavings] = useState<number>(0);
     const [totalSavingsCOP, setTotalSavingsCOP] = useState<number>(0);
     const [totalSavingsUsdInCop, setTotalSavingsUsdInCop] = useState<number>(0);
+    const [loading, setLoading] = useState(true);
 
     const [totalDebts, setTotalDebts] = useState<number>(0);
     const [totalPatrimonies, setTotalPatrimonies] = useState<number>(0);
@@ -77,9 +79,9 @@ export default function Page() {
     }
 
     useEffect(() => { 
-        console.log(totalSavingsCOP, totalSavingsUsdInCop); 
         if (totalSavingsCOP && totalSavingsUsdInCop) {
             setTotalSavings(+totalSavingsCOP + totalSavingsUsdInCop);
+            setLoading(false);
         }
     }, [totalSavingsCOP, totalSavingsUsdInCop]);
 
@@ -92,50 +94,56 @@ export default function Page() {
 
 
     return (
-        <div>
-            <div className="mb-6">
-                <Kpi 
-                    title="Balance" 
-                    value={getBalance()} 
-                    customClasses={["from-cyan-500", "to-blue-300", "text-black"]} 
-                />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Kpi 
-                    title="Ahorros" 
-                    value={totalSavings} 
-                    customClasses={["from-cyan-400", "to-green-500"]}
-                    isPressable
-                    onPress={() => router.push(ROUTES.SAVINGS.path)}
-                />
-                <Kpi 
-                    title="Deudas" 
-                    value={totalDebts} 
-                    customClasses={["from-rose-400", "to-red-500"]} 
-                />
-                <Kpi 
-                    title="Patrimonio"
-                    value={totalPatrimonies} 
-                    customClasses={["from-purple-400", "to-violet-500"]} 
-                />
-            </div>
-            <Divider className="my-6" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <h3 className="text-2xl font-light mb-4">Deudas</h3>
-                    <DebtsList onSelectDebt={(debt) => onSelectDebt(debt)} />
-                    <DebtManagerModal isOpen={isOpenDebt} onOpenChange={onOpenDebtChange} debt={selectedDebt}/>
-                </div>
-                <div>
-                    <h3 className="text-2xl font-light mb-4">Patrimonio</h3>
-                    <PatrimonyList onSelectPatrimony={(patrimony) => onSelectPatrimony(patrimony)} />
-                    <PatrimonyManagerModal isOpen={isOpen} onOpenChange={onOpenChange} patrimony={selectedPatrimony}/>
-                </div>
-            </div>
-            <Divider className="my-6" />
-            <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
-            <Divider className="my-6" />
-        </div>
+        <> 
+            {
+                loading ?
+                    <CustomLoading /> :
+                    <div>
+                        <div className="mb-6">
+                            <Kpi 
+                                title="Balance" 
+                                value={getBalance()} 
+                                customClasses={["from-cyan-500", "to-blue-300", "text-black"]} 
+                            />
+                        </div>
+                
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <Kpi 
+                                title="Ahorros" 
+                                value={totalSavings} 
+                                customClasses={["from-cyan-400", "to-green-500"]}
+                                isPressable
+                                onPress={() => router.push(ROUTES.SAVINGS.path)}
+                            />
+                            <Kpi 
+                                title="Deudas" 
+                                value={totalDebts} 
+                                customClasses={["from-rose-400", "to-red-500"]} 
+                            />
+                            <Kpi 
+                                title="Patrimonio"
+                                value={totalPatrimonies} 
+                                customClasses={["from-purple-400", "to-violet-500"]} 
+                            />
+                        </div>
+                        <Divider className="my-6" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h3 className="text-2xl font-light mb-4">Deudas</h3>
+                                <DebtsList onSelectDebt={(debt) => onSelectDebt(debt)} />
+                                <DebtManagerModal isOpen={isOpenDebt} onOpenChange={onOpenDebtChange} debt={selectedDebt}/>
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-light mb-4">Patrimonio</h3>
+                                <PatrimonyList onSelectPatrimony={(patrimony) => onSelectPatrimony(patrimony)} />
+                                <PatrimonyManagerModal isOpen={isOpen} onOpenChange={onOpenChange} patrimony={selectedPatrimony}/>
+                            </div>
+                        </div>
+                        <Divider className="my-6" />
+                        <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
+                        <Divider className="my-6" />
+                    </div>
+            }
+        </>
     )
 }

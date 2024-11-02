@@ -1,10 +1,12 @@
 'use client'
 
-import { getCountExpenses, getExpenses } from "@/app/actions/expenses";
+import { getCountExpenses, getExpenses, removeExpense } from "@/app/actions/expenses";
 import { Expense } from "@/app/types/expense";
 import { useEffect, useState } from "react";
 import ExpensesTable from "./components/expenses-table";
 import { CustomLoading } from "@/app/components/customLoading";
+import toast from "react-hot-toast";
+import ToastCustom from "@/app/components/toastCustom";
 
 export default function Page() {
 
@@ -22,6 +24,13 @@ export default function Page() {
         setCountExpenses((countExpensesData / perPage) + 1);
     }
 
+    const onDeleteExpense = async (expense: Expense) => {
+        setLoading(true);
+        await removeExpense(expense);
+        toast.custom((t) => <ToastCustom message="Tu gasto se ha eliminado correctamente" toast={t}/>);
+        getExpensesData();
+    }
+
     useEffect(() => {
         getExpensesData();
     }, [page, perPage]);
@@ -36,6 +45,7 @@ export default function Page() {
                     perPage={perPage} 
                     currentPage={page}
                     countExpenses={countExpenses}
+                    onDeleteExpense={onDeleteExpense}
                 />
             }
         </div>

@@ -36,6 +36,15 @@ export async function getExpenses(page: number, perPage: number): Promise<Expens
     });
 }
 
+export async function removeExpense(expense: Expense): Promise<void> {
+    if (!expense.id) {
+        return;
+    }
+    await db.delete(ExpensesTable).where(
+        eq(ExpensesTable.id, expense.id)
+    );
+}
+
 export async function getCountExpenses(): Promise<number> {
     const counterResult = await db.select({
         count: count(ExpensesTable.id)

@@ -7,14 +7,16 @@ import { getBudgetsActiveWithExpenses } from "../actions/bugdets";
 import { ItemCounter } from "./item-counter";
 import { formatCurrency } from "@/app/lib/currency";
 import { FaCircle } from "react-icons/fa";
+import { CustomLoading } from "@/app/components/customLoading";
 
 export default function BudgetList() {
 
     const [activeBudgets, setActiveBudgets] = useState<BudgetWithExpenses[]>([]);
-
+    const [loading, setLoading] = useState(true);
 
     const getBudgetsData = async () => {
         const budgets = await getBudgetsActiveWithExpenses();
+        setLoading(false);
         setActiveBudgets(budgets);
     }
 
@@ -34,30 +36,35 @@ export default function BudgetList() {
     }, []);
 
     return (
-        <div className="full-width">
-            <Listbox
-                className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
-                itemClasses={{
-                    base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
-                }}
-            >
-                {activeBudgets.map((budget) => (
-                    <ListboxItem key={budget.id} value={budget.id}
-                        startContent={<FaCircle className={getColorBudget(budget)} />}
-                        endContent={
-                            <div className="flex flex-wrap items-center">
-                                <span className="text-small font-light text-default-400 ml-2">({formatCurrency(budget.value)})</span>
-                                <span className={getColorBudget(budget)}>
-                                    <ItemCounter value={formatCurrency(budget.value - budget.totalExpenses)}/>
-                                </span>
-                            </div>
-                        }
-                        className="text-small flex flex-wrap"
+        <>
+            { loading ?
+                <CustomLoading /> :
+                <div className="full-width">
+                    <Listbox
+                        className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
+                        itemClasses={{
+                            base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
+                        }}
                     >
-                        <span className="text-medium"> {budget.name}</span>
-                    </ListboxItem>
-                ))}
-            </Listbox>
-        </div>
+                        {activeBudgets.map((budget) => (
+                            <ListboxItem key={budget.id} value={budget.id}
+                                startContent={<FaCircle className={getColorBudget(budget)} />}
+                                endContent={
+                                    <div className="flex flex-wrap items-center">
+                                        <span className="text-small font-light text-default-400 ml-2">({formatCurrency(budget.value)})</span>
+                                        <span className={getColorBudget(budget)}>
+                                            <ItemCounter value={formatCurrency(budget.value - budget.totalExpenses)}/>
+                                        </span>
+                                    </div>
+                                }
+                                className="text-small flex flex-wrap"
+                            >
+                                <span className="text-medium"> {budget.name}</span>
+                            </ListboxItem>
+                        ))}
+                    </Listbox>
+                </div>
+            }
+        </>
     )
 }

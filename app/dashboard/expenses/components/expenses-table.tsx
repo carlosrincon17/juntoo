@@ -1,16 +1,18 @@
 import { getAttribute } from "@/app/lib/objects";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { Chip, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Tooltip, Chip, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import {  FaTrashAlt } from "react-icons/fa";
 
 export default function ExpensesTable(props: { 
     expenses: Expense[],
     perPage: number,
     currentPage: number,
     countExpenses: number,
-    onPageChange: (page: number) => void
+    onPageChange: (page: number) => void,
+    onDeleteExpense: (expense: Expense) => void
 }) {
-    const { expenses, onPageChange, currentPage, countExpenses } = props;
+    const { expenses, onPageChange, currentPage, countExpenses, onDeleteExpense } = props;
 
     const columns = [
         { key: 'createdBy', label: 'Creado por' },
@@ -18,6 +20,7 @@ export default function ExpensesTable(props: {
         { key: 'category', label: 'Categoría' },
         { key: 'value', label: 'Valor' },
         { key: 'createdAt', label: 'Creado en' },
+        { key: 'actions', label: 'Acciones' },
     ];
 
     const rows = [...expenses];
@@ -48,6 +51,17 @@ export default function ExpensesTable(props: {
         }
         if (columnKey === 'createdAt') {
             return new Date(expense.createdAt as Date).toLocaleDateString('es-CO');
+        }
+        if (columnKey === 'actions') {
+            return (
+                <div className="flex gap-2">
+                    <Tooltip content="Eliminar gasto" color="foreground" placement="top-start">
+                        <span className="text-lg text-danger cursor-pointer opacity-70" onClick={() => onDeleteExpense(expense)}>
+                            <FaTrashAlt />
+                        </span>
+                    </Tooltip>
+                </div>
+            );
         }
         const value = getAttribute(expense, columnKey);
         return value as string;

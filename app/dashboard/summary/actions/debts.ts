@@ -3,11 +3,13 @@
 import { Debts } from "@/app/types/debts";
 import { DebtsTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 
 export async function getDebts(): Promise<Debts[]> {
-    return await db.query.DebtsTable.findMany({});
+    return await db.query.DebtsTable.findMany({
+        orderBy: desc(DebtsTable.value),
+    });
 }
 
 export async function getTotalDebts(): Promise<number> {

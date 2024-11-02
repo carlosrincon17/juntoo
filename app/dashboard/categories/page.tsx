@@ -14,6 +14,8 @@ import { getUser } from "@/app/actions/auth";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { getBudgets } from "../budgets/actions/bugdets";
 import { Budget } from "@/app/types/budget";
+import ToastCustom from "@/app/components/toastCustom";
+import { formatCurrency } from "@/app/lib/currency";
 
 export default function Page() {
 
@@ -53,7 +55,8 @@ export default function Page() {
         };
         await addExpense(expenseToAdd);
         const typeLabel = selectedCategoryTransactionType === TransactionType.Outcome ? 'gasto' : 'ingreso';
-        toast.success(`Agregado ${typeLabel} de $ ${expenseToAdd.value} por ${expenseToAdd.category?.name}.`);
+        const toastMessage = `Agregado ${typeLabel} de ${formatCurrency(expenseToAdd.value as number)} por ${expenseToAdd.category?.name}.`;
+        toast.custom((t) => <ToastCustom message={toastMessage} toast={t}/>);
         onClose();
     }
 
@@ -88,7 +91,7 @@ export default function Page() {
                 </Button>
             </ButtonGroup>
             {loading ? 
-                <CustomLoading className="mt-16"/> :
+                <CustomLoading className="mt-24" /> :
                 <div>
                     <CategoryList categories={categories} onAddExpense={(category: Category) => onAddExpense(category)}/>
                     <NewExpenseModal
