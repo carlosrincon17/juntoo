@@ -24,7 +24,7 @@ const saveInvestmentIncomes = async (saving: Savings, dailyInterest: number, inv
         console.log("CRON is not enabled");
         return;
     }
-    await db.update(SavingsTable).set(saving).where(eq(SavingsTable.id, saving.id));
+    // await db.update(SavingsTable).set(saving).where(eq(SavingsTable.id, saving.id));
     await db.insert(ExpensesTable).values(newExpense);
 }
 
