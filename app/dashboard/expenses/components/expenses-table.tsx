@@ -92,6 +92,5 @@ export default function ExpensesTable(props: {
                 />
             </div>
         </div>
-        
     );
 }
