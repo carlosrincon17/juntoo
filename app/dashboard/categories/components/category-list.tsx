@@ -56,7 +56,7 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
 
     return (
         <div className="mt-10">
-            <div className="grid gap-4 flex-row lg:grid-cols-6 grid-cols-3 md:grid-cols-3 mt-4">
+            <div className="grid gap-4 flex-row lg:grid-cols-6 grid-cols-2 md:grid-cols-3 mt-4">
                 {getParentCategories()}
             </div>
         </div>
