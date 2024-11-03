@@ -80,8 +80,7 @@ export default function Page() {
     }
 
     useEffect(() => {
-        if(searchCategory)
-            getFilteredCategories();
+        getFilteredCategories();
     }, [searchCategory]);
 
     useEffect(() => {
