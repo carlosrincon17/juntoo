@@ -127,7 +127,7 @@ export default function Layout({
                         }
                         <BreadcrumbItem href={getCurrentRoute()?.path} isCurrent>{getCurrentRoute()?.label}</BreadcrumbItem>
                     </Breadcrumbs>
-                    <div className="mt-6 mb-10 ">
+                    <div className="mt-6 mb-4">
                         <h1 className="text-3xl">{getCurrentRoute()?.label}</h1>
                     </div>
                     {children}

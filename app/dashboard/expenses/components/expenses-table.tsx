@@ -50,7 +50,7 @@ export default function ExpensesTable(props: {
             return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(expense.value || 0);
         }
         if (columnKey === 'createdAt') {
-            return new Date(expense.createdAt as Date).toLocaleDateString('es-CO');
+            return new Date(expense.createdAt?.toUTCString() as string).toLocaleDateString('es-CO');
         }
         if (columnKey === 'actions') {
             return (
@@ -69,14 +69,14 @@ export default function ExpensesTable(props: {
 
     return (
         <div>
-            <Table color="primary" className="w-full">
+            <Table color="primary" className="w-full" aria-labelledby="table-expenses">
                 <TableHeader columns={columns}>
                     {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                 </TableHeader>
                 <TableBody items={rows} >
                     {(item) => (
                         <TableRow key={item.id} className="hover:bg-gray-100">
-                            {(columnKey) => <TableCell>{renderCell(item as Expense, columnKey as string)}</TableCell>}
+                            {(columnKey) => <TableCell key={`${item.id}-${columnKey}`}>{renderCell(item as Expense, columnKey as string)}</TableCell>}
                         </TableRow>
                     )}
                 </TableBody>

@@ -17,8 +17,14 @@ export const addDaysToCurrentDate = (days = 1) => {
 }
 
 export const formatDateToISOString = (date: Date): string => {
-    const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
-    return utcDate.toISOString().split('.')[0] + '.000';
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    });
+    let formattedDate = formatter.format(date).split('/').reverse().join('-');
+    formattedDate += 'T00:00:00.000';
+    return formattedDate
 }
 
 export const getUTCDate = (date: Date) => {

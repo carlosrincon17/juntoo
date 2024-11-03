@@ -32,13 +32,7 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
     const getParentCategories = () => {
         return Object.keys(groupedCategories).map((parentCategory) => {
             const groupedCategoryList = groupedCategories[parentCategory];
-            return (
-                <div className="mb-10" key={parentCategory}>
-                    <div className="grid gap-4 flex-row lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-3 mt-4">
-                        {getCategories(groupedCategoryList as Category[])}
-                    </div>
-                </div>
-            )
+            return getCategories(groupedCategoryList as Category[]);
         })
     }
 
@@ -49,11 +43,11 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
                     isBlurred 
                     isPressable
                     onPress={() => onAddExpense(category)}>
-                    <CardBody>
-                        <h3 className="font-light text-xl">{category.name}</h3>
+                    <CardBody className="pb-0">
+                        <h4 className="font-light text-medium">{category.name}</h4>
                     </CardBody>
-                    <CardFooter className="flex flex-col-reverse items-end">
-                        <Chip className="text-extra-small font-light text-gray-950 bg-gray-200 " size="sm">{category.parent}</Chip>
+                    <CardFooter className="flex flex-col-reverse items-end pt-2">
+                        <Chip className="text-extra-small font-extralight text-gray-950 bg-gray-200" size="sm">{category.parent}</Chip>
                     </CardFooter>
                 </Card>
             )
@@ -62,7 +56,9 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
 
     return (
         <div className="mt-10">
-            {getParentCategories()}
+            <div className="grid gap-4 flex-row lg:grid-cols-6 grid-cols-3 md:grid-cols-3 mt-4">
+                {getParentCategories()}
+            </div>
         </div>
     )
 }

@@ -32,7 +32,7 @@ export async function getExpenses(page: number, perPage: number): Promise<Expens
         with: {
             category: true,
         },
-        orderBy: desc(ExpensesTable.createdAt),
+        orderBy: desc(ExpensesTable.id),
     });
 }
 
