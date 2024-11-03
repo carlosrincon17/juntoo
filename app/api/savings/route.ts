@@ -32,16 +32,17 @@ export async function GET(request: Request) {
     const savingsAccount =  await db.query.SavingsTable.findMany({
         where: eq(SavingsTable.currency, 'COP'),
     });
+    console.log("savings account to process", savingsAccount);
     const investmentCategory = await db.query.CategoryTable.findFirst({
         where: eq(CategoryTable.name, 'Inversion'),
     });
     if (!investmentCategory) {
         return new Response(`Category Inversion not found`, { status: 404 });
     }
-    savingsAccount.forEach(saving => {
+    savingsAccount.forEach(async(saving) => {
         const dailyInterest = (saving.value * (ANNUAL_INTEREST_RATE/365)).toFixed(0);
         saving.value = saving.value + parseInt(dailyInterest);
-        saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
+        await saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
     });
     return new Response(`Hello from ${process.env.CRON_ENABLE}, ${request.url}`);
 }
