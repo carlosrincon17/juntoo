@@ -14,6 +14,6 @@ export async function convertUsdToCop(amount: number): Promise<number> {
         return amount * parseFloat(rate.valor);
     } catch (error) {
         console.error(`Error converting USD to COP, url: ${urlRequest}`, error);
-        return USD_COP_DEFAULT_VALUE;
+        return USD_COP_DEFAULT_VALUE * amount;
     }
 }
