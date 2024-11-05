@@ -39,10 +39,10 @@ export async function GET(request: Request) {
     if (!investmentCategory) {
         return new Response(`Category Inversion not found`, { status: 404 });
     }
-    savingsAccount.forEach(async(saving) => {
+    await Promise.all(savingsAccount.map(async(saving) => {
         const dailyInterest = (saving.value * (ANNUAL_INTEREST_RATE/365)).toFixed(0);
         saving.value = saving.value + parseInt(dailyInterest);
-        await saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
-    });
+        return await saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
+    }));
     return new Response(`Hello from ${process.env.CRON_ENABLE}, ${request.url}`);
 }
