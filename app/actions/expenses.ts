@@ -3,7 +3,7 @@
 import { CategoryTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
 import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense } from "../types/expense";
-import { and, count, desc, eq, gte, lte, not, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, lte, not, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { addDaysToCurrentDate } from "../lib/dates";
@@ -146,6 +146,6 @@ export async function getExpensesByDate(filters: ExpensesFilters): Promise<Expen
             )
         )
         .groupBy(sql<string>`EXTRACT(DAY FROM "createdAt")`)
-        .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
+        .orderBy(asc(sql<number>`EXTRACT(DAY FROM "createdAt")`))
     return expensesByDate as ExpenseByDate[];
 }
