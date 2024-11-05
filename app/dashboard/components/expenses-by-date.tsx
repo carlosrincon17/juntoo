@@ -35,19 +35,24 @@ export default function ExpensesByDate(props: {
                 Chart.getChart(chartId)?.destroy()
             }
             const ctx = document.getElementById(chartId) as HTMLCanvasElement;
-            const labels = expensesByDate.map(expense => expense.date);
-            const values = expensesByDate.map(expense => expense.totalExpenses);
+            const parents = [...new Set(expensesByDate.map(item => item.parent))];
+            const dates = [...new Set(expensesByDate.map(item => item.date))];
+            const datasets = parents.map(parent => {
+                return {
+                    label: parent,
+                    data: dates.map(date => {
+                        const entry = expensesByDate.find(d => d.parent === parent && d.date === date);
+                        return entry ? entry.totalExpenses : 0;
+                    }),
+                    fill: false
+                };
+            });
 
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Gastos',
-                        data: values,
-                        backgroundColor: '#36D399',
-                        borderColor: '#36D399',
-                    }],
+                    labels: dates,
+                    datasets: datasets,
                 },
                 options: {
                     scales: {
