@@ -7,37 +7,14 @@ on:
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Check out the code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Set up Node.js
-        # Ensure Node.js is installed before setting up pnpm
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '22'
-
-      # Step 3: Set up pnpm
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v2.2.4 # specify the exact version to avoid compatibility issues
-        with:
-          version: 'latest' # can specify a particular version if needed
-          run_install: true # optional: run `pnpm install` automatically 
-
-      # Step 4: Install dependencies using pnpm
-      - name: Install dependencies
-        run: pnpm install 
-
-      # Step 5: Build the project
-      - name: Build project
-        run: pnpm build
-
-      # Step 6: Run Semantic Release
-      - name: Run Semantic Release
+          node-version: 22
+      - run: pnpm install
+      - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx semantic-release
