@@ -1,38 +1,35 @@
-name: Changesets
+name: Release
+
 on:
   push:
     branches:
       - main
-env:
-  CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
+
 jobs:
-  version:
-    timeout-minutes: 15
+  release:
     runs-on: ubuntu-latest
+
     steps:
-      - name: checkout code repository
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: setup node.js
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
-      - name: install pnpm
-        run: npm i pnpm@latest -g
-      - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.GH_TOKEN }}" > .npmrc
-      - name: setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
-      - name: install dependencies
+          node-version: '18'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
         run: pnpm install
-      - name: create and publish versions
-        uses: changesets/action@v1
-        with:
-          version: pnpm ci:version
-          commit: "chore: update versions"
-          title: "chore: update versions"
-          publish: pnpm ci:publish
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Run Semantic Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
