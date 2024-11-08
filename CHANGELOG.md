@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/carlosrincon17/cashly/compare/v1.0.0...v1.1.0) (2024-11-08)
+
+
+### Features
+
+* budgets v2.0 ([9f4c44e](https://github.com/carlosrincon17/cashly/commit/9f4c44e6b98274e2748bf520a51be6ce3ed93871))
+
 # 1.0.0 (2024-11-08)
 
 
