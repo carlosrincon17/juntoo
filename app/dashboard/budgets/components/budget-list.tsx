@@ -1,12 +1,10 @@
 'use client'
 
 import { BudgetWithExpenses } from "@/app/types/budget";
-import { Listbox, ListboxItem } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { getBudgetsActiveWithExpenses } from "../actions/bugdets";
-import { ItemCounter } from "./item-counter";
 import { formatCurrency } from "@/app/lib/currency";
-import { FaCircle } from "react-icons/fa";
 import { CustomLoading } from "@/app/components/customLoading";
 
 export default function BudgetList() {
@@ -31,6 +29,48 @@ export default function BudgetList() {
         return "text-green-700";
     }
 
+    const renderBudget = (budget: BudgetWithExpenses) => {
+        const totalAvailable = budget.value - budget.totalExpenses;
+        const percentageUsed = (budget.totalExpenses / budget.value) * 100;
+        const percentageAvailable = (totalAvailable / budget.value) * 100;
+        const colorName = getColorBudget(budget);
+        return (
+            <Card className="max-w-md w-full bg-white shadow-lg" key={budget.id}>
+                <CardHeader className="flex flex-col items-start px-4 pt-4 pb-0">
+                    <h2 className="text-lg font-bold text-gray-800">{budget.name}</h2>
+                </CardHeader>
+                <CardBody className="px-4 py-4">
+                    <div className="flex justify-between items-center mb-4">
+                        <div>
+                            <p className="text-sm font-medium text-gray-500">Total</p>
+                            <p className="text-2xl font-bold text-gray-800">{formatCurrency(budget.value)}</p>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-sm font-medium text-gray-500">Disponible</p>
+                            <p className={"text-2xl font-bold " + colorName}>{formatCurrency(budget.value - budget.totalExpenses)}</p>
+                        </div>
+                    </div>
+                    <Progress 
+                        aria-label="Budget progress" 
+                        value={percentageUsed} 
+                        className="h-3"
+                        classNames={{
+                            base: "max-w-md",
+                            track: "drop-shadow-md border border-default",
+                            indicator: "bg-gradient-to-r from-pink-500 to-yellow-500",
+                            label: "tracking-wider font-medium text-default-600",
+                            value: "text-foreground/60",
+                        }}
+                    />
+                    <div className="flex justify-between mt-2">
+                        <p className="text-sm text-gray-500">{formatCurrency(budget.totalExpenses)} usado</p>
+                        <p className="text-sm text-gray-500">{percentageAvailable.toFixed(1)}% disponible</p>
+                    </div>
+                </CardBody>
+            </Card>
+        )
+    };
+
     useEffect(() => {
         getBudgetsData();
     }, []);
@@ -40,29 +80,9 @@ export default function BudgetList() {
             { loading ?
                 <CustomLoading /> :
                 <div className="full-width">
-                    <Listbox
-                        className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
-                        itemClasses={{
-                            base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
-                        }}
-                    >
-                        {activeBudgets.map((budget) => (
-                            <ListboxItem key={budget.id} value={budget.id}
-                                startContent={<FaCircle className={getColorBudget(budget)} />}
-                                endContent={
-                                    <div className="flex flex-wrap items-center">
-                                        <span className="text-small font-light text-default-400 ml-2">({formatCurrency(budget.value)})</span>
-                                        <span className={getColorBudget(budget)}>
-                                            <ItemCounter value={formatCurrency(budget.value - budget.totalExpenses)}/>
-                                        </span>
-                                    </div>
-                                }
-                                className="text-small flex flex-wrap"
-                            >
-                                <span className="text-medium"> {budget.name}</span>
-                            </ListboxItem>
-                        ))}
-                    </Listbox>
+                    <div className="flex flex-wrap gap-8 sm:columns-1 md:columns-2">
+                        {activeBudgets.map((budget) => renderBudget(budget))}
+                    </div>
                 </div>
             }
         </>
