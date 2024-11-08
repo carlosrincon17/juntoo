@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/carlosrincon17/cashly/compare/v1.1.0...v1.1.1) (2024-11-08)
+
+
+### Bug Fixes
+
+* improved colors of budgets progress bar ([308f6d4](https://github.com/carlosrincon17/cashly/commit/308f6d439c6339f9a4d02bcfe88d0514a7bb2dba))
+
 # [1.1.0](https://github.com/carlosrincon17/cashly/compare/v1.0.0...v1.1.0) (2024-11-08)
 
 
