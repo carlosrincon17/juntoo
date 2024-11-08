@@ -85,6 +85,13 @@
       "when": 1730611613420,
       "tag": "0011_added-missing-categories",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1731066968736,
+      "tag": "0012_added-missing-categories-2",
+      "breakpoints": true
     }
   ]
 }
