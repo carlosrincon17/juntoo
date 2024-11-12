@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/carlosrincon17/cashly/compare/v1.1.1...v1.2.0) (2024-11-12)
+
+
+### Features
+
+* improved list of incomes/expenses design ([8f91daf](https://github.com/carlosrincon17/cashly/commit/8f91daf8206c6802a7b5ac7dec97f6ba8bdf53a6))
+
 ## [1.1.1](https://github.com/carlosrincon17/cashly/compare/v1.1.0...v1.1.1) (2024-11-08)
 
 
