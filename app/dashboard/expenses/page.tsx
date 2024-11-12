@@ -17,6 +17,7 @@ export default function Page() {
     const perPage = 10;
 
     const getExpensesData = async () => {
+        setLoading(true);
         const expensesData = await getExpenses(page, perPage);
         const countExpensesData = await getCountExpenses();
         setLoading(false);

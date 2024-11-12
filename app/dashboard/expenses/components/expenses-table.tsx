@@ -1,8 +1,7 @@
-import { getAttribute } from "@/app/lib/objects";
+import { formatCurrency } from "@/app/lib/currency";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { Tooltip, Chip, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import {  FaTrashAlt } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaTrashAlt } from "react-icons/fa";
 
 export default function ExpensesTable(props: { 
     expenses: Expense[],
@@ -13,83 +12,73 @@ export default function ExpensesTable(props: {
     onDeleteExpense: (expense: Expense) => void
 }) {
     const { expenses, onPageChange, currentPage, countExpenses, onDeleteExpense } = props;
-
-    const columns = [
-        { key: 'createdBy', label: 'Creado por' },
-        { key: 'transactionType', label: 'Tipo' },
-        { key: 'category', label: 'Categoría' },
-        { key: 'value', label: 'Valor' },
-        { key: 'createdAt', label: 'Creado en' },
-        { key: 'actions', label: 'Acciones' },
-    ];
-
-    const rows = [...expenses];
-
-    const renderCell = (expense: Expense, columnKey: string) => {
-        if (columnKey === 'category') {
-            return (
-                <div>
-                    <Chip color="primary" size="sm" variant="flat">
-                        {expense.category?.name}
-                    </Chip>
-                </div>
-            );
-        }
-        if(columnKey === 'transactionType') {
-            const color = expense.transactionType === TransactionType.Income ? 'success' : 'danger';
-            const expenseType = expense.transactionType === TransactionType.Income ? 'Ingreso' : 'Gasto';
-            return (
-                <div>
-                    <Chip color={color} size="sm" variant="flat">
-                        <span > { expenseType}</span>
-                    </Chip>
-                </div>
-            );
-        }
-        if (columnKey === 'value') {
-            return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(expense.value || 0);
-        }
-        if (columnKey === 'createdAt') {
-            return new Date(expense.createdAt?.toUTCString() as string).toLocaleDateString('es-CO');
-        }
-        if (columnKey === 'actions') {
-            return (
-                <div className="flex gap-2">
-                    <Tooltip content="Eliminar gasto" color="foreground" placement="top-start">
-                        <span className="text-lg text-danger cursor-pointer opacity-70" onClick={() => onDeleteExpense(expense)}>
-                            <FaTrashAlt />
-                        </span>
-                    </Tooltip>
-                </div>
-            );
-        }
-        const value = getAttribute(expense, columnKey);
-        return value as string;
-    };
+    const totalPages = Math.floor(countExpenses);
 
     return (
-        <div>
-            <Table color="primary" className="w-full" aria-labelledby="table-expenses">
-                <TableHeader columns={columns}>
-                    {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-                </TableHeader>
-                <TableBody items={rows} >
-                    {(item) => (
-                        <TableRow key={item.id} className="hover:bg-gray-100">
-                            {(columnKey) => <TableCell key={`${item.id}-${columnKey}`}>{renderCell(item as Expense, columnKey as string)}</TableCell>}
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-            <div className="flex justify-center mt-6">
-                <Pagination
-                    color="primary"
-                    isCompact
-                    total={countExpenses}
-                    page={currentPage} 
-                    size='sm'
-                    onChange={(page) => onPageChange(page)} 
-                />
+        <div className="w-full">
+            <div className="gap-2 flex flex-wrap">
+                {expenses.map((expense) => (
+                    <div 
+                        key={expense.id}
+                        className="p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors bg-white w-full"
+                    >
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex flex-col">
+                                    <span className="font-medium text-gray-900">{expense.createdBy}</span>
+                                    <span className={`text-sm text-gray-700`}>{expense.category?.name}</span>
+                                </div>
+                            </div>
+                  
+                            <div className="flex items-center space-x-4">
+                                <span className={`px-2 py-1 rounded-full text-sm ${
+                                    expense.transactionType === TransactionType.Outcome 
+                                        ? 'bg-red-100 text-red-800' 
+                                        : 'bg-green-100 text-green-800'
+                                }`}>
+                                    {expense.transactionType === TransactionType.Income ? 'Ingreso' : 'Gasto'}
+                                </span>
+                    
+                                <div className="flex flex-col items-end">
+                                    <span className="font-medium text-gray-900">
+                                        {formatCurrency(expense.value || 0)}
+                                    </span>
+                                    <span className="text-sm text-gray-500">{new Date(expense.createdAt?.toUTCString() as string).toLocaleDateString('es-CO')}</span>
+                                </div>
+
+                                <div className="flex flex-col items-end">
+                                    <span>
+                                        <FaTrashAlt onClick={() => onDeleteExpense(expense)} className="text-red-600 cursor-pointer" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+    
+            <div className="mt-6 flex items-center justify-between">
+                <span className="text-sm text-gray-500">
+              Página {currentPage} de {totalPages}
+                </span>
+            
+                <div className="flex space-x-2">
+                    <button
+                        onClick={() => onPageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="p-2 rounded-lg border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                    >
+                        <FaChevronLeft className="w-5 h-5 text-gray-600" />
+                    </button>
+              
+                    <button
+                        onClick={() => onPageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="p-2 rounded-lg border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                    >
+                        <FaChevronRight className="w-5 h-5 text-gray-600" />
+                    </button>
+                </div>
             </div>
         </div>
     );
