@@ -16,7 +16,7 @@ export default function ExpensesTable(props: {
 
     return (
         <div className="w-full">
-            <div className="gap-2 flex flex-wrap">
+            <div className="gap-4 flex flex-wrap">
                 {expenses.map((expense) => (
                     <div 
                         key={expense.id}

@@ -34,14 +34,6 @@ export default function Page() {
         getSavingsData();
     }, []);
 
-    const getSavingsGradient = (saving: Savings) => {
-        if (saving.owner === 'Carlos')
-            return 'from-blue-500 to-green-500';
-        if (saving.owner === 'Maye')
-            return 'from-rose-500 to-amber-500';
-        return 'from-blue-500 to-green-500';
-    }
-        
     return (
         <div>
             {
@@ -50,12 +42,20 @@ export default function Page() {
                     <div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                             {savings.map((saving) => (
-                                <div className={`bg-gradient-to-br ${getSavingsGradient(saving)} p-6 rounded-lg shadow-lg text-gray-200 hover:cursor-pointer`} 
+                                <div className="group bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors"
                                     key={saving.id} 
                                     onClick={() => onClickSavings(saving)}
                                 >
-                                    <h2 className="text-2xl font-light mb-2">{saving.owner} <span className="text-small font-light">({saving.name})</span></h2>
-                                    <p className="text-right"> {formatCurrency(saving.value)} {saving.currency}</p>
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h2 className="text-lg font-medium text-gray-900">{saving.owner}</h2>
+                                            <p className="text-sm text-gray-500">{saving.name}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-lg font-medium text-gray-900">{formatCurrency(saving.value)}</p>
+                                            <p className="text-sm text-gray-500">{saving.currency}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>

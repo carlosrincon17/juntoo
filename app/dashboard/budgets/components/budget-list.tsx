@@ -1,7 +1,7 @@
 'use client'
 
 import { BudgetWithExpenses } from "@/app/types/budget";
-import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react";
+import { Progress } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { getBudgetsActiveWithExpenses } from "../actions/bugdets";
 import { formatCurrency } from "@/app/lib/currency";
@@ -35,11 +35,13 @@ export default function BudgetList() {
         const percentageAvailable = (totalAvailable / budget.value) * 100;
         const colorName = getColorBudget(budget);
         return (
-            <Card className="max-w-md w-full bg-white shadow-lg" key={budget.id}>
-                <CardHeader className="flex flex-col items-start px-4 pt-4 pb-0">
+            <div className="p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors bg-white w-full"
+                key={budget.id}
+            >
+                <div className="flex flex-col items-start px-4 pt-4 pb-0">
                     <h2 className="text-lg font-bold text-gray-800">{budget.name}</h2>
-                </CardHeader>
-                <CardBody className="px-4 py-4">
+                </div>
+                <div className="px-4 py-4">
                     <div className="flex justify-between items-center mb-4">
                         <div>
                             <p className="text-sm font-medium text-gray-500">Total</p>
@@ -66,8 +68,8 @@ export default function BudgetList() {
                         <p className="text-sm text-gray-500">{formatCurrency(budget.totalExpenses)} usado</p>
                         <p className="text-sm text-gray-500">{percentageAvailable.toFixed(1)}% disponible</p>
                     </div>
-                </CardBody>
-            </Card>
+                </div>
+            </div>
         )
     };
 
@@ -80,7 +82,7 @@ export default function BudgetList() {
             { loading ?
                 <CustomLoading /> :
                 <div className="full-width">
-                    <div className="flex flex-wrap gap-8 sm:columns-1 md:columns-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                         {activeBudgets.map((budget) => renderBudget(budget))}
                     </div>
                 </div>
