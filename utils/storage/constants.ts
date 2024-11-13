@@ -3,5 +3,4 @@ export enum StorageUsers {
     Maye = "Maye",
 }
 
-export const USER_KEY = "userName";
 export const SESSION_KEY = "session";

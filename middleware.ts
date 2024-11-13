@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { USER_KEY } from "@/utils/storage/constants";
+import { getSession } from "./app/lib/sessions";
 
 export function middleware(request: NextRequest) {
-    const user = request.cookies.get(USER_KEY);
+    const user = getSession()
     if (!user) {
         const url = request.nextUrl.clone()
         url.pathname = '/'
