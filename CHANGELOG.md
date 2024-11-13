@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/carlosrincon17/cashly/compare/v1.2.0...v1.3.0) (2024-11-13)
+
+
+### Features
+
+* improved design in budgets and savings screens ([381046d](https://github.com/carlosrincon17/cashly/commit/381046d3c6e804010b26bc5d1f418a5499e25bbf))
+
 # [1.2.0](https://github.com/carlosrincon17/cashly/compare/v1.1.1...v1.2.0) (2024-11-12)
 
 
