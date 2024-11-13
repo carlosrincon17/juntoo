@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ROUTES_LIST } from "@/utils/navigation/routes-constants";
 import { Toaster } from "react-hot-toast";
+import { User } from "../types/user";
 
 export default function Layout({
     children,
@@ -13,7 +14,7 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
     const pathName = usePathname();
-    const [user, setUser] = useState("--");
+    const [user, setUser] = useState<User>();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     async function getUserData() {
@@ -108,7 +109,7 @@ export default function Layout({
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <NavbarItem className="hidden lg:flex">
-                        {user}
+                        {user?.name}
                     </NavbarItem>
                     <NavbarItem>
                         <Button as={Link} color="primary" href="#" variant="flat" onClick={onLogoutClick}>

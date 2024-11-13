@@ -41,8 +41,8 @@ export async function deleteSession() {
     })
 }
 
-export async function getSession() {
-    const session = await (await cookies()).get(USER_KEY)
-    return session?.value as string;
+export async function getSession(): Promise<User> {
+    const session = await (await cookies()).get(SESSION_KEY)
+    return JSON.parse(session?.value as string) as User;
 }
 

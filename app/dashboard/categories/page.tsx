@@ -17,6 +17,7 @@ import { Budget } from "@/app/types/budget";
 import ToastCustom from "@/app/components/toastCustom";
 import { formatCurrency } from "@/app/lib/currency";
 import { FaSearch } from "react-icons/fa";
+import { User } from "@/app/types/user";
 
 export default function Page() {
 
@@ -24,7 +25,7 @@ export default function Page() {
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [filteredCategories, setFilteredCategories] = useState<Category[]>([]);
     const [searchCategory, setSearchCategory] = useState<string>('');
-    const [user, setUser] = useState<string>('--');
+    const [user, setUser] = useState<User>();
     const [selectedCategoryTransactionType, setSelectedCategoryTransactionType] = useState<TransactionType>(TransactionType.Outcome);
     const [budgets, setBudgets] = useState<Budget[]>([]);
 
@@ -55,7 +56,7 @@ export default function Page() {
             ...expense,
             category_id: selectedCategory?.id || 0,
             category: selectedCategory,
-            createdBy: user,
+            createdBy: user?.email,
             transactionType: selectedCategory?.transactionType,
         };
         await addExpense(expenseToAdd);

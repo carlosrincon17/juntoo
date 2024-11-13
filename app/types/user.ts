@@ -1,8 +1,8 @@
 export type User = {
-    id: number;
+    id?: number;
     name: string;
     email: string;
-    createdAt: Date;
+    createdAt?: Date;
     family_id: number;
     isActive: boolean;
     isAdmin: boolean;
