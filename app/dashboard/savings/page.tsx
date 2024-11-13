@@ -15,7 +15,9 @@ export default function Page() {
         id: 0,
         name: "",
         value: 0,
-        owner: ""
+        owner: "",
+        userId: null,
+        familyId: null,
     });
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 

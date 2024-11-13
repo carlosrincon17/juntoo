@@ -1,18 +1,24 @@
 'use server'
 
+import { getUser } from "@/app/actions/auth";
 import { Budget, BudgetWithExpenses } from "@/app/types/budget";
 import { BudgetsTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, and } from "drizzle-orm";
 
 
 export async function getBudgets(): Promise<Budget[]> {
+    const user = await getUser();
     return await db.query.BudgetsTable.findMany({
-        where: eq(BudgetsTable.isActive, true),
+        where: and(
+            eq(BudgetsTable.familyId, user.familyId),
+            eq(BudgetsTable.isActive, true)
+        )
     });
 }
 
-export async function getBudgetsActiveWithExpenses(): Promise<BudgetWithExpenses[]> { 
+export async function getBudgetsActiveWithExpenses(): Promise<BudgetWithExpenses[]> {
+    const user = await getUser();
     const activeBudgetsWithTotalExpenses = await db
         .select({
             id: BudgetsTable.id,
@@ -23,7 +29,12 @@ export async function getBudgetsActiveWithExpenses(): Promise<BudgetWithExpenses
         })
         .from(BudgetsTable)
         .leftJoin(ExpensesTable, eq(BudgetsTable.id, ExpensesTable.budgetId))
-        .where(eq(BudgetsTable.isActive, true))
+        .where(
+            and(
+                eq(BudgetsTable.isActive, true),
+                eq(BudgetsTable.familyId, user?.familyId)
+            )
+        )
         .groupBy(BudgetsTable.id)
         .orderBy(BudgetsTable.name)
     return activeBudgetsWithTotalExpenses as BudgetWithExpenses[];

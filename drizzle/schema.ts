@@ -36,9 +36,11 @@ export const ExpensesTable = pgTable(
         category_id: integer("category_id").references(() => CategoryTable.id).notNull(),
         value: bigint({mode: 'number'}).notNull(),
         createdBy: text('createdBy').notNull(),
+        userId: integer("user_id").references(() => UserTable.id),
         createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
         transactionType: text('transaction_type').notNull(),
         budgetId: integer("budget_id").references(() => BudgetsTable.id),
+        familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
 
@@ -49,7 +51,9 @@ export const SavingsTable = pgTable(
         name: text('name').notNull(),
         value: bigint({mode: 'number'}).notNull(),
         owner: text('owner').notNull(),
+        userId: integer("user_id").references(() => UserTable.id),
         currency: text('currency').notNull().default('COP'),
+        familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
 
@@ -62,6 +66,7 @@ export const BudgetsTable = pgTable(
         value: bigint({mode: 'number'}).notNull(),
         isActive: boolean('is_active').notNull(),
         createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
 
@@ -72,6 +77,7 @@ export const DebtsTable = pgTable(
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
         value: bigint({mode: 'number'}).notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
 
@@ -81,23 +87,9 @@ export const PatrimoniesTable = pgTable(
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
         value: bigint({mode: 'number'}).notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
-
-export const expenseCategoryRelationship = relations(ExpensesTable, ({ one }) => ({
-    category: one(CategoryTable, {
-        fields: [ExpensesTable.category_id],
-        references: [CategoryTable.id],
-    }),
-}));
-
-export const expenseBudgetRelationship = relations(ExpensesTable, ({ one }) => ({
-    budget: one(BudgetsTable, {
-        fields: [ExpensesTable.category_id],
-        references: [BudgetsTable.id],
-    }),
-}));
-
 
 export const FamilyTable = pgTable(
     'families',
@@ -115,7 +107,7 @@ export const UserTable = pgTable(
         name: text('name').notNull(),
         email: text('email').notNull(),
         createdAt: timestamp('createdAt').defaultNow().notNull(),
-        family_id: integer("family_id").references(() => FamilyTable.id).notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
         isActive: boolean('is_active').notNull(),
         isAdmin: boolean('is_admin').notNull(),
     },
@@ -126,9 +118,37 @@ export const UserTable = pgTable(
     },
 );
 
+export const expenseCategoryRelationship = relations(ExpensesTable, ({ one }) => ({
+    category: one(CategoryTable, {
+        fields: [ExpensesTable.category_id],
+        references: [CategoryTable.id],
+    }),
+}));
+
+export const expenseBudgetRelationship = relations(ExpensesTable, ({ one }) => ({
+    budget: one(BudgetsTable, {
+        fields: [ExpensesTable.category_id],
+        references: [BudgetsTable.id],
+    }),
+}));
+
 export const userFamilyRelationship = relations(UserTable, ({ one }) => ({
     family: one(FamilyTable, {
-        fields: [UserTable.family_id],
+        fields: [UserTable.familyId],
         references: [FamilyTable.id],
+    }),
+}));
+
+export const userExpensesRelationship = relations(ExpensesTable, ({ one }) => ({
+    user: one(UserTable, {
+        fields: [ExpensesTable.userId],
+        references: [UserTable.id],
+    }),
+}));
+
+export const userSavingsRelationship = relations(SavingsTable, ({ one }) => ({
+    savings: one(UserTable, {
+        fields: [SavingsTable.userId],
+        references: [UserTable.id],
     }),
 }));

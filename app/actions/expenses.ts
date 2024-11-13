@@ -7,6 +7,7 @@ import { and, asc, count, desc, eq, gte, lte, not, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { addDaysToCurrentDate } from "../lib/dates";
+import { getUser } from "./auth";
 
 const totalsFilters = {
     totalExpenses: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Outcome} then ${ExpensesTable.value} else 0 end) as bigint)`,
@@ -22,11 +23,14 @@ export async function addExpense(expense: Expense) {
         transactionType: expense.transactionType || TransactionType.Outcome,
         budgetId: expense.budgetId,
         createdAt: date,
+        familyId: expense.familyId,
     });
 }   
 
 export async function getExpenses(page: number, perPage: number): Promise<Expense[]> {
+    const user = await getUser();
     return await db.query.ExpensesTable.findMany({
+        where: eq(ExpensesTable.familyId, user.familyId),
         limit: perPage,
         offset: (page -1) * perPage,
         with: {
@@ -46,15 +50,19 @@ export async function removeExpense(expense: Expense): Promise<void> {
 }
 
 export async function getCountExpenses(): Promise<number> {
+    const user = await getUser();
     const counterResult = await db.select({
         count: count(ExpensesTable.id)
     }).from(
         ExpensesTable
+    ).where(
+        eq(ExpensesTable.familyId, user.familyId)
     )
     return counterResult[0].count as number;
 }
 
 export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters, transactionType: TransactionType): Promise<CategoryExpense[]> {
+    const user = await getUser();
     const topCategoriesWithMostExpenses = await db
         .select({
             categoryName: CategoryTable.parent,
@@ -64,6 +72,7 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters,
         .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
         .where(
             and(
+                eq(ExpensesTable.familyId, user.familyId),
                 gte(ExpensesTable.createdAt, filters.startDate),
                 lte(ExpensesTable.createdAt, filters.endDate),
                 eq(ExpensesTable.transactionType, transactionType)
@@ -76,6 +85,7 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters,
 }
 
 export async function getTotalsExpenses(filters: ExpensesFilters): Promise<TotalExpenses> {
+    const user = await getUser();
     const totalExpenses = await db
         .select({
             ...totalsFilters
@@ -83,6 +93,7 @@ export async function getTotalsExpenses(filters: ExpensesFilters): Promise<Total
         .from(ExpensesTable)
         .where(
             and(
+                eq(ExpensesTable.familyId, user.familyId),
                 gte(ExpensesTable.createdAt, filters.startDate),
                 lte(ExpensesTable.createdAt, filters.endDate),
             )
@@ -91,6 +102,7 @@ export async function getTotalsExpenses(filters: ExpensesFilters): Promise<Total
 }
 
 export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserExpense[]> {
+    const user = await getUser();
     const expensesByUser = await db
         .select({
             userName: ExpensesTable.createdBy,
@@ -99,6 +111,7 @@ export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserE
         .from(ExpensesTable)
         .where(
             and(
+                eq(ExpensesTable.familyId, user.familyId),
                 gte(ExpensesTable.createdAt, filters.startDate),
                 lte(ExpensesTable.createdAt, filters.endDate),
                 eq(ExpensesTable.transactionType, TransactionType.Outcome)
@@ -109,6 +122,7 @@ export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserE
 }
 
 export async function getIncomesByCategory(filters: ExpensesFilters): Promise<CategoryExpense[]> {
+    const user = await getUser();
     const incomesByCategory = await db
         .select({
             categoryName: CategoryTable.name,
@@ -118,6 +132,7 @@ export async function getIncomesByCategory(filters: ExpensesFilters): Promise<Ca
         .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
         .where(
             and(
+                eq(ExpensesTable.familyId, user.familyId),
                 gte(ExpensesTable.createdAt, filters.startDate),
                 lte(ExpensesTable.createdAt, filters.endDate),
                 eq(ExpensesTable.transactionType, TransactionType.Income)
@@ -130,6 +145,7 @@ export async function getIncomesByCategory(filters: ExpensesFilters): Promise<Ca
 }
 
 export async function getExpensesByDate(filters: ExpensesFilters): Promise<ExpenseByDate[]> {
+    const user = await getUser();
     const expensesByDate = await db
         .select({
             date: sql<string>`EXTRACT(DAY FROM "createdAt")`,
@@ -140,6 +156,7 @@ export async function getExpensesByDate(filters: ExpensesFilters): Promise<Expen
         .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
         .where(
             and(
+                eq(ExpensesTable.familyId, user.familyId),
                 eq(ExpensesTable.transactionType, TransactionType.Outcome),
                 gte(ExpensesTable.createdAt, filters.startDate),
                 lte(ExpensesTable.createdAt, filters.endDate),

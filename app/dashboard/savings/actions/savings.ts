@@ -1,23 +1,31 @@
 'use server'
 
+import { getUser } from "@/app/actions/auth";
 import { Savings } from "@/app/types/saving";
 import { SavingsTable } from "@/drizzle/schema";
 import { Currency } from "@/utils/enums/currency";
 import { db } from "@/utils/storage/db";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 export async function getSavings(): Promise<Savings[]> {
-    return await db.query.SavingsTable.findMany();
+    const user = await getUser();
+    return await db.query.SavingsTable.findMany({
+        where: eq(SavingsTable.familyId, user.familyId),
+    });
 }   
 
 export async function getTotalSavings(currency: Currency = Currency.COP): Promise<number> {
+    const user = await getUser();
     const totalSavings = await db
         .select({
             totalSavings: sql<number>`COALESCE(SUM(${SavingsTable.value}), 0)`,
         })
         .from(SavingsTable)
         .where(
-            eq(SavingsTable.currency, currency)
+            and(
+                eq(SavingsTable.currency, currency),
+                eq(SavingsTable.familyId, user.familyId)
+            )
         )
     return totalSavings[0].totalSavings as number;
 }

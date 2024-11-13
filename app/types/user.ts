@@ -1,9 +1,12 @@
+import { Family } from "./family";
+
 export type User = {
     id?: number;
     name: string;
     email: string;
     createdAt?: Date;
-    family_id: number;
+    familyId: number;
     isActive: boolean;
     isAdmin: boolean;
+    family?: Family;
 }

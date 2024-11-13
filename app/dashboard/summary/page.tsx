@@ -32,12 +32,14 @@ export default function Page() {
     const [selectedPatrimony, setSelectedPatrimony] = useState<Patrimony>({
         id: 0,
         name: "",
-        value: 0
+        value: 0,
+        familyId: null,
     });
     const [selectedDebt, setSelectedDebt] = useState<Debts>({
         id: 0,
         name: "",
-        value: 0
+        value: 0,
+        familyId: null,
     });
     const router = useRouter();
 

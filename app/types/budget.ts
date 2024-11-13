@@ -4,6 +4,7 @@ export type Budget = {
     value: number;
     isActive: boolean;
     createdAt?: Date;
+    familyId: number | null;
 }
 
 export type BudgetWithExpenses = Budget & {totalExpenses: number}

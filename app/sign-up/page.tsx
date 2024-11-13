@@ -29,7 +29,7 @@ export default function WelcomeRegistration() {
         const userData: User = {
             name: formData.userName,
             email: googleUser.email,
-            family_id: family.id,
+            familyId: family.id,
             isActive: true,
             isAdmin: true,
         };

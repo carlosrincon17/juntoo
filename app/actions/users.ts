@@ -8,7 +8,10 @@ import { signIn } from "./auth";
 
 export async function getUserByEmail(email: string): Promise<User | undefined> {
     return await db.query.UserTable.findFirst({
-        where: eq(UserTable.email, email)
+        where: eq(UserTable.email, email),
+        with: {
+            family: true,
+        },
     });
 }
 
@@ -16,7 +19,7 @@ export async function createUser(user: User) {
     await db.insert(UserTable).values({
         name: user.name,
         email: user.email,
-        family_id: user.family_id,
+        familyId: user.familyId,
         isActive: user.isActive,
         isAdmin: user.isAdmin,
     });

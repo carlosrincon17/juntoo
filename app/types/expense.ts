@@ -1,5 +1,6 @@
 import { Category } from "./category";
 import { Budget } from "./budget";
+import { User } from "./user";
 
 export type Expense = {
     id?: number;
@@ -11,6 +12,9 @@ export type Expense = {
     transactionType?: string;
     budgetId: number | null;
     budget?: Budget | null;
+    userId: number | null;
+    user?: User | null;
+    familyId?: number | null;
 }
 
 export type CategoryExpense = {

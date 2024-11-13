@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers'
 import { SESSION_KEY } from '@/utils/storage/constants'
 import { User } from '../types/user'
+import { redirect } from 'next/navigation'
 
 export async function createUserSession(user: User) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
@@ -26,10 +27,10 @@ export async function deleteSession() {
     })
 }
 
-export async function getSession(): Promise<User | undefined> {
+export async function getSession(): Promise<User> {
     const session = await (await cookies()).get(SESSION_KEY)
     if (!session) {
-        return;
+        redirect('/')
     }
     return JSON.parse(session?.value as string) as User;
 }
