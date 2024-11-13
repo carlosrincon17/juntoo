@@ -1,31 +1,69 @@
 'use client'
 
-import { StorageUsers } from "@/utils/storage/constants";
-import { FaMale, FaFemale } from 'react-icons/fa';
-import { signUp } from "./actions/auth";
+import { FaPiggyBank } from 'react-icons/fa';
+import { signIn } from "./actions/auth";
+import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode';
+import { getGoogleApiKey } from "./actions/keys";
+import { useEffect, useState } from "react";
+import { GoogleUsers } from "./types/google-user";
 
 export default function Home() {
-  
-    const selectUser = (user: StorageUsers) => {
-        signUp(user)
+    
+    const [googleClientId, setGoogleClientId] = useState<string>();
+
+    const selectUser = (credentialResponse: GoogleCredentialResponse) => {
+        const credential = credentialResponse.credential;
+        if (!credential) {
+            return;
+        }
+        localStorage.setItem("credentials", credential);
+        const credentialData: GoogleUsers = jwtDecode(credential);
+        signIn(credentialData.email);
     }
 
-    return (
-        <div className="flex items-center justify-center min-h-screen flex-col">
-            <h1 className="text-center text-4xl font-bold text-gray-900">Cashly</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-                <div className="flex flex-col items-center p-8 bg-gradient-to-br rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer w-48 h-48 from-teal-500 to bg-cyan-700"
-                    onClick={() => selectUser(StorageUsers.Carlos)}>
-                    <div className="text-2xl font-bold text-white mb-4">Carlos</div>
-                    <FaMale size={"4em"} className="text-white"/>
-                </div>
+    const getGoogleApiKeyData = async () => {
+        const googleClientId = await getGoogleApiKey();
+        setGoogleClientId(googleClientId);
+    }
 
-                <div className="flex flex-col items-center p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 cursor-pointer w-48 h-48 bg-gradient-to-br from-amber-500 to bg-rose-500"
-                    onClick={() => selectUser(StorageUsers.Maye)}>
-                    <div className="text-2xl font-bold text-white mb-4">Maye</div>
-                    <FaFemale size={"4em"} className="text-white"/>
-                </div>
-            </div>
-        </div>
+
+    useEffect(() => {
+        getGoogleApiKeyData()
+    }, []);
+
+    return (
+        <>
+            {
+                googleClientId && 
+                <GoogleOAuthProvider clientId={googleClientId}>
+                    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white px-4">
+                        <div className="mb-8 text-center">
+                            <div className="w-16 h-16 bg-gray-900 rounded-xl mx-auto mb-4 flex items-center justify-center">
+                                <span className="text-2xl text-white font-bold"><FaPiggyBank /></span>
+                            </div>
+                            <h1 className="text-2xl font-semibold text-gray-900">Cashly App</h1>
+                            <p className="text-sm text-gray-500 mt-2">Manage your money wisely</p>
+                        </div>
+        
+                
+                        <GoogleLogin
+                            onSuccess={(credentialResponse) => {
+                                selectUser(credentialResponse)
+                            }}
+                            onError={() => {
+                                console.log('Login Failed');
+                            }}
+                        />
+        
+                        <p className="mt-8 text-xs text-center text-gray-500">
+                    Conoce cómo se comporta y se mueve tu dinero... <br />
+                    Establece metas financieras que sean realistas y alcanzables... <br />
+                    Siempre ten un ahorro para cualquier gasto imprevisto...
+                        </p>
+                    </div>
+                </GoogleOAuthProvider>
+            }
+        </>
     );
 }

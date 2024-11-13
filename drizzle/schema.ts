@@ -10,23 +10,6 @@ import {
     bigint,
     boolean
 } from 'drizzle-orm/pg-core';
- 
-export const UsersTable = pgTable(
-    'users',
-    {
-        id: serial('id').primaryKey(),
-        name: text('name').notNull(),
-        email: text('email').notNull(),
-        image: text('image').notNull(),
-        password: text('password').notNull(),
-        createdAt: timestamp('createdAt').defaultNow().notNull(),
-    },
-    (users) => {
-        return {
-            uniqueIdx: uniqueIndex('unique_idx').on(users.email),
-        };
-    },
-);
 
 
 export const CategoryTable = pgTable(
@@ -112,5 +95,40 @@ export const expenseBudgetRelationship = relations(ExpensesTable, ({ one }) => (
     budget: one(BudgetsTable, {
         fields: [ExpensesTable.category_id],
         references: [BudgetsTable.id],
+    }),
+}));
+
+
+export const FamilyTable = pgTable(
+    'families',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        reference: text('reference').notNull().unique(),
+    }
+);
+
+export const UserTable = pgTable(
+    'users',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        email: text('email').notNull(),
+        createdAt: timestamp('createdAt').defaultNow().notNull(),
+        family_id: integer("family_id").references(() => FamilyTable.id).notNull(),
+        isActive: boolean('is_active').notNull(),
+        isAdmin: boolean('is_admin').notNull(),
+    },
+    (users) => {
+        return {
+            emailUniqueIdx: uniqueIndex('email_unique_idx').on(users.email),
+        };
+    },
+);
+
+export const userFamilyRelationship = relations(UserTable, ({ one }) => ({
+    family: one(FamilyTable, {
+        fields: [UserTable.family_id],
+        references: [FamilyTable.id],
     }),
 }));

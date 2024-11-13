@@ -4,3 +4,4 @@ export enum StorageUsers {
 }
 
 export const USER_KEY = "userName";
+export const SESSION_KEY = "session";

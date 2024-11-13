@@ -92,6 +92,20 @@
       "when": 1731066968736,
       "tag": "0012_added-missing-categories-2",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1731519716222,
+      "tag": "0013_added-user-management",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1731519797379,
+      "tag": "0014_added-user-management-2",
+      "breakpoints": true
     }
   ]
 }
