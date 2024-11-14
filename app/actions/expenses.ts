@@ -16,6 +16,7 @@ const totalsFilters = {
 
 export async function addExpense(expense: Expense) {
     const date = addDaysToCurrentDate(0);
+    const user = await getUser()
     await db.insert(ExpensesTable).values({
         createdBy: expense.createdBy ?? "",
         value: expense.value ?? 0,
@@ -23,7 +24,8 @@ export async function addExpense(expense: Expense) {
         transactionType: expense.transactionType || TransactionType.Outcome,
         budgetId: expense.budgetId,
         createdAt: date,
-        familyId: expense.familyId,
+        familyId: user.familyId,
+        userId: user.id,
     });
 }   
 

@@ -6,6 +6,7 @@ import { User } from "../types/user";
 import { GoogleUsers } from "../types/google-user";
 import { jwtDecode } from "jwt-decode";
 import { createUser } from "../actions/users";
+import { Family } from "../types/family";
 
 export default function WelcomeRegistration() {
     const [showContent, setShowContent] = useState(false);
@@ -14,8 +15,19 @@ export default function WelcomeRegistration() {
         familyName: '',
         userName: ''
     });
+    const [family, setFamily] = useState<Family>();
+
     useEffect(() => {
-        setTimeout(() => setShowContent(true), 100);
+        const familySelected = localStorage.getItem("family");
+        if (familySelected) {
+            setFamily(JSON.parse(familySelected));
+        }
+        setTimeout(() => {
+            setShowContent(true);
+            if (familySelected) {
+                setShowSecondInput(true);
+            }
+        }, 100);
     }, []);
   
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -25,11 +37,11 @@ export default function WelcomeRegistration() {
             return;
         }
         const googleUser = jwtDecode(credentials) as GoogleUsers;
-        const family = await createFamily(formData.familyName);
+        const createdFamily = family ? family : await createFamily(formData.familyName);
         const userData: User = {
             name: formData.userName,
             email: googleUser.email,
-            familyId: family.id,
+            familyId: createdFamily.id,
             isActive: true,
             isAdmin: true,
         };
@@ -63,31 +75,41 @@ export default function WelcomeRegistration() {
                 </p>
             </div>
   
-            {/* Form */}
+           
             <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-8">
-                {/* Family Name Input */}
-                <div 
-                    className={`transition-all duration-1000 delay-500 ease-out transform ${
-                        showContent ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                    }`}
-                >
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-              ¿Cómo quieres llamar a tu familia?
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.familyName}
-                        onChange={(e) => {
-                            setFormData({ ...formData, familyName: e.target.value });
-                            if (e.target.value.length > 2 && !showSecondInput) {
-                                setShowSecondInput(true);
-                            }
-                        }}
-                        className="w-full px-4 py-3 text-lg bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 focus:bg-white transition-all duration-200"
-                        placeholder="ej: Los Pérez"
-                        autoFocus
-                    />
-                </div>
+                {family ?
+                    <div>
+                        <div className='flex flex-col items-center  text-gray-900'>
+                            <span className='text-xl font-extralight'>
+                                Bienvenido a la familia 
+                            </span> 
+                            <span className='text-xl font-bold'> {family.name} </span>
+                        </div>
+                    </div> :
+                    <div 
+                        className={`transition-all duration-1000 delay-500 ease-out transform ${
+                            showContent ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}
+                    >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            ¿Cómo quieres llamar a tu familia?
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.familyName}
+                            onChange={(e) => {
+                                setFormData({ ...formData, familyName: e.target.value });
+                                if (e.target.value.length > 2 && !showSecondInput) {
+                                    setShowSecondInput(true);
+                                }
+                            }}
+                            className="w-full px-4 py-3 text-lg bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 focus:bg-white transition-all duration-200"
+                            placeholder="ej: Los Pérez"
+                            autoFocus
+                        />
+                    </div>
+                }
+
   
                 {/* User Name Input */}
                 <div 

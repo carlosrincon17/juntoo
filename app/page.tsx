@@ -7,10 +7,15 @@ import {jwtDecode} from 'jwt-decode';
 import { getGoogleApiKey } from "./actions/keys";
 import { useEffect, useState } from "react";
 import { GoogleUsers } from "./types/google-user";
+import { useSearchParams } from 'next/navigation';
+import { Family } from './types/family';
+import { getFamilyByReferenceCode } from './actions/family';
 
 export default function Home() {
     
     const [googleClientId, setGoogleClientId] = useState<string>();
+    const [family, setFamily] = useState<Family>();
+    const searchParams = useSearchParams()
 
     const selectUser = (credentialResponse: GoogleCredentialResponse) => {
         const credential = credentialResponse.credential;
@@ -18,6 +23,7 @@ export default function Home() {
             return;
         }
         localStorage.setItem("credentials", credential);
+        localStorage.setItem("family", JSON.stringify(family));
         const credentialData: GoogleUsers = jwtDecode(credential);
         signIn(credentialData.email);
     }
@@ -27,10 +33,43 @@ export default function Home() {
         setGoogleClientId(googleClientId);
     }
 
+    const getFamilyByReference = async () => {
+        const familyReference = searchParams.get('family');
+        if (!familyReference) {
+            return;
+        }
+        const family = await getFamilyByReferenceCode(familyReference);
+        setFamily(family);
+    }
 
     useEffect(() => {
-        getGoogleApiKeyData()
+        localStorage.removeItem("family");
+        localStorage.removeItem("credentials");
+        getFamilyByReference();
+        getGoogleApiKeyData();
     }, []);
+
+    const getLoginText = () => {
+        if (family) {
+            return (
+                <div className='flex flex-col items-center  text-gray-900'>
+                    <span className='text-xl font-extralight'>
+                        Fuiste invitado a la familia 
+                    </span> 
+                    <span className='text-xl font-bold'> {family.name} </span>
+                    <br />
+                    <span className='font-extralight'>
+                        Inicia sesión con google para comenzar a gestionar tus finanzas
+                    </span>
+                </div>
+            );
+        }
+        return (
+            <span className='text-xl font-extralight text-gray-900'>
+                Inicia sesión con google para crear tu familia y comienza a gestionar tus finanzas
+            </span>
+        )
+    }
 
     return (
         <>
@@ -46,7 +85,9 @@ export default function Home() {
                             <p className="text-sm text-gray-500 mt-2">Manage your money wisely</p>
                         </div>
         
-                
+                        <div className='mb-10'>
+                            {getLoginText()}    
+                        </div>
                         <GoogleLogin
                             onSuccess={(credentialResponse) => {
                                 selectUser(credentialResponse)
