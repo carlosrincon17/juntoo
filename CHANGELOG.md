@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/carlosrincon17/cashly/compare/v1.5.1...v1.6.0) (2024-11-14)
+
+
+### Bug Fixes
+
+* expenses by user was fixed to correct user group ([ac4c63b](https://github.com/carlosrincon17/cashly/commit/ac4c63bc63730013d637d385987c409307ce38fe))
+
+
+### Features
+
+* show the correct user name ([2589b05](https://github.com/carlosrincon17/cashly/commit/2589b05b72bc993497aa8f9c1a92d46a48911bd8))
+
 ## [1.5.1](https://github.com/carlosrincon17/cashly/compare/v1.5.0...v1.5.1) (2024-11-14)
 
 
