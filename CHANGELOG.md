@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/carlosrincon17/cashly/compare/v1.4.0...v1.5.0) (2024-11-14)
+
+
+### Features
+
+* invite a family member and sign up process ([b5779e5](https://github.com/carlosrincon17/cashly/commit/b5779e54544d20fea2369dbed9f8e46cb5486604))
+
 # [1.4.0](https://github.com/carlosrincon17/cashly/compare/v1.3.0...v1.4.0) (2024-11-14)
 
 
