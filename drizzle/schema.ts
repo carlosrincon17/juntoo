@@ -147,7 +147,7 @@ export const userExpensesRelationship = relations(ExpensesTable, ({ one }) => ({
 }));
 
 export const userSavingsRelationship = relations(SavingsTable, ({ one }) => ({
-    savings: one(UserTable, {
+    user: one(UserTable, {
         fields: [SavingsTable.userId],
         references: [UserTable.id],
     }),

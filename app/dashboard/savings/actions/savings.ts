@@ -11,6 +11,9 @@ export async function getSavings(): Promise<Savings[]> {
     const user = await getUser();
     return await db.query.SavingsTable.findMany({
         where: eq(SavingsTable.familyId, user.familyId),
+        with: {
+            user: true
+        }
     });
 }   
 

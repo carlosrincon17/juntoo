@@ -50,7 +50,7 @@ export default function Page() {
                                 >
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <h2 className="text-lg font-medium text-gray-900">{saving.owner}</h2>
+                                            <h2 className="text-lg font-medium text-gray-900">{saving.user?.name}</h2>
                                             <p className="text-sm text-gray-500">{saving.name}</p>
                                         </div>
                                         <div className="text-right">
