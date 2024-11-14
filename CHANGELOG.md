@@ -1,3 +1,13 @@
+# [1.4.0](https://github.com/carlosrincon17/cashly/compare/v1.3.0...v1.4.0) (2024-11-14)
+
+
+### Features
+
+* added create family and user on singup ([332f065](https://github.com/carlosrincon17/cashly/commit/332f065a99f2ab2f8b3f3ea3749b9f1d72440015))
+* added support to mange session with users data ([6e4f7ae](https://github.com/carlosrincon17/cashly/commit/6e4f7ae7007b319de575c9d7f1f1423aacac0969))
+* added user and family schemas ([f3c8b50](https://github.com/carlosrincon17/cashly/commit/f3c8b5050110f2c2f7035099be2605f0ccc4009a))
+* invite a family member and sign up process ([92fbf68](https://github.com/carlosrincon17/cashly/commit/92fbf68f723a5a9f99762e937847a37262cce11c))
+
 # [1.3.0](https://github.com/carlosrincon17/cashly/compare/v1.2.0...v1.3.0) (2024-11-13)
 
 
