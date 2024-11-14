@@ -1,6 +1,6 @@
 'use server'
 
-import { CategoryTable, ExpensesTable } from "@/drizzle/schema";
+import { CategoryTable, ExpensesTable, UserTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
 import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense } from "../types/expense";
 import { and, asc, count, desc, eq, gte, lte, not, sql } from "drizzle-orm";
@@ -108,10 +108,11 @@ export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserE
     const user = await getUser();
     const expensesByUser = await db
         .select({
-            userName: ExpensesTable.createdBy,
+            userName: UserTable.name,
             totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
         })
         .from(ExpensesTable)
+        .leftJoin(UserTable, eq(ExpensesTable.userId, UserTable.id))
         .where(
             and(
                 eq(ExpensesTable.familyId, user.familyId),
@@ -120,7 +121,7 @@ export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserE
                 eq(ExpensesTable.transactionType, TransactionType.Outcome)
             )
         )
-        .groupBy(ExpensesTable.createdBy)
+        .groupBy(UserTable.name)
     return expensesByUser as UserExpense[];
 }
 
