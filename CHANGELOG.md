@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/carlosrincon17/cashly/compare/v1.6.1...v1.6.2) (2024-11-14)
+
+
+### Bug Fixes
+
+* fixed sign-up of new user ([e4a421c](https://github.com/carlosrincon17/cashly/commit/e4a421c065fe32ee3701c3b2f6dbf7cf35baf85e))
+
 ## [1.6.1](https://github.com/carlosrincon17/cashly/compare/v1.6.0...v1.6.1) (2024-11-14)
 
 
