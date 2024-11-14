@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/carlosrincon17/cashly/compare/v1.6.0...v1.6.1) (2024-11-14)
+
+
+### Bug Fixes
+
+* linked savings to user entity ([740c8d2](https://github.com/carlosrincon17/cashly/commit/740c8d25463a18dbc8871652199ef18225818634))
+
 # [1.6.0](https://github.com/carlosrincon17/cashly/compare/v1.5.1...v1.6.0) (2024-11-14)
 
 

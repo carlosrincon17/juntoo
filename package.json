@@ -1,7 +1,7 @@
 {
   "name": "cashly",
   "description": "A family finance management application built with Next.js and deployed on Vercel.",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
