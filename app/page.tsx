@@ -7,15 +7,15 @@ import {jwtDecode} from 'jwt-decode';
 import { getGoogleApiKey } from "./actions/keys";
 import { useEffect, useState } from "react";
 import { GoogleUsers } from "./types/google-user";
-import { useSearchParams } from 'next/navigation';
 import { Family } from './types/family';
 import { getFamilyByReferenceCode } from './actions/family';
+import { useRouter } from 'next/router';
 
 export default function Home() {
     
     const [googleClientId, setGoogleClientId] = useState<string>();
     const [family, setFamily] = useState<Family>();
-    const searchParams = useSearchParams()
+    const router = useRouter()
 
     const selectUser = (credentialResponse: GoogleCredentialResponse) => {
         const credential = credentialResponse.credential;
@@ -34,11 +34,11 @@ export default function Home() {
     }
 
     const getFamilyByReference = async () => {
-        const familyReference = searchParams.get('family');
+        const familyReference = router.query.family;
         if (!familyReference) {
             return;
         }
-        const family = await getFamilyByReferenceCode(familyReference);
+        const family = await getFamilyByReferenceCode(familyReference as string);
         setFamily(family);
     }
 
