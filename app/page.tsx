@@ -5,17 +5,17 @@ import { signIn } from "./actions/auth";
 import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import {jwtDecode} from 'jwt-decode';
 import { getGoogleApiKey } from "./actions/keys";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { GoogleUsers } from "./types/google-user";
+import { useSearchParams } from 'next/navigation';
 import { Family } from './types/family';
 import { getFamilyByReferenceCode } from './actions/family';
-import { useRouter } from 'next/router';
 
-export default function Home() {
+function Home() {
     
     const [googleClientId, setGoogleClientId] = useState<string>();
     const [family, setFamily] = useState<Family>();
-    const router = useRouter()
+    const searchParams = useSearchParams()
 
     const selectUser = (credentialResponse: GoogleCredentialResponse) => {
         const credential = credentialResponse.credential;
@@ -34,11 +34,11 @@ export default function Home() {
     }
 
     const getFamilyByReference = async () => {
-        const familyReference = router.query.family;
+        const familyReference = searchParams.get('family');
         if (!familyReference) {
             return;
         }
-        const family = await getFamilyByReferenceCode(familyReference as string);
+        const family = await getFamilyByReferenceCode(familyReference);
         setFamily(family);
     }
 
@@ -106,5 +106,13 @@ export default function Home() {
                 </GoogleOAuthProvider>
             }
         </>
+    );
+}
+
+export default function SuspenseHome() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+        </Suspense>
     );
 }
