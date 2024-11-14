@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/carlosrincon17/cashly/compare/v1.5.0...v1.5.1) (2024-11-14)
+
+
+### Bug Fixes
+
+* added suspense on home page ([12bdddd](https://github.com/carlosrincon17/cashly/commit/12bdddd609de74f71e07914f6d04b9e328d1da24))
+
 # [1.5.0](https://github.com/carlosrincon17/cashly/compare/v1.4.0...v1.5.0) (2024-11-14)
 
 
