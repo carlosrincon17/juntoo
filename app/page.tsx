@@ -23,7 +23,7 @@ function Home() {
             return;
         }
         localStorage.setItem("credentials", credential);
-        localStorage.setItem("family", JSON.stringify(family));
+        if (family) localStorage.setItem("family", JSON.stringify(family));
         const credentialData: GoogleUsers = jwtDecode(credential);
         signIn(credentialData.email);
     }
