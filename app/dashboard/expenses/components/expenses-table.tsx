@@ -25,7 +25,7 @@ export default function ExpensesTable(props: {
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-4">
                                 <div className="flex flex-col">
-                                    <span className="font-medium text-gray-900">{expense.createdBy}</span>
+                                    <span className="font-medium text-gray-900">{expense.user?.name}</span>
                                     <span className={`text-sm text-gray-700`}>{expense.category?.name}</span>
                                 </div>
                             </div>

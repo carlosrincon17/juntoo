@@ -37,6 +37,7 @@ export async function getExpenses(page: number, perPage: number): Promise<Expens
         offset: (page -1) * perPage,
         with: {
             category: true,
+            user: true
         },
         orderBy: desc(ExpensesTable.id),
     });
