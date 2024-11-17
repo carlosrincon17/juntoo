@@ -18,6 +18,7 @@ import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
 
 export default function Page() {
+
     const [totalExpenses, setTotalExpenses] = useState<TotalExpenses>({
         totalExpenses: 0,
         totalIncomes: 0,
