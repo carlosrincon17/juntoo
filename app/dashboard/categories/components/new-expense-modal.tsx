@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/app/lib/currency";
 import { Budget } from "@/app/types/budget";
 import { Category } from "@/app/types/category";
 import { Expense } from "@/app/types/expense";
@@ -13,6 +14,7 @@ export default function NewExpenseModal(props: {
     budgets: Budget[],
 }) {
     const { isOpen, onOpenChange, onSaveExpense, category, budgets } = props;
+    const [expenseValue, setExpenseValue] = useState('');
     const [expense, setExpense] = useState<Expense>({
         value: 0,
         category_id: 0,
@@ -28,7 +30,8 @@ export default function NewExpenseModal(props: {
         <Modal 
             isOpen={isOpen} 
             onOpenChange={onOpenChange}
-            placement="top-center"
+            placement="center"
+            size="2xl"
         >
             <ModalContent>
                 {(onClose) => (
@@ -42,16 +45,22 @@ export default function NewExpenseModal(props: {
                         <ModalBody>
                             <Input
                                 autoFocus
-                                type="number"
+                                type="text"
                                 label="Valor"
-                                placeholder="0"
+                                placeholder="Cuanto gastaste?"
                                 size="lg"
                                 labelPlacement="inside"
-                                value={`${expense.value}`}
-                                onChange={(e) => setExpense({...expense, value: parseInt(e.target.value, 10)})}
+                                value={expenseValue}
+                                onChange={(e) => {
+                                    const numberValue = e.target.value.replace(/\D/g, '');
+                                    const intValue = parseInt(numberValue, 10);
+                                    setExpenseValue(formatCurrency(intValue));
+                                    console.log(expenseValue)
+                                    setExpense({...expense, value: intValue})}
+                                }
                                 endContent={
                                     <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">$COP</span>
+                                        <span className="text-default-400 text-small">COP</span>
                                     </div>
                                 }
                             />
