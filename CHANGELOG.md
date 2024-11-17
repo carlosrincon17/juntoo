@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/carlosrincon17/cashly/compare/v1.7.0...v1.7.1) (2024-11-17)
+
+
+### Bug Fixes
+
+* fixed colors scheme ([4f93c49](https://github.com/carlosrincon17/cashly/commit/4f93c4975dec8f2808113febb1c7b5eef41421ab))
+
 # [1.7.0](https://github.com/carlosrincon17/cashly/compare/v1.6.2...v1.7.0) (2024-11-17)
 
 
