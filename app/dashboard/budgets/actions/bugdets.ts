@@ -39,3 +39,20 @@ export async function getBudgetsActiveWithExpenses(): Promise<BudgetWithExpenses
         .orderBy(BudgetsTable.name)
     return activeBudgetsWithTotalExpenses as BudgetWithExpenses[];
 }
+
+export async function deleteBudget(budgetId: number): Promise<void> {
+    await db.delete(BudgetsTable).where(
+        eq(BudgetsTable.id, budgetId)
+    );
+}
+
+export async function deactivateBudget(budgetId: number): Promise<void> {
+    await db.update(BudgetsTable)
+        .set({
+            isActive: false,
+        })
+        .where(
+            eq(BudgetsTable.id, budgetId)
+        )
+    return;
+}

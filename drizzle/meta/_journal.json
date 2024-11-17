@@ -113,6 +113,13 @@
       "when": 1731531102714,
       "tag": "0015_added-user-family-columns",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1731820265364,
+      "tag": "0016_added-missing-categories",
+      "breakpoints": true
     }
   ]
 }
