@@ -1,3 +1,11 @@
+# [1.7.0](https://github.com/carlosrincon17/cashly/compare/v1.6.2...v1.7.0) (2024-11-17)
+
+
+### Features
+
+* added budget managment and missing categories ([039af56](https://github.com/carlosrincon17/cashly/commit/039af56f2b2ff59c055f639a1b41f3bb6a8721f1))
+* improved modal of manage expenses ([8b63ff8](https://github.com/carlosrincon17/cashly/commit/8b63ff809dae9c49493dbc97c9867b41d3b18c67))
+
 ## [1.6.2](https://github.com/carlosrincon17/cashly/compare/v1.6.1...v1.6.2) (2024-11-14)
 
 
