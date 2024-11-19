@@ -16,6 +16,7 @@ import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaBalanceScale} from "react-icons/fa";
 
 export default function Page() {
 
@@ -63,6 +64,7 @@ export default function Page() {
                                     customClasses={["from-red-400", "to-pink-500"]} 
                                     isPressable={true} 
                                     onPress={() => router.push(ROUTES.EXPENSES.path)}
+                                    icon={(<FaAngleDoubleDown className="text-red-500 opacity-90" />)}
                                 />
                                 <Kpi 
                                     title="Ingresos" 
@@ -70,11 +72,13 @@ export default function Page() {
                                     customClasses={["from-green-400", "to-blue-500"]}
                                     isPressable={true} 
                                     onPress={() => router.push(ROUTES.EXPENSES.path)}
+                                    icon={(<FaAngleDoubleUp className="text-green-500 opacity-90" />)}
                                 />
                                 <Kpi 
                                     title="Balance" 
                                     value={totalExpenses.totalIncomes - totalExpenses.totalExpenses} 
                                     customClasses={["from-blue-400", "to-cyan-500"]}
+                                    icon={(<FaBalanceScale  className="text-blue-500 opacity-90" />)}
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
