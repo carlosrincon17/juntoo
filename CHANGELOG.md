@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/carlosrincon17/cashly/compare/v1.8.0...v1.9.0) (2024-11-19)
+
+
+### Features
+
+* improved UI and options of monthly summary ([7781cae](https://github.com/carlosrincon17/cashly/commit/7781cae7cbd4dbb026c4588b49a6394651965cb2))
+
 # [1.8.0](https://github.com/carlosrincon17/cashly/compare/v1.7.1...v1.8.0) (2024-11-19)
 
 
