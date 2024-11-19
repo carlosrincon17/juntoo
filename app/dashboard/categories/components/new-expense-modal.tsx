@@ -1,4 +1,4 @@
-import { formatCurrency } from "@/app/lib/currency";
+import { currencyToInteger, formatCurrency } from "@/app/lib/currency";
 import { Budget } from "@/app/types/budget";
 import { Category } from "@/app/types/category";
 import { Expense } from "@/app/types/expense";
@@ -23,6 +23,7 @@ export default function NewExpenseModal(props: {
     });
 
     useEffect(() => {
+        setExpenseValue('');
         setExpense({ value: 0, category_id: 0, budgetId: null, userId: null});
     }, [isOpen]);
     
@@ -52,10 +53,8 @@ export default function NewExpenseModal(props: {
                                 labelPlacement="inside"
                                 value={expenseValue}
                                 onChange={(e) => {
-                                    const numberValue = e.target.value.replace(/\D/g, '');
-                                    const intValue = parseInt(numberValue, 10);
+                                    const intValue = currencyToInteger(e.target.value);
                                     setExpenseValue(formatCurrency(intValue));
-                                    console.log(expenseValue)
                                     setExpense({...expense, value: intValue})}
                                 }
                                 endContent={

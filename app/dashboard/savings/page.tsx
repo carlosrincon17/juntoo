@@ -6,7 +6,8 @@ import { getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import SavingsManagerModal from "./component/savings-manager";
-import { useDisclosure } from "@nextui-org/react";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
+import { FaEllipsisV } from "react-icons/fa";
 
 export default function Page() {
     const [savings, setSavings] = useState<Savings[]>([]);    
@@ -18,6 +19,7 @@ export default function Page() {
         owner: "",
         userId: null,
         familyId: null,
+        isInvestment: false,
     });
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
@@ -46,16 +48,37 @@ export default function Page() {
                             {savings.map((saving) => (
                                 <div className="group bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors"
                                     key={saving.id} 
-                                    onClick={() => onClickSavings(saving)}
                                 >
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between items-center mb-2">
                                         <div>
-                                            <h2 className="text-lg font-medium text-gray-900">{saving.user?.name}</h2>
-                                            <p className="text-sm text-gray-500">{saving.name}</p>
+                                            <h2 className="text-lg font-bold text-gray-800">{saving.name}</h2>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-lg font-medium text-gray-900">{formatCurrency(saving.value)}</p>
-                                            <p className="text-sm text-gray-500">{saving.currency}</p>
+                                            <Dropdown>
+                                                <DropdownTrigger>
+                                                    <FaEllipsisV className="hover:cursor-pointer"></FaEllipsisV>
+                                                </DropdownTrigger>
+                                                <DropdownMenu aria-label="Static Actions">
+                                                    <DropdownItem onClick={() => onClickSavings(saving)}>
+                                                        Editar
+                                                    </DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                    <div className="grid flex-row grid-cols-1 md:grid-cols-2 gap-2">
+                                        <div>
+                                            <p className="text-2xl font-bold text-gray-800">{formatCurrency(saving.value)}</p>
+                                            <p className="text-sm font-medium text-gray-500">{saving.currency}</p>
+                                        </div>
+                                        <div className="md:text-right">
+                                            <p className="text-sm font-medium text-gray-500">Interes anual</p>
+                                            <p className={"text-2xl font-bold text-green-500"}>{
+                                                saving.isInvestment ? 
+                                                    <span> {saving.annualInterestRate} % </span>:
+                                                    <span className="text-gray-500"> -- </span>
+                                            }
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

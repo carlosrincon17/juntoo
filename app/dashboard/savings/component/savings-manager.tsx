@@ -3,6 +3,8 @@ import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader 
 import toast from "react-hot-toast";
 import { updateSavings } from "../actions/savings";
 import ToastCustom from "@/app/components/toastCustom";
+import { useEffect, useState } from "react";
+import { currencyToInteger, formatCurrency } from "@/app/lib/currency";
 
 export default function SavingsManagerModal(props: {
     isOpen: boolean, 
@@ -10,18 +12,25 @@ export default function SavingsManagerModal(props: {
     onOpenChange: (isOpen: boolean) => void,
 }) {
     const { isOpen, savings, onOpenChange } = props;
+    const [savingsValue, setSavingsValue] = useState('');
 
     const onSaveSavings = async (onClose: () => void) => {
         await updateSavings(savings);
         toast.custom((t) => <ToastCustom message="Tus ahorros se actualizaron correctamente" toast={t}/>);
         onClose();
     }
+
+    useEffect(() => {
+        setSavingsValue(formatCurrency(savings.value));
+        console.log(savingsValue);
+    }, [isOpen])
     
     return (
         <Modal 
             isOpen={isOpen} 
             onOpenChange={onOpenChange}
-            placement="top-center"
+            placement="center"
+            size="2xl"
         >
             <ModalContent>
                 {(onClose) => (
@@ -32,16 +41,19 @@ export default function SavingsManagerModal(props: {
                         <ModalBody>
                             <Input
                                 autoFocus
-                                type="number"
                                 label="Valor"
                                 placeholder="0"
                                 size="lg"
                                 labelPlacement="inside"
-                                defaultValue={`${savings.value}`}
-                                onChange={(e) => savings.value = parseInt(e.target.value, 10)}
+                                value={savingsValue}
+                                onChange={(e) => {
+                                    const intValue = currencyToInteger(e.target.value);
+                                    setSavingsValue(formatCurrency(intValue));
+                                    savings.value = intValue
+                                }}
                                 endContent={
                                     <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">$COP</span>
+                                        <span className="text-default-400 text-small">{savings.currency}</span>
                                     </div>
                                 }
                             />

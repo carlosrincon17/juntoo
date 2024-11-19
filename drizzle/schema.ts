@@ -8,7 +8,8 @@ import {
     integer,
     timestamp,
     bigint,
-    boolean
+    boolean,
+    real
 } from 'drizzle-orm/pg-core';
 
 
@@ -54,6 +55,8 @@ export const SavingsTable = pgTable(
         userId: integer("user_id").references(() => UserTable.id),
         currency: text('currency').notNull().default('COP'),
         familyId: integer("family_id").references(() => FamilyTable.id),
+        isInvestment: boolean('is_investment').notNull().default(false),
+        annualInterestRate: real('annual_interest_rate'),
     }
 );
 

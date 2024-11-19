@@ -9,4 +9,6 @@ export type Savings = {
     user?: User | null;
     currency?: string;
     familyId: number | null;
+    isInvestment: boolean;
+    annualInterestRate?: number | null;
 }

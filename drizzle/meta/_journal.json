@@ -120,6 +120,13 @@
       "when": 1731820265364,
       "tag": "0016_added-missing-categories",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1731984004563,
+      "tag": "0017_added-savings-columns",
+      "breakpoints": true
     }
   ]
 }

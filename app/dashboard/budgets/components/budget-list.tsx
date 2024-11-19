@@ -74,16 +74,16 @@ export default function BudgetList() {
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions">
                                 <DropdownItem onClick={() => onInactiveBudget(budget)}>
-                                Finalizar
+                                    Finalizar
                                 </DropdownItem>
                                 <DropdownItem className="text-danger"onClick={() => onDeleteBudget(budget)}>
-                                Eliminar
+                                    Eliminar
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
                 </div>
-                <div className="px-4 py-4">
+                <div>
                     <div className="grid mb-4 flex-row grid-cols-1 md:grid-cols-2 gap-2">
                         <div>
                             <p className="text-sm font-medium text-gray-500">Total</p>
