@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/carlosrincon17/cashly/compare/v1.9.0...v1.10.0) (2024-11-19)
+
+
+### Features
+
+* Improved UI ([3ec2154](https://github.com/carlosrincon17/cashly/commit/3ec21545a378a8aec1b804d5bb7540820a469a2a))
+
 # [1.9.0](https://github.com/carlosrincon17/cashly/compare/v1.8.0...v1.9.0) (2024-11-19)
 
 
