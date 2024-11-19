@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/carlosrincon17/cashly/compare/v1.7.1...v1.8.0) (2024-11-19)
+
+
+### Features
+
+* UI improvemnts and new columns in savings ([996b4d9](https://github.com/carlosrincon17/cashly/commit/996b4d92a093e38a672cfb7e7ba81a2ee75b241d))
+
 ## [1.7.1](https://github.com/carlosrincon17/cashly/compare/v1.7.0...v1.7.1) (2024-11-17)
 
 
