@@ -76,7 +76,7 @@ export default function ExpenseByUserChart(props: {
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4"> Quien los está gastando? </h3>
+                <h3 className="text-xl font-light mb-4">Distribución de gastos </h3>
                 <canvas id="expenses-by-user-chart"></canvas>
             </CardBody>
         </Card>

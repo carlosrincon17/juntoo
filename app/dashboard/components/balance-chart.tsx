@@ -57,7 +57,7 @@ export default function BalanceChart(props: {
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4"> Como se ven? </h3>
+                <h3 className="text-xl font-light mb-4"> Ingresos vs Gastos</h3>
                 <canvas id="balance-chart"></canvas>
             </CardBody>
         </Card>

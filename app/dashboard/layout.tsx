@@ -119,7 +119,7 @@ export default function Layout({
                 </NavbarContent>
             </Navbar>
             <div className="min-h-screen flex justify-center bg-slate-100">
-                <div className="w-full max-w-6xl p-8 bg-slate-50 text-stone-800">
+                <div className="w-full p-8 bg-slate-50 text-stone-800">
                     <Breadcrumbs underline="hover" color="primary">
                         {getParentRoute() && 
                             <BreadcrumbItem href={getParentRoute()?.path}>

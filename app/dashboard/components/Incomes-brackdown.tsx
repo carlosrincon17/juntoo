@@ -74,7 +74,7 @@ export default function IncomeBreakdown(props: {
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4"> De donde vienen los ingresos? </h3>
+                <h3 className="text-xl font-light mb-4">Fuentes de Ingreso</h3>
                 <canvas id="incomes-by-category-chart"></canvas>
             </CardBody>
         </Card>

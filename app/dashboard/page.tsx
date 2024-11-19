@@ -12,7 +12,7 @@ import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import BalanceChart from "./components/balance-chart";
 import ExpenseByUserChart from "./components/expenses-by-user";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
@@ -77,17 +77,30 @@ export default function Page() {
                                     customClasses={["from-blue-400", "to-cyan-500"]}
                                 />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                                <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
-                                <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Income}/>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                                <div className="md:col-span-2">
+                                    <ExpensesByDate expensesFilter={expensesFilter}/>
+                                </div>
+                                <div className="grid gap-4">
+                                    <Card radius="none">
+                                        <CardBody>
+                                            <h3 className="text-xl font-light mb-4">Movimientos por categoría</h3>
+                                            <Tabs>
+                                                <Tab title="Gastos" key={TransactionType.Outcome}>
+                                                    <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
+                                                </Tab>
+                                                <Tab title="Ingresos" key={TransactionType.Income}>
+                                                    <ExpensesBreackdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Income}/>
+                                                </Tab>
+                                            </Tabs>
+                                        </CardBody>
+                                    </Card>
+                                </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                                 <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
                                 <ExpenseByUserChart expensesFilter={expensesFilter}/>
                                 <IncomeBreakdown expensesFilter={expensesFilter}/>
-                            </div>
-                            <div className="grid grid-cols-1 gap-4 mt-6">
-                                <ExpensesByDate expensesFilter={expensesFilter}/>
                             </div>
                         </>
                         : 

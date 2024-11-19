@@ -83,7 +83,6 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters,
         )
         .groupBy(CategoryTable.parent)
         .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
-        .limit(5)
     return topCategoriesWithMostExpenses as CategoryExpense[];
 }
 
@@ -154,7 +153,6 @@ export async function getExpensesByDate(filters: ExpensesFilters): Promise<Expen
         .select({
             date: sql<string>`EXTRACT(DAY FROM "createdAt")`,
             totalExpenses: sql<number>`COALESCE(SUM(${ExpensesTable.value}), 0)`,
-            parent: CategoryTable.parent,
         })
         .from(ExpensesTable)
         .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
@@ -167,7 +165,7 @@ export async function getExpensesByDate(filters: ExpensesFilters): Promise<Expen
                 not(eq(CategoryTable.parent, 'Deudas'))
             )
         )
-        .groupBy(sql<string>`EXTRACT(DAY FROM "createdAt"), "parent"`)
+        .groupBy(sql<string>`EXTRACT(DAY FROM "createdAt")`)
         .orderBy(asc(sql<number>`EXTRACT(DAY FROM "createdAt")`))
     return expensesByDate as ExpenseByDate[];
 }

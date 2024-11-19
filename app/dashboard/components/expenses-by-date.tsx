@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { ExpensesFilters } from "@/app/types/filters";
 import { ExpenseByDate } from "@/app/types/expense";
 import { getExpensesByDate } from "@/app/actions/expenses";
-import { formatCurrency } from "@/app/lib/currency";
 
 export default function ExpensesByDate(props: {
     expensesFilter: ExpensesFilters
@@ -49,7 +48,7 @@ export default function ExpensesByDate(props: {
             });
 
             new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: dates,
                     datasets: datasets,
@@ -66,17 +65,11 @@ export default function ExpensesByDate(props: {
                     },
                     plugins: {
                         datalabels: {
-                            formatter: (value) => {
-                                return `$${formatCurrency(value)}`;
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 16
-                            },
                             display: false
                         },
-                        
+                        legend: {
+                            display: false
+                        }
                     },
                     responsive: true,
                 },
@@ -87,7 +80,7 @@ export default function ExpensesByDate(props: {
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4"> Cuando lo estas gastando? </h3>
+                <h3 className="text-xl font-light mb-4"> Gastos por día</h3>
                 <canvas id="expenses-by-date-chart"></canvas>
             </CardBody>
         </Card>
