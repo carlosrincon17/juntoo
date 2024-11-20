@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/carlosrincon17/cashly/compare/v1.10.0...v1.11.0) (2024-11-20)
+
+
+### Features
+
+* added suppport to all savings fields and crud operations ([77f9cdc](https://github.com/carlosrincon17/cashly/commit/77f9cdc462987ecd218284a2013042a6f0831945))
+
 # [1.10.0](https://github.com/carlosrincon17/cashly/compare/v1.9.0...v1.10.0) (2024-11-19)
 
 
