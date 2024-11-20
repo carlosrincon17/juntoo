@@ -5,7 +5,7 @@ import { Savings } from "@/app/types/saving";
 import { SavingsTable } from "@/drizzle/schema";
 import { Currency } from "@/utils/enums/currency";
 import { db } from "@/utils/storage/db";
-import { and, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 export async function getSavings(): Promise<Savings[]> {
     const user = await getUser();
@@ -13,7 +13,8 @@ export async function getSavings(): Promise<Savings[]> {
         where: eq(SavingsTable.familyId, user.familyId),
         with: {
             user: true
-        }
+        },
+        orderBy: desc(SavingsTable.id)
     });
 }   
 
@@ -38,4 +39,17 @@ export async function updateSavings(savings: Savings): Promise<void> {
         .set(savings)
         .where(eq(SavingsTable.id, savings.id));
     return;
+}
+
+export async function createSavings(savings: Savings): Promise<void> {
+    const user = await getUser()
+    savings.familyId = user.familyId
+    savings.userId = user.id as number
+    await db.insert(SavingsTable).values(savings);
+}
+
+export async function deleteSaving(savingId: number): Promise<void> {
+    await db.delete(SavingsTable).where(
+        eq(SavingsTable.id, savingId)
+    );
 }

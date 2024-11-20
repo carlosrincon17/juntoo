@@ -2,31 +2,40 @@
 
 import { Savings } from "@/app/types/saving";
 import { useEffect, useState } from "react";
-import { getSavings } from "./actions/savings";
+import { deleteSaving, getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import SavingsManagerModal from "./component/savings-manager";
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
-import { FaEllipsisV } from "react-icons/fa";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
+import { FaEllipsisV, FaPlus } from "react-icons/fa";
+import ConfirmModal from "@/app/components/confirmModal";
+
+const savingBase: Savings = {
+    id: 0,
+    name: "",
+    value: 0,
+    owner: "",
+    userId: null,
+    familyId: null,
+    isInvestment: false,
+}
 
 export default function Page() {
     const [savings, setSavings] = useState<Savings[]>([]);    
     const [loading, setLoading] = useState(true);
-    const [selectedSavings, setSelectedSavings] = useState<Savings>({
-        id: 0,
-        name: "",
-        value: 0,
-        owner: "",
-        userId: null,
-        familyId: null,
-        isInvestment: false,
-    });
+    const [selectedSavings, setSelectedSavings] = useState<Savings>({...savingBase});
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
 
     const getSavingsData = async () => {
+        setLoading(true);
         const savingsData = await getSavings();
         setSavings(savingsData);
         setLoading(false);
+    }
+
+    const afterSaveSavings = async () => {
+        getSavingsData();
     }
 
     const onClickSavings = (savings: Savings) => {
@@ -34,6 +43,22 @@ export default function Page() {
         onOpen();
     }
 
+    const onClickDeleteSaving = (savings: Savings) => {
+        setSelectedSavings(savings);
+        onDeleteModalOpen();
+    }
+
+    const onCreateNewSavingClick = async () => {
+        const newSaving: Savings = {...savingBase};
+        setSelectedSavings(newSaving);
+        onOpen();
+    }
+
+    const onConfirmDeleteSaving = async (onClose: () => void) => {
+        await deleteSaving(selectedSavings?.id as number);
+        onClose();
+        getSavingsData();
+    }
     useEffect(() => {
         getSavingsData();
     }, []);
@@ -44,6 +69,11 @@ export default function Page() {
                 loading ? 
                     <CustomLoading /> :
                     <div>
+                        <div className="flex w-full flex-wrap flex-row-reverse justify-items-end">
+                            <Button onClick={onCreateNewSavingClick} color="primary" variant="shadow" className="w-full md:w-auto">
+                                <FaPlus /> Agregar ahorro
+                            </Button>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                             {savings.map((saving) => (
                                 <div className="group bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors"
@@ -61,6 +91,9 @@ export default function Page() {
                                                 <DropdownMenu aria-label="Static Actions">
                                                     <DropdownItem onClick={() => onClickSavings(saving)}>
                                                         Editar
+                                                    </DropdownItem>
+                                                    <DropdownItem onClick={() => onClickDeleteSaving(saving)}>
+                                                        Eliminar
                                                     </DropdownItem>
                                                 </DropdownMenu>
                                             </Dropdown>
@@ -84,7 +117,8 @@ export default function Page() {
                                 </div>
                             ))}
                         </div>
-                        <SavingsManagerModal isOpen={isOpen} savings={selectedSavings} onOpenChange={onOpenChange} />
+                        <SavingsManagerModal isOpen={isOpen} savings={selectedSavings} onOpenChange={onOpenChange} afterSaveSavings={afterSaveSavings} />
+                        <ConfirmModal isOpen={isDeleteModalOpen} onOpenChange={onDeleteModalChange} title="Eliminar ahorro" message="¿Estás seguro de que quieres eliminar este ahorro?" onConfirm={onConfirmDeleteSaving} />
                     </div>
             }
         </div>

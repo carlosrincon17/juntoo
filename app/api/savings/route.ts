@@ -3,7 +3,7 @@ import { Savings } from "@/app/types/saving";
 import { CategoryTable, SavingsTable, ExpensesTable } from "@/drizzle/schema";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { db } from "@/utils/storage/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const dynamic = 'force-dynamic';
  
@@ -18,19 +18,23 @@ const saveInvestmentIncomes = async (saving: Savings, dailyInterest: number, inv
         transactionType: TransactionType.Income,
         budgetId: null,
         createdAt: new Date(),
+        userId: saving.userId,
+        familyId: saving.familyId,
     };
     console.log("newExpense", newExpense);
     if (process.env.CRON_ENABLE !== 'yes') {
         console.log("CRON is not enabled");
         return;
     }
-    // await db.update(SavingsTable).set(saving).where(eq(SavingsTable.id, saving.id));
     await db.insert(ExpensesTable).values(newExpense);
 }
 
 export async function GET(request: Request) {
     const savingsAccount =  await db.query.SavingsTable.findMany({
-        where: eq(SavingsTable.currency, 'COP'),
+        where: and(
+            eq(SavingsTable.currency, 'COP'),
+            eq(SavingsTable.isInvestment, true),
+        )
     });
     console.log("savings account to process", savingsAccount);
     const investmentCategory = await db.query.CategoryTable.findFirst({
@@ -41,7 +45,6 @@ export async function GET(request: Request) {
     }
     await Promise.all(savingsAccount.map(async(saving) => {
         const dailyInterest = (saving.value * (ANNUAL_INTEREST_RATE/365)).toFixed(0);
-        saving.value = saving.value + parseInt(dailyInterest);
         return await saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
     }));
     return new Response(`Hello from ${process.env.CRON_ENABLE}, ${request.url}`);
