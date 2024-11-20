@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/carlosrincon17/cashly/compare/v1.11.0...v1.11.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* fixed calculation of invetments wins ([17f96cc](https://github.com/carlosrincon17/cashly/commit/17f96cceea1f149163c89434525547bad8a8c6cc))
+
 # [1.11.0](https://github.com/carlosrincon17/cashly/compare/v1.10.0...v1.11.0) (2024-11-20)
 
 
