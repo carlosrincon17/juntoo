@@ -13,7 +13,7 @@ import { Patrimony } from "@/app/types/patrimony";
 import Feedback from "./components/feedback";
 import { Debts } from "@/app/types/debts";
 import DebtManagerModal from "./components/debts-manager";
-import { ROUTES } from "@/utils/navigation/routes-constants";
+import { FINANCE_ROUTES } from "@/utils/navigation/routes-constants";
 import { useRouter } from "next/navigation";
 import { Currency } from "@/utils/enums/currency";
 import { convertUsdToCop } from "@/app/actions/trm";
@@ -115,7 +115,7 @@ export default function Page() {
                                 value={totalSavings} 
                                 customClasses={["from-cyan-400", "to-green-500"]}
                                 isPressable
-                                onPress={() => router.push(ROUTES.SAVINGS.path)}
+                                onPress={() => router.push(FINANCE_ROUTES.SAVINGS.path)}
                             />
                             <Kpi 
                                 title="Deudas" 

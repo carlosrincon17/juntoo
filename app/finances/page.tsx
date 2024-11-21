@@ -7,7 +7,7 @@ import { getTotalsExpenses } from "../actions/expenses";
 import ExpenseFilter from "./components/filter";
 import { ExpensesFilters } from "../types/filters";
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/utils/navigation/routes-constants";
+import { FINANCE_ROUTES } from "@/utils/navigation/routes-constants";
 import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import BalanceChart from "./components/balance-chart";
@@ -63,7 +63,7 @@ export default function Page() {
                                     value={totalExpenses.totalExpenses} 
                                     customClasses={["from-red-400", "to-pink-500"]} 
                                     isPressable={true} 
-                                    onPress={() => router.push(ROUTES.EXPENSES.path)}
+                                    onPress={() => router.push(FINANCE_ROUTES.EXPENSES.path)}
                                     icon={(<FaAngleDoubleDown className="text-red-500 opacity-90" />)}
                                 />
                                 <Kpi 
@@ -71,7 +71,7 @@ export default function Page() {
                                     value={totalExpenses.totalIncomes} 
                                     customClasses={["from-green-400", "to-blue-500"]}
                                     isPressable={true} 
-                                    onPress={() => router.push(ROUTES.EXPENSES.path)}
+                                    onPress={() => router.push(FINANCE_ROUTES.EXPENSES.path)}
                                     icon={(<FaAngleDoubleUp className="text-green-500 opacity-90" />)}
                                 />
                                 <Kpi 

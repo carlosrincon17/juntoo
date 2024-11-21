@@ -11,7 +11,7 @@ export async function signIn(userEmail: string) {
         return redirect("/sign-up");
     }
     await createUserSession(user);
-    redirect("/dashboard/categories");
+    redirect("/finances/categories");
 }
 
 export async function logout() {

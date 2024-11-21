@@ -1,48 +1,55 @@
-type Routes = {
+export type Routes = {
     label: string;
     path: string;
     parent?: string;
     labelBreadcrumb?: string;
+    subItems?: Routes[];
 }
 
-export const ROUTES: Record<string, Routes> = {
+export const FINANCE_ROUTES: Record<string, Routes> = {
     CATEGORIES: {
         label: "Nuevo Gasto",
-        path: "/dashboard/categories",
-        parent: "/dashboard",
+        path: "/finances/categories",
     },
     DASHBOARD: {
         label: "Tu mes",
-        path: "/dashboard",
+        path: "/finances",
         labelBreadcrumb: "Inicio",
     },
     SUMMARY: {
         label: "Consolidado",
-        path: "/dashboard/summary",
-        parent: "/dashboard",
+        path: "/finances/summary",
+        parent: "/finances",
     },
     EXPENSES: {
         label: "Movimientos",
-        path: "/dashboard/expenses",
-        parent: "/dashboard",
+        path: "/finances/expenses",
+        parent: "/finances",
     },
     BUDGETS: {
         label: "Presupuestos",
-        path: "/dashboard/budgets",
-        parent: "/dashboard",
+        path: "/finances/budgets",
+        parent: "/finances",
     },
     SAVINGS: {
         label: "Ahorros",
-        path: "/dashboard/savings", 
-        parent: "/dashboard",
+        path: "/finances/savings", 
+        parent: "/finances",
     },
 }
 
-export const ROUTES_LIST = [
-    ROUTES.CATEGORIES,
-    ROUTES.DASHBOARD,
-    ROUTES.SUMMARY,
-    ROUTES.EXPENSES,
-    ROUTES.BUDGETS,
-    ROUTES.SAVINGS,
-]
+export const ROUTES_LIST: Routes[] = [
+    {
+        label: "Finanzas",
+        path: "/finances",
+        subItems: [
+            FINANCE_ROUTES.CATEGORIES,
+            FINANCE_ROUTES.DASHBOARD,
+            FINANCE_ROUTES.SUMMARY,
+            FINANCE_ROUTES.EXPENSES,
+            FINANCE_ROUTES.BUDGETS,
+            FINANCE_ROUTES.SAVINGS,
+        ]
+    }
+    
+];

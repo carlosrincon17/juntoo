@@ -92,7 +92,7 @@ export default function Page() {
                                                     <DropdownItem onClick={() => onClickSavings(saving)}>
                                                         Editar
                                                     </DropdownItem>
-                                                    <DropdownItem onClick={() => onClickDeleteSaving(saving)}>
+                                                    <DropdownItem onClick={() => onClickDeleteSaving(saving)} className="text-red-600">
                                                         Eliminar
                                                     </DropdownItem>
                                                 </DropdownMenu>

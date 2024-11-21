@@ -1,6 +1,6 @@
 'use client'
 
-import { getBudgetsActiveWithExpenses } from "@/app/dashboard/budgets/actions/bugdets";
+import { getBudgetsActiveWithExpenses } from "@/app/finances/budgets/actions/bugdets";
 import { formatCurrency } from "@/app/lib/currency";
 import { BudgetWithExpenses } from "@/app/types/budget";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
