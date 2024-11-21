@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/carlosrincon17/cashly/compare/v1.12.1...v1.13.0) (2024-11-21)
+
+
+### Features
+
+* added loans support ([49cb503](https://github.com/carlosrincon17/cashly/commit/49cb503d0847f9357e5ab8b32ae6d2c0bb3c112e))
+
 ## [1.12.1](https://github.com/carlosrincon17/cashly/compare/v1.12.0...v1.12.1) (2024-11-21)
 
 
