@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/carlosrincon17/cashly/compare/v1.11.1...v1.12.0) (2024-11-21)
+
+
+### Features
+
+* added menu items for goals ([ae9cfcb](https://github.com/carlosrincon17/cashly/commit/ae9cfcbe3c52eb3c9db2e35216aaba9c0d39f6b8))
+
 ## [1.11.1](https://github.com/carlosrincon17/cashly/compare/v1.11.0...v1.11.1) (2024-11-20)
 
 
