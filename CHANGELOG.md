@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/carlosrincon17/cashly/compare/v1.12.0...v1.12.1) (2024-11-21)
+
+
+### Bug Fixes
+
+* fixed daily interest rate calculation ([110f43f](https://github.com/carlosrincon17/cashly/commit/110f43fe924c5849055f395cd01eb493a3f07de6))
+
 # [1.12.0](https://github.com/carlosrincon17/cashly/compare/v1.11.1...v1.12.0) (2024-11-21)
 
 
