@@ -38,6 +38,21 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
     },
 }
 
+const GOAL_ROUTES = {
+    PROGRESS_GOALS: {
+        label: "Tu progreso",
+        path: "/goals",
+    },
+    FAMILY_GOALS: {
+        label: "Metas familiares",
+        path: "/goals/family",
+    },
+    PERSONAL_GOALS: {
+        label: "Goals",
+        path: "/goals/personal",
+    },
+}
+
 export const ROUTES_LIST: Routes[] = [
     {
         label: "Finanzas",
@@ -49,6 +64,15 @@ export const ROUTES_LIST: Routes[] = [
             FINANCE_ROUTES.EXPENSES,
             FINANCE_ROUTES.BUDGETS,
             FINANCE_ROUTES.SAVINGS,
+        ]
+    },
+    {
+        label: "Metas",
+        path: "/goals",
+        subItems: [
+            GOAL_ROUTES.PROGRESS_GOALS,
+            GOAL_ROUTES.FAMILY_GOALS,
+            GOAL_ROUTES.PERSONAL_GOALS,
         ]
     }
     
