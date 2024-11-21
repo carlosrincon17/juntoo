@@ -48,7 +48,7 @@ const GOAL_ROUTES = {
         path: "/goals/family",
     },
     PERSONAL_GOALS: {
-        label: "Goals",
+        label: "Metas personales",
         path: "/goals/personal",
     },
 }

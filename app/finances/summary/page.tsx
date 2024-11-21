@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Kpi from "../components/kpi";
 import { getTotalSavings } from "../savings/actions/savings";
-import { Divider, useDisclosure } from "@nextui-org/react";
+import { Button, Divider, useDisclosure } from "@nextui-org/react";
 import { getTotalDebts } from "./actions/debts";
 import DebtsList from "./components/debts-list";
 import PatrimonyList from "./components/patrimony-list";
@@ -18,7 +18,18 @@ import { useRouter } from "next/navigation";
 import { Currency } from "@/utils/enums/currency";
 import { convertUsdToCop } from "@/app/actions/trm";
 import { CustomLoading } from "@/app/components/customLoading";
+import LoanList from "./components/loans-list";
+import { FaPlus } from "react-icons/fa";
+import LoansManagerModal from "./components/loans-manager";
+import { Loan } from "@/app/types/loans";
+import { getTotalLoans } from "./actions/loans";
 
+const baseLoan: Loan = {
+    id: 0,
+    name: "",
+    value: 0,
+    familyId: 0,
+}
 
 export default function Page() {
     
@@ -29,6 +40,7 @@ export default function Page() {
 
     const [totalDebts, setTotalDebts] = useState<number>(0);
     const [totalPatrimonies, setTotalPatrimonies] = useState<number>(0);
+    const [totalLoans, setTotalLoans] = useState<number>(0);
     const [selectedPatrimony, setSelectedPatrimony] = useState<Patrimony>({
         id: 0,
         name: "",
@@ -41,10 +53,12 @@ export default function Page() {
         value: 0,
         familyId: null,
     });
+    const [selectedLoan, setSelectedLoan] = useState<Loan>({...baseLoan});
     const router = useRouter();
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const {isOpen: isOpenDebt, onOpen: onOpenDebt, onOpenChange: onOpenDebtChange} = useDisclosure();
+    const {isOpen: isOpenLoan, onOpen: onOpenLoan, onOpenChange: onOpenLoanChange} = useDisclosure();
 
     const getTotalSavingsData = async () => {
         const totalSavingsData = await getTotalSavings();
@@ -54,30 +68,41 @@ export default function Page() {
     const getTotalSavingsUSDData = async () => {
         const totalSavingsUSDData = await getTotalSavings(Currency.USD);
         const savingsUsdInCop = await convertUsdToCop(totalSavingsUSDData);
-        setTotalSavingsUsdInCop(savingsUsdInCop);
+        setTotalSavingsUsdInCop(Number(savingsUsdInCop));
     }
 
     const getTotalPatrimoniesData = async () => {
         const totalPatrimoniesData = await getTotalPatrimonies();
-        setTotalPatrimonies(totalPatrimoniesData);
+        setTotalPatrimonies(Number(totalPatrimoniesData));
     }
 
     const getTotalDebtsData = async () => {
         const totalDebtsData = await getTotalDebts();
-        setTotalDebts(totalDebtsData);
+        setTotalDebts(Number(totalDebtsData));
+    }
+
+    const getTotalLoansData = async () => {
+        const totalLoansData = await getTotalLoans();
+        setTotalLoans(Number(totalLoansData));
     }
 
     const onSelectPatrimony = (patrimony: Patrimony) => {
         setSelectedPatrimony(patrimony);
         onOpen()
     }
+
     const onSelectDebt = (debt: Debts) => {
         setSelectedDebt(debt);
         onOpenDebt();
     }
 
+    const onSelectLoan = (loan: Loan) => {
+        setSelectedLoan(loan);
+        onOpenLoan();
+    }
+
     const getBalance = () => {
-        return (+totalSavings + +totalPatrimonies) - +totalDebts;
+        return (totalSavings + totalPatrimonies + totalLoans) - totalDebts;
     }
 
     useEffect(() => { 
@@ -92,6 +117,7 @@ export default function Page() {
         getTotalSavingsUSDData();
         getTotalDebtsData();
         getTotalPatrimoniesData();
+        getTotalLoansData();
     }, []);
 
 
@@ -109,7 +135,7 @@ export default function Page() {
                             />
                         </div>
                 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <Kpi 
                                 title="Ahorros" 
                                 value={totalSavings} 
@@ -127,22 +153,47 @@ export default function Page() {
                                 value={totalPatrimonies} 
                                 customClasses={["from-purple-400", "to-violet-500"]} 
                             />
+                            <Kpi 
+                                title="Prestamos"
+                                value={totalLoans} 
+                                customClasses={["from-purple-400", "to-violet-500"]} 
+                            />
                         </div>
                         <Divider className="my-6" />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <h3 className="text-2xl font-light mb-4">Deudas</h3>
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-2xl font-light">Prestamos</h3>
+                                    <Button className="hover:cursor-pointer" variant="light">
+                                        <FaPlus></FaPlus> Agregar
+                                    </Button>
+                                </div>
                                 <DebtsList onSelectDebt={(debt) => onSelectDebt(debt)} />
                                 <DebtManagerModal isOpen={isOpenDebt} onOpenChange={onOpenDebtChange} debt={selectedDebt}/>
                             </div>
                             <div>
-                                <h3 className="text-2xl font-light mb-4">Patrimonio</h3>
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-2xl font-light">Patrimonio</h3>
+                                    <Button className="hover:cursor-pointer" variant="light">
+                                        <FaPlus></FaPlus> Agregar
+                                    </Button>
+                                </div>
                                 <PatrimonyList onSelectPatrimony={(patrimony) => onSelectPatrimony(patrimony)} />
                                 <PatrimonyManagerModal isOpen={isOpen} onOpenChange={onOpenChange} patrimony={selectedPatrimony}/>
                             </div>
+                            <div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-2xl font-light">Prestamos</h3>
+                                    <Button className="hover:cursor-pointer" variant="light" onClick={() => onSelectLoan({...baseLoan})}>
+                                        <FaPlus></FaPlus> Agregar
+                                    </Button>
+                                </div>
+                                <LoanList onSelectLoan={(loan) => onSelectLoan(loan)} />
+                                <LoansManagerModal isOpen={isOpenLoan} onOpenChange={onOpenLoanChange} loan={selectedLoan}/>
+                            </div>
                         </div>
                         <Divider className="my-6" />
-                        <Feedback patrimonies={totalPatrimonies} savings={totalSavings} debts={totalDebts} />
+                        <Feedback patrimonies={totalPatrimonies} savings={totalSavings + totalLoans} debts={totalDebts} />
                         <Divider className="my-6" />
                     </div>
             }

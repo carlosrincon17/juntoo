@@ -13,7 +13,7 @@ export async function generateFeedback(savings: number, debts: number, patrimoni
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
     const prompt = `
-            I need a concise feedback on my family financial situation based on colombia context. 
+            You are a modern financial advisor, I need a concise feedback on my family financial situation based on colombia context.   
             My current assets include:
                 1. Savings:${savings} COP (invested with 12% of annual interest rate in a account of easy access)
                 2. Debts: ${debts} COP (mortgage)
