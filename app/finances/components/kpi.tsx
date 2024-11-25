@@ -23,8 +23,8 @@ export default function Kpi(props: {
                         <div className="flex items-center">
                         </div>
                     </div>
-                    <div className="w-1/12">
-                        {icon ? React.cloneElement(icon, { size: 'auto' }): null}
+                    <div className="w-1/12 flex items-end">
+                        {icon ? React.cloneElement(icon, { size: '32px' }): null}
                     </div>
                 </div>
             </CardBody>

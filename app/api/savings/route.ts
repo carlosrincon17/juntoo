@@ -44,7 +44,7 @@ export async function GET(request: Request) {
     const validSavingsToProcess = savingsAccount.filter((saving) => saving.isInvestment && saving.annualInterestRate);
     await Promise.all(validSavingsToProcess.map(async(saving) => {
         const annualInterestRate = saving.annualInterestRate || 0;
-        const dailyInterest = (saving.value * (annualInterestRate / 365)).toFixed(0);
+        const dailyInterest = (saving.value * ((annualInterestRate / 365) / 100)).toFixed(0);
         return await saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
     }));
     return new Response(`Hello from ${process.env.CRON_ENABLE}, ${request.url}`);
