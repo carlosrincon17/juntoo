@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/carlosrincon17/cashly/compare/v1.13.0...v1.13.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* fixed calculations of interest in savings ([43956f7](https://github.com/carlosrincon17/cashly/commit/43956f7716d32a259f9214414b6b8dc0c3de8658))
+
 # [1.13.0](https://github.com/carlosrincon17/cashly/compare/v1.12.1...v1.13.0) (2024-11-21)
 
 
