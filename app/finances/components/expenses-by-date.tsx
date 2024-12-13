@@ -1,22 +1,25 @@
 'use client';
 
 import { Card, CardBody } from "@nextui-org/react";
-import { Chart } from "chart.js/auto";
 import { useEffect, useState } from "react";
 import { ExpensesFilters } from "@/app/types/filters";
 import { ExpenseByDate } from "@/app/types/expense";
 import { getExpensesByDate } from "@/app/actions/expenses";
+import ApexCharts from "apexcharts";
+import { formatCurrency } from "@/app/lib/currency";
+import { CustomLoading } from "@/app/components/customLoading";
 
 export default function ExpensesByDate(props: {
     expensesFilter: ExpensesFilters
 }) {
     const { expensesFilter } = props;
     const [expensesByDate, setExpensesByDate] = useState<ExpenseByDate[]>([]);
-
-    const chartId = 'expenses-by-date-chart';
+    const [loading, setLoading] = useState(true);
 
     async function getExpensesByDateData(){
+        setLoading(true);
         const expensesByDateData = await getExpensesByDate(expensesFilter);
+        setLoading(false);
         setExpensesByDate(expensesByDateData);
     }
 
@@ -30,59 +33,80 @@ export default function ExpensesByDate(props: {
         if(
             expensesByDate.length > 0
         ) {
-            if(Chart.getChart(chartId)) {
-                Chart.getChart(chartId)?.destroy()
-            }
-            const ctx = document.getElementById(chartId) as HTMLCanvasElement;
-            const parents = [...new Set(expensesByDate.map(item => item.parent))];
+            const datasets = [...new Set(expensesByDate.map(item => item.totalExpenses))];
             const dates = [...new Set(expensesByDate.map(item => item.date))];
-            const datasets = parents.map(parent => {
-                return {
-                    label: parent,
-                    data: dates.map(date => {
-                        const entry = expensesByDate.find(d => d.parent === parent && d.date === date);
-                        return entry ? entry.totalExpenses : 0;
-                    }),
-                    fill: false
-                };
-            });
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: dates,
-                    datasets: datasets,
+            const options = {
+                series: [{
+                    name: 'Gastos',
+                    data: datasets
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
                 },
-                options: {
-                    scales: {
-                        x: {
-                            type: 'category',
-                            offset: true,
-                            grid: {
-                                display: false
-                            }
-                        }
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        borderRadius: 5,
+                        borderRadiusApplication: 'end'
                     },
-                    plugins: {
-                        datalabels: {
-                            display: false
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    responsive: true,
                 },
-            });
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: dates,
+                },
+                yaxis: {
+                    title: {
+                        text: 'Valor en pesos'
+                    },
+                    labels: {
+                        formatter: function (value: string) {
+                            return formatCurrency(parseInt(value))
+                        }
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (value: string) {
+                            return formatCurrency(parseInt(value))
+                        }
+                    }
+                }
+            };
+            const chart = new ApexCharts(document.querySelector("#expenses-by-date-chart"), options);
+            chart.render();
         }
     }, [expensesByDate]);
     
     return (
-        <Card>
-            <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4"> Gastos por día</h3>
-                <canvas id="expenses-by-date-chart"></canvas>
-            </CardBody>
-        </Card>
+        <>
+            {!loading ?
+                <Card className="h-full">
+                    <CardBody className="p-4">
+                        <h3 className="text-xl font-light mb-4"> Gastos por día</h3>
+                        <div id="expenses-by-date-chart"></div>
+                    </CardBody>
+                </Card>
+                :
+                <Card>
+                    <CardBody className="p-4">
+                        <div className="flex justify-center items-center">
+                            <CustomLoading className="mt-24" />
+                        </div>
+                    </CardBody>
+                </Card>
+            }
+        </>
     )
 }

@@ -17,6 +17,7 @@ import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaBalanceScale} from "react-icons/fa";
+import { MonthlyBudget } from "./components/monthly-budget";
 
 export default function Page() {
 
@@ -29,6 +30,7 @@ export default function Page() {
     const router = useRouter();
 
     const getTotalExpensesData = async (filters: ExpensesFilters) => {
+        setLoading(true);
         const totalExpensesData = await getTotalsExpenses(filters);
         setLoading(false);
         setTotalExpenses(totalExpensesData);
@@ -81,7 +83,10 @@ export default function Page() {
                                     icon={(<FaBalanceScale  className="text-blue-500 opacity-90" />)}
                                 />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                            <div className="grid grid-cols-1 gap-4 mt-6">
+                                <MonthlyBudget totalExpenses={totalExpenses.totalExpenses}/>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 auto-rows-[1fr]">
                                 <div className="md:col-span-2">
                                     <ExpensesByDate expensesFilter={expensesFilter}/>
                                 </div>

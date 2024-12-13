@@ -4,7 +4,7 @@ import { db } from "@/utils/storage/db";
 import { User } from "../types/user";
 import { eq } from "drizzle-orm";
 import { UserTable } from "@/drizzle/schema";
-import { signIn } from "./auth";
+import { getUser, signIn } from "./auth";
 
 export async function getUserByEmail(email: string): Promise<User | undefined> {
     return await db.query.UserTable.findFirst({
@@ -24,4 +24,11 @@ export async function createUser(user: User) {
         isAdmin: user.isAdmin,
     });
     await signIn(user.email);
+}
+
+export async function getUsersByFamily(): Promise<User[]> {
+    const user = await getUser();
+    return await db.query.UserTable.findMany({
+        where: eq(UserTable.familyId, user.familyId),
+    });
 }

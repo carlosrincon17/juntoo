@@ -10,8 +10,8 @@ import { addDaysToCurrentDate } from "../lib/dates";
 import { getUser } from "./auth";
 
 const totalsFilters = {
-    totalExpenses: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Outcome} then ${ExpensesTable.value} else 0 end) as bigint)`,
-    totalIncomes: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Income} then ${ExpensesTable.value} else 0 end) as bigint)`
+    totalExpenses: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Outcome} then ${ExpensesTable.value} else 0 end) as bigint)`.mapWith(Number),
+    totalIncomes: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Income} then ${ExpensesTable.value} else 0 end) as bigint)`.mapWith(Number)
 }
 
 export async function addExpense(expense: Expense) {
@@ -108,7 +108,7 @@ export async function getExpensesByUser(filters: ExpensesFilters): Promise<UserE
     const expensesByUser = await db
         .select({
             userName: UserTable.name,
-            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
+            totalExpenses: sql<number>`sum(${ExpensesTable.value}) as bigint`.mapWith(Number),
         })
         .from(ExpensesTable)
         .leftJoin(UserTable, eq(ExpensesTable.userId, UserTable.id))
@@ -129,7 +129,7 @@ export async function getIncomesByCategory(filters: ExpensesFilters): Promise<Ca
     const incomesByCategory = await db
         .select({
             categoryName: CategoryTable.name,
-            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
+            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`.mapWith(Number),
         })
         .from(ExpensesTable)
         .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))

@@ -4,6 +4,8 @@ import { Card, CardBody } from "@nextui-org/react";
 import { Chart } from "chart.js/auto";
 import { useEffect } from "react";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ApexCharts from "apexcharts";
+import { formatCurrency } from "@/app/lib/currency";
 
 export default function BalanceChart(props: {
     totalExpenses: number,
@@ -11,46 +13,39 @@ export default function BalanceChart(props: {
 }) {
     Chart.register(ChartDataLabels);
     const { totalExpenses, totalIncomes } = props;
-    const chartId = "balance-chart";
+
     useEffect(() => {
         if(
             totalExpenses
             && totalIncomes
         ){
-            if(Chart.getChart(chartId)) {
-                Chart.getChart(chartId)?.destroy()
+            const options = {
+                theme: {
+                    palette: 'palette2'
+                },
+                series: [totalExpenses, totalIncomes - totalExpenses],
+                labels: ["Gastado", "Disponible"],
+                chart: {
+                    type: 'pie'
+                },
+                legend: {
+                    show: true,
+                    position: 'top'
+                },
+                dataLabels: {
+                    tooltip: {
+                        enabled: true,
+                        formatter: formatCurrency
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: formatCurrency
+                    }
+                },
             }
-            const ctx = document.getElementById(chartId) as HTMLCanvasElement;
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Disponible', 'Gastado'],
-                    datasets: [{
-                        label: 'Balance',
-                        data: [totalIncomes - totalExpenses, totalExpenses],
-                        backgroundColor: ['#36D399', '#FF6384'],
-                        borderColor: ['#36D399', '#FF6384'],
-                        borderWidth: 1,
-                    }],
-                },
-                options: {
-                    plugins: {
-                        datalabels: {
-                            formatter: (value) => {
-                                const total = totalIncomes;
-                                const percentage = (value / total * 100).toFixed(1) + '%';
-                                return percentage;
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 16
-                            }
-                        }
-                    },
-                    responsive: true,
-                },
-            });
+            const chart = new ApexCharts(document.querySelector("#balance-chart"), options);
+            chart.render();
         }
     }, [totalExpenses, totalIncomes]);
     
@@ -58,7 +53,7 @@ export default function BalanceChart(props: {
         <Card>
             <CardBody className="p-4">
                 <h3 className="text-xl font-light mb-4"> Ingresos vs Gastos</h3>
-                <canvas id="balance-chart"></canvas>
+                <div id="balance-chart"></div>
             </CardBody>
         </Card>
     )

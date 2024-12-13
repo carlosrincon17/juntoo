@@ -7,6 +7,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ExpensesFilters } from "@/app/types/filters";
 import { CategoryExpense } from "@/app/types/expense";
 import { getIncomesByCategory } from "@/app/actions/expenses";
+import { formatCurrency } from "@/app/lib/currency";
+import ApexCharts from "apexcharts";
 
 export default function IncomeBreakdown(props: {
     expensesFilter: ExpensesFilters
@@ -14,8 +16,6 @@ export default function IncomeBreakdown(props: {
     Chart.register(ChartDataLabels);
     const { expensesFilter } = props;
     const [incomesByCategory, setIncomesByCategory] = useState<CategoryExpense[]>([]);
-
-    const chartId = 'incomes-by-category-chart';
 
     async function getIncomesByCategoryData(){
         const incomesByCategoryData = await getIncomesByCategory(expensesFilter);
@@ -32,42 +32,50 @@ export default function IncomeBreakdown(props: {
         if(
             incomesByCategory.length > 0
         ) {
-            if(Chart.getChart(chartId)) {
-                Chart.getChart(chartId)?.destroy()
-            }
-            const ctx = document.getElementById(chartId) as HTMLCanvasElement;
             const labels = incomesByCategory.map(expense => expense.categoryName);
             const values = incomesByCategory.map(expense => expense.totalExpenses);
-            const totalIncomes = incomesByCategory.reduce(
-                (acc, expense) => +acc + +expense.totalExpenses, +0);
-            
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Ingresos',
-                        data: values,
-                        borderWidth: 1,
-                    }],
+            const options = {
+                theme: {
+                    palette: 'palette2'
                 },
-                options: {
-                    plugins: {
-                        datalabels: {
-                            formatter: (value) => {
-                                const percentage = (value / totalIncomes * 100).toFixed(1) + '%';
-                                return percentage;
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 16
+                series: values,
+                labels: labels,
+                chart: {
+                    type: 'donut'
+                },
+                legend: {
+                    show: true,
+                    position: 'top'
+                },
+                dataLabels: {
+                    tooltip: {
+                        enabled: true,
+                        formatter: formatCurrency
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: formatCurrency
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                name: {
+                                    formatter: (name: string) => `Total de ${name}`
+                                },
+                                value: {
+                                    formatter: formatCurrency
+                                }
                             }
                         }
-                    },
-                    responsive: true,
-                },
-            });
+                    }
+                }
+            }
+            const chart = new ApexCharts(document.querySelector("#incomes-by-category-chart"), options);
+            chart.render();
         }
     }, [incomesByCategory]);
     
@@ -75,7 +83,7 @@ export default function IncomeBreakdown(props: {
         <Card>
             <CardBody className="p-4">
                 <h3 className="text-xl font-light mb-4">Fuentes de Ingreso</h3>
-                <canvas id="incomes-by-category-chart"></canvas>
+                <div id="incomes-by-category-chart"></div>
             </CardBody>
         </Card>
     )

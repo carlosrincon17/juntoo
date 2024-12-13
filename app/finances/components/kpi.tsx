@@ -12,7 +12,7 @@ export default function Kpi(props: {
 }) {
     const { title, value, isPressable, onPress, icon } = props;
     return (
-        <Card isPressable={isPressable} onPress={onPress} radius="none" shadow="sm">
+        <Card isPressable={isPressable} onPress={onPress}>
             <CardBody className="p-4">
                 <div className="flex flex-row justify-between">
                     <div className="w-11/12">

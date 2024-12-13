@@ -53,6 +53,13 @@ const GOAL_ROUTES = {
     },
 }
 
+const PLANNER_ROUTES = {
+    TASKS: {
+        label: "Tareas",
+        path: "/planner",
+    },
+}
+
 export const ROUTES_LIST: Routes[] = [
     {
         label: "Finanzas",
@@ -74,6 +81,14 @@ export const ROUTES_LIST: Routes[] = [
             GOAL_ROUTES.FAMILY_GOALS,
             GOAL_ROUTES.PERSONAL_GOALS,
         ]
-    }
+    },
+    {
+        label: "Planificación",
+        path: "/planner",
+        subItems: [
+            PLANNER_ROUTES.TASKS,
+        ]
+    },
     
 ];
+

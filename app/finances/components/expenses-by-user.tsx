@@ -7,6 +7,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ExpensesFilters } from "@/app/types/filters";
 import { UserExpense } from "@/app/types/expense";
 import { getExpensesByUser } from "@/app/actions/expenses";
+import ApexCharts from "apexcharts";
+import { formatCurrency } from "@/app/lib/currency";
+import { CustomLoading } from "@/app/components/customLoading";
 
 export default function ExpenseByUserChart(props: {
     expensesFilter: ExpensesFilters
@@ -14,11 +17,13 @@ export default function ExpenseByUserChart(props: {
     Chart.register(ChartDataLabels);
     const { expensesFilter } = props;
     const [expensesByUser, setExpensesByUser] = useState<UserExpense[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const chartId = 'expenses-by-user-chart';
 
     async function getExpensesByUserData(){
+        setLoading(true);
         const expensesByUserData = await getExpensesByUser(expensesFilter);
+        setLoading(false);
         setExpensesByUser(expensesByUserData);
     }
 
@@ -32,53 +37,71 @@ export default function ExpenseByUserChart(props: {
         if(
             expensesByUser.length > 0
         ) {
-            if(Chart.getChart(chartId)) {
-                Chart.getChart(chartId)?.destroy()
-            }
-            const ctx = document.getElementById(chartId) as HTMLCanvasElement;
             const labels = expensesByUser.map(expense => expense.userName);
             const values = expensesByUser.map(expense => expense.totalExpenses);
-            const totalExpenses = expensesByUser.reduce(
-                (acc, expense) => +acc + +expense.totalExpenses, +0);
-            
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Gastos',
-                        data: values,
-                        backgroundColor: ['#36D399', '#FF6384'],
-                        borderColor: ['#36D399', '#FF6384'],
-                        borderWidth: 1,
-                    }],
+            const options = {
+                theme: {
+                    palette: 'palette2' // upto palette10
                 },
-                options: {
-                    plugins: {
-                        datalabels: {
-                            formatter: (value) => {
-                                const percentage = (value / totalExpenses * 100).toFixed(1) + '%';
-                                return percentage;
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 16
+                series: values,
+                labels: labels,
+                chart: {
+                    type: 'donut'
+                },
+                legend: {
+                    show: true,
+                    position: 'top'
+                },
+                dataLabels: {
+                    tooltip: {
+                        enabled: true,
+                        formatter: formatCurrency
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: formatCurrency
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                name: {
+                                    formatter: (name: string) => `Total de ${name}`
+                                },
+                                value: {
+                                    formatter: formatCurrency
+                                }
                             }
                         }
-                    },
-                    responsive: true,
-                },
-            });
+                    }
+                }
+            }
+            const chart = new ApexCharts(document.querySelector("#expenses-by-user-chart"), options);
+            chart.render();
         }
     }, [expensesByUser]);
     
     return (
-        <Card>
-            <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4">Distribución de gastos </h3>
-                <canvas id="expenses-by-user-chart"></canvas>
-            </CardBody>
-        </Card>
+        <>
+            {!loading ?
+                <Card>
+                    <CardBody className="p-4">
+                        <h3 className="text-xl font-light mb-4">Gastos por persona </h3>
+                        <div id="expenses-by-user-chart"></div>
+                    </CardBody>
+                </Card>
+                :
+                <Card>
+                    <CardBody className="p-4">
+                        <div className="flex justify-center items-center">
+                            <CustomLoading className="mt-24" />
+                        </div>
+                    </CardBody>
+                </Card>
+            }
+        </>
     )
 }
