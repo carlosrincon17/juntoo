@@ -1,3 +1,5 @@
+'use client'
+
 import { getTopCategoriesWithMostExpenses } from "@/app/actions/expenses";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";

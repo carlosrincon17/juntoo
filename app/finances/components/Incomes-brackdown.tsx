@@ -1,90 +1,80 @@
-'use client';
+"use client";
 
 import { Card, CardBody } from "@nextui-org/react";
-import { Chart } from "chart.js/auto";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ExpensesFilters } from "@/app/types/filters";
 import { CategoryExpense } from "@/app/types/expense";
 import { getIncomesByCategory } from "@/app/actions/expenses";
 import { formatCurrency } from "@/app/lib/currency";
-import ApexCharts from "apexcharts";
+import { ApexOptions } from "apexcharts";
 
-export default function IncomeBreakdown(props: {
-    expensesFilter: ExpensesFilters
-}) {
-    Chart.register(ChartDataLabels);
-    const { expensesFilter } = props;
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+
+export default function IncomeBreakdown({ expensesFilter }: { expensesFilter: ExpensesFilters }) {
     const [incomesByCategory, setIncomesByCategory] = useState<CategoryExpense[]>([]);
 
-    async function getIncomesByCategoryData(){
+    async function getIncomesByCategoryData() {
         const incomesByCategoryData = await getIncomesByCategory(expensesFilter);
         setIncomesByCategory(incomesByCategoryData);
     }
 
     useEffect(() => {
-        if(expensesFilter.startDate && expensesFilter.endDate){
+        if (expensesFilter.startDate && expensesFilter.endDate) {
             getIncomesByCategoryData();
         }
     }, [expensesFilter.startDate, expensesFilter.endDate]);
 
-    useEffect(() => {
-        if(
-            incomesByCategory.length > 0
-        ) {
-            const labels = incomesByCategory.map(expense => expense.categoryName);
-            const values = incomesByCategory.map(expense => expense.totalExpenses);
-            const options = {
-                theme: {
-                    palette: 'palette2'
+    const chartOptions: ApexOptions  = {
+        chart: {
+            type: "donut",
+        },
+        theme: {
+            palette: "palette2",
+        },
+        labels: incomesByCategory.map((income) => income.categoryName),
+        legend: {
+            show: true,
+            position: "top",
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: (val: number) => formatCurrency(val),
+        },
+        tooltip: {
+            y: {
+                formatter: (val: number) => formatCurrency(val),
+            },
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            formatter: (name: string) => `Total de ${name}`,
+                        },
+                        value: {
+                            formatter: (val: string) => formatCurrency(parseInt(val)),
+                        },
+                    },
                 },
-                series: values,
-                labels: labels,
-                chart: {
-                    type: 'donut'
-                },
-                legend: {
-                    show: true,
-                    position: 'top'
-                },
-                dataLabels: {
-                    tooltip: {
-                        enabled: true,
-                        formatter: formatCurrency
-                    }
-                },
-                tooltip: {
-                    y: {
-                        formatter: formatCurrency
-                    }
-                },
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            labels: {
-                                show: true,
-                                name: {
-                                    formatter: (name: string) => `Total de ${name}`
-                                },
-                                value: {
-                                    formatter: formatCurrency
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            const chart = new ApexCharts(document.querySelector("#incomes-by-category-chart"), options);
-            chart.render();
-        }
-    }, [incomesByCategory]);
-    
+            },
+        },
+    };
+
+    const chartSeries = incomesByCategory.map((income) => income.totalExpenses);
+
     return (
         <Card>
             <CardBody className="p-4">
                 <h3 className="text-xl font-light mb-4">Fuentes de Ingreso</h3>
-                <div id="incomes-by-category-chart"></div>
+                {incomesByCategory.length > 0 ? (
+                    <Chart options={chartOptions} series={chartSeries} type="donut" height={350} />
+                ) : (
+                    <div className="flex justify-center items-center">Cargando...</div>
+                )}
             </CardBody>
         </Card>
-    )
+    );
 }

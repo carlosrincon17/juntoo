@@ -1,60 +1,54 @@
-'use client'
+'use client';
 
 import { Card, CardBody } from "@nextui-org/react";
-import { Chart } from "chart.js/auto";
-import { useEffect } from "react";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import ApexCharts from "apexcharts";
+import dynamic from "next/dynamic";
 import { formatCurrency } from "@/app/lib/currency";
+import { ApexOptions } from "apexcharts";
 
-export default function BalanceChart(props: {
-    totalExpenses: number,
-    totalIncomes: number,
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+
+export default function BalanceChart({ totalExpenses, totalIncomes }: {
+  totalExpenses: number;
+  totalIncomes: number;
 }) {
-    Chart.register(ChartDataLabels);
-    const { totalExpenses, totalIncomes } = props;
+    const chartOptions: ApexOptions = {
+        chart: {
+            type: "pie",
+        },
+        theme: {
+            palette: "palette2",
+        },
+        labels: ["Gastado", "Disponible"],
+        legend: {
+            show: true,
+            position: "top",
+        },
+        dataLabels: {
+            formatter: (val: number) => formatCurrency(val),
+        },
+        tooltip: {
+            y: {
+                formatter: (val: number) => formatCurrency(val),
+            },
+        },
+    };
 
-    useEffect(() => {
-        if(
-            totalExpenses
-            && totalIncomes
-        ){
-            const options = {
-                theme: {
-                    palette: 'palette2'
-                },
-                series: [totalExpenses, totalIncomes - totalExpenses],
-                labels: ["Gastado", "Disponible"],
-                chart: {
-                    type: 'pie'
-                },
-                legend: {
-                    show: true,
-                    position: 'top'
-                },
-                dataLabels: {
-                    tooltip: {
-                        enabled: true,
-                        formatter: formatCurrency
-                    }
-                },
-                tooltip: {
-                    y: {
-                        formatter: formatCurrency
-                    }
-                },
-            }
-            const chart = new ApexCharts(document.querySelector("#balance-chart"), options);
-            chart.render();
-        }
-    }, [totalExpenses, totalIncomes]);
-    
+    const chartSeries = [
+        totalExpenses,
+        totalIncomes - totalExpenses,
+    ];
+
     return (
         <Card>
             <CardBody className="p-4">
-                <h3 className="text-xl font-light mb-4"> Ingresos vs Gastos</h3>
-                <div id="balance-chart"></div>
+                <h3 className="text-xl font-light mb-4">Ingresos vs Gastos</h3>
+                <Chart 
+                    options={chartOptions} 
+                    series={chartSeries} 
+                    type="pie" 
+                    height={350} 
+                />
             </CardBody>
         </Card>
-    )
+    );
 }
