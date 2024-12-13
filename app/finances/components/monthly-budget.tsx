@@ -1,3 +1,5 @@
+'use client'
+
 import { formatCurrency } from "@/app/lib/currency";
 import { Card, CardBody, Progress } from "@nextui-org/react";
 
