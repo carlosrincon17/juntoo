@@ -24,7 +24,7 @@ export default function BalanceChart({ totalExpenses, totalIncomes }: {
             position: "top",
         },
         dataLabels: {
-            formatter: (val: number) => formatCurrency(val),
+            formatter: (val: number) => `${val.toFixed(2)} %`,
         },
         tooltip: {
             y: {

@@ -43,7 +43,7 @@ export default function ExpenseByUserChart({ expensesFilter }: { expensesFilter:
         },
         dataLabels: {
             enabled: true,
-            formatter: (val: number) => formatCurrency(val),
+            formatter: (val: number) => `${val.toFixed(2)} %`,
         },
         tooltip: {
             y: {

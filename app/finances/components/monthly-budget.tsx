@@ -31,14 +31,14 @@ export const MonthlyBudget = (props: {
     return (
         <Card className="w-full">
             <CardBody className="w-full">
-                <h3 className="text-xl font-light mb-4">Presupuesto mensual</h3>
+                <h3 className="text-2xl font-extralight mb-4">Presupuesto mensual</h3>
                 <div className="grid mb-4 flex-row grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <p className="text-sm font-medium text-gray-500">Total</p>
-                        <p className="text-2xl font-bold text-gray-800">{formatCurrency(TOTAL_BUDGET)}</p>
+                        <p className="text-sm font-light">Total</p>
+                        <p className="text-2xl font-bold">{formatCurrency(TOTAL_BUDGET)}</p>
                     </div>
                     <div className="md:text-right">
-                        <p className="text-sm font-medium text-gray-500">Disponible</p>
+                        <p className="text-sm font-light">Disponible</p>
                         <p className={"text-2xl font-bold " + getColorBudget()}>{formatCurrency(TOTAL_BUDGET - totalExpenses)}</p>
                     </div>
                 </div>

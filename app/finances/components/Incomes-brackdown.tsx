@@ -39,7 +39,7 @@ export default function IncomeBreakdown({ expensesFilter }: { expensesFilter: Ex
         },
         dataLabels: {
             enabled: true,
-            formatter: (val: number) => formatCurrency(val),
+            formatter: (val: number) => `${val.toFixed(2)} %`,
         },
         tooltip: {
             y: {
