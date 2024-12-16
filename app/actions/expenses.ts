@@ -69,7 +69,7 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters,
     const topCategoriesWithMostExpenses = await db
         .select({
             categoryName: CategoryTable.parent,
-            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`,
+            totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`.mapWith(Number),
         })
         .from(ExpensesTable)
         .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
@@ -78,7 +78,8 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters,
                 eq(ExpensesTable.familyId, user.familyId),
                 gte(ExpensesTable.createdAt, filters.startDate),
                 lte(ExpensesTable.createdAt, filters.endDate),
-                eq(ExpensesTable.transactionType, transactionType)
+                eq(ExpensesTable.transactionType, transactionType),
+                not(eq(CategoryTable.parent, 'Deudas')) 
             )
         )
         .groupBy(CategoryTable.parent)

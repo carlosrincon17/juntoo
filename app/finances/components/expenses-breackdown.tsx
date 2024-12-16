@@ -3,23 +3,44 @@
 import { getTopCategoriesWithMostExpenses } from "@/app/actions/expenses";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
-import { CategoryExpense } from "@/app/types/expense";
 import { ExpensesFilters } from "@/app/types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { Progress, Spacer } from "@nextui-org/react";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { ApexOptions } from "apexcharts";
+import dynamic from "next/dynamic";
 
-export default function ExpensesBreackdown(props: { totalExpenses: number, expensesFilter: ExpensesFilters, transactionType: TransactionType }) {
-    const { totalExpenses, expensesFilter, transactionType } = props;
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-    const [transactionSummary, setTransactionSummary] = useState<CategoryExpense[]>([]);
+const chartOptions: ApexOptions = {
+    chart: {
+        type: "pie",
+    },
+    theme: {
+        palette: "palette2",
+    },
+    legend: {
+        show: true,
+        position: "top",
+    },
+    tooltip: {
+        y: {
+            formatter: (val: number) => formatCurrency(val),
+        },
+    },
+};
+
+export const ExpensesBreakdown = (props: { totalExpenses: number, expensesFilter: ExpensesFilters, transactionType: TransactionType }) => {
+    const {  expensesFilter, transactionType } = props;
+
     const [loading, setLoading] = useState(true);
+    const [series, setSeries] = useState<number[]>([]);
+    const [options, setOptions] = useState<ApexOptions>({...chartOptions})
 
-    const color = transactionType === TransactionType.Income ? 'primary' : 'danger';
     const getTransactionListData = async () => {
         const transactionsData = await getTopCategoriesWithMostExpenses(expensesFilter, transactionType);
+        setSeries(transactionsData.map(item => item.totalExpenses));
+        setOptions({...chartOptions, labels: transactionsData.map(item => item.categoryName)})
         setLoading(false);
-        setTransactionSummary(transactionsData);
     }
 
     useEffect(() => {
@@ -27,24 +48,16 @@ export default function ExpensesBreackdown(props: { totalExpenses: number, expen
     }, [expensesFilter]);
 
     return (
-        <div className="overflow-scroll max-h-80 md:max-h-96">
+        <div>
             {loading ?
                 <CustomLoading /> :
                 <>
-                    {transactionSummary.map((category, index) => (
-                        <Fragment key={category.categoryName}>
-                            <div className="flex justify-between items-center mb-2">
-                                <span>{category.categoryName}</span>
-                                <span className="font-semibold">{formatCurrency(category.totalExpenses)}</span>
-                            </div>
-                            <Progress 
-                                value={(category.totalExpenses  / totalExpenses) * 100} 
-                                color={color}
-                                className="h-2 mb-3"
-                            />
-                            {index < transactionSummary.length - 1 && <Spacer y={2} />}
-                        </Fragment>
-                    ))}
+                    <div>
+                        <div id="chart">
+                            <Chart options={options} series={series} type="pie" />
+                        </div>
+                        <div id="html-dist"></div>
+                    </div>
                 </>
             }
         </div>
