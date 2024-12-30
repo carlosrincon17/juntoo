@@ -23,6 +23,7 @@ import { FaPlus } from "react-icons/fa";
 import LoansManagerModal from "./components/loans-manager";
 import { Loan } from "@/app/types/loans";
 import { getTotalLoans } from "./actions/loans";
+import ExpensesByMonth from "./components/expenses-by-month";
 
 const baseLoan: Loan = {
     id: 0,
@@ -158,6 +159,9 @@ export default function Page() {
                                 value={totalLoans} 
                                 customClasses={["from-purple-400", "to-violet-500"]} 
                             />
+                        </div>
+                        <div className="grid grid-cols-1 mt-6">
+                            <ExpensesByMonth />
                         </div>
                         <Divider className="my-6" />
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
