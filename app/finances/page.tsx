@@ -11,7 +11,6 @@ import { FINANCE_ROUTES } from "@/utils/navigation/routes-constants";
 import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import BalanceChart from "./components/balance-chart";
-import ExpenseByUserChart from "./components/expenses-by-user";
 import { Card, CardBody } from "@nextui-org/react";
 import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
@@ -83,7 +82,9 @@ export default function Page() {
                                     icon={(<FaBalanceScale  className="text-blue-500 opacity-90" />)}
                                 />
                             </div>
-                            <div className="grid grid-cols-1 gap-4 mt-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                                <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
+                                <IncomeBreakdown expensesFilter={expensesFilter}/>
                                 <MonthlyBudget totalExpenses={totalExpenses.totalExpenses}/>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 auto-rows-[1fr]">
@@ -98,11 +99,6 @@ export default function Page() {
                                         </CardBody>
                                     </Card>
                                 </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                                <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
-                                <ExpenseByUserChart expensesFilter={expensesFilter}/>
-                                <IncomeBreakdown expensesFilter={expensesFilter}/>
                             </div>
                         </>
                         : 
