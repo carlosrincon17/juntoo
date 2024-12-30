@@ -31,8 +31,9 @@ export default function ExpenseFilter(props: { onChange: (year: number, month: n
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
     const handleYearChange = (year: SharedSelection) => {
-        setSelectedYear(parseInt(year.currentKey as string, 10));
-        onChange(selectedYear, selectedMonth);
+        const newYearSelected = parseInt(year.currentKey as string, 10)
+        setSelectedYear(newYearSelected)
+        onChange(newYearSelected, selectedMonth);
     }
 
     const handleMonthChange = (month: SharedSelection) => {
