@@ -153,7 +153,7 @@ export async function getExpensesByDate(filters: ExpensesFilters): Promise<Expen
     const expensesByDate = await db
         .select({
             date: sql<string>`EXTRACT(DAY FROM "createdAt")`,
-            totalExpenses: sql<number>`COALESCE(SUM(${ExpensesTable.value}), 0)`,
+            totalExpenses: sql<number>`COALESCE(SUM(${ExpensesTable.value}), 0)`.mapWith(Number),
         })
         .from(ExpensesTable)
         .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
