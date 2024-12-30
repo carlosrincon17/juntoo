@@ -8,7 +8,10 @@ export default function ExpenseFilter(props: { onChange: (year: number, month: n
     
     const { onChange } = props;
 
-    const years = [{  label: '2024', key: 2024 }];
+    const years = [
+        { label: '2024', key: 2024 },
+        { label: '2025', key: 2025 }
+    ];
     const months = [
         { label: 'Enero', key: 1 },
         { label: 'Febrero', key: 2 },
