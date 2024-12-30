@@ -175,7 +175,7 @@ export async function getExpensesByMonth(): Promise<ExpenseByDate[]> {
     const user = await getUser();
     const expensesByDate = await db
         .select({
-            date: sql<string>`TO_CHAR("createdAt", 'TMMonth, YYYY')`,
+            date: sql<string>`TO_CHAR("createdAt", 'Mon, YYYY')`,
             totalExpenses: sql<number>`COALESCE(SUM(${ExpensesTable.value}), 0)`.mapWith(Number),
             minDate: sql<string>`MIN("createdAt")`
         })
@@ -187,7 +187,7 @@ export async function getExpensesByMonth(): Promise<ExpenseByDate[]> {
                 eq(ExpensesTable.transactionType, TransactionType.Outcome),
             )
         )
-        .groupBy(sql<string>`TO_CHAR("createdAt", 'TMMonth, YYYY')`)
+        .groupBy(sql<string>`TO_CHAR("createdAt", 'Mon, YYYY')`)
         .orderBy(sql<string>`MIN("createdAt") ASC`) 
         .limit(6)
     return expensesByDate as ExpenseByDate[];

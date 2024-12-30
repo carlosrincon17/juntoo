@@ -79,7 +79,7 @@ export default function ExpensesByMonth() {
                     text: "Valor en pesos",
                 },
                 labels: {
-                    formatter: (value: number) => formatCurrency(value),
+                    formatter: (value: number) => formatCurrency(value).split('.')[0] + " M",
                 },
             },
             fill: {
