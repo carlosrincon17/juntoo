@@ -31,7 +31,7 @@ export default function ExpensesByMonth() {
             },
             {
                 name: 'Presupuesto',
-                data: expensesByDateData.map(() => 17000000)
+                data: expensesByDateData.map(() => 19000000)
             }
         ]
         setChartOptions(getChartOptions(expensesByDateData));

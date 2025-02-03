@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const TOTAL_BUDGET = 17000000;
+const TOTAL_BUDGET = 19000000;
 
 export const MonthlyBudget = (props: {
     totalExpenses: number,
