@@ -10,7 +10,7 @@ function extractJson(textResponse: string): string {
 
 export async function generateFeedback(savings: number, debts: number, patrimonies: number): Promise<string> {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
     
     const prompt = `
             You are a modern financial advisor, I need a concise feedback on my family financial situation based on colombia context.   
