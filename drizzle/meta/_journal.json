@@ -134,6 +134,13 @@
       "when": 1732206962019,
       "tag": "0018_added-loans-column",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1739216631274,
+      "tag": "0019_added-missing-categories",
+      "breakpoints": true
     }
   ]
 }
