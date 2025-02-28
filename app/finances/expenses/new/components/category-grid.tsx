@@ -2,7 +2,6 @@ import { motion } from "framer-motion"
 import type React from "react"
 import { ParentCategory } from "@/app/types/category"
 import { Button } from "@nextui-org/react"
-import { Icon } from "@/app/components/ui/icon"
 
 interface CategoryGridProps {
   parentCategories: ParentCategory[]
@@ -25,7 +24,6 @@ export function CategoryGrid({ parentCategories, onSelectParentCategory }: Categ
                         className="w-full h-24 flex flex-col items-center justify-center p-2 hover:bg-accent border-stone-500"
                         onClick={() => onSelectParentCategory(category)}
                     >
-                        <Icon name="fi/FiHome" size={32} color="text-stone-500" />
                         <span className="text-sm text-center font-medium text-stone-500">{category.name}</span>
                     </Button>
                 </motion.div>
