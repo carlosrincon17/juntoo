@@ -1,7 +1,7 @@
 import { User } from "./user";
 
 export type Savings = {
-    id: number;
+    id: number; 
     name: string;
     value: number;
     owner: string;

@@ -45,7 +45,7 @@ export async function createSavings(savings: Savings): Promise<void> {
     const user = await getUser()
     savings.familyId = user.familyId
     savings.userId = user.id as number
-    await db.insert(SavingsTable).values(savings);
+    await db.insert(SavingsTable).values({...savings, id: undefined});
 }
 
 export async function deleteSaving(savingId: number): Promise<void> {

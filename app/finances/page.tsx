@@ -17,6 +17,7 @@ import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaBalanceScale} from "react-icons/fa";
 import { MonthlyBudget } from "./components/monthly-budget";
+import FinancialTransactionsList from "./components/expenses-table";
 
 export default function Page() {
 
@@ -88,16 +89,21 @@ export default function Page() {
                                 <MonthlyBudget totalExpenses={totalExpenses.totalExpenses}/>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 auto-rows-[1fr]">
-                                <div className="md:col-span-2">
+                                <div className="md:col-span-3">
                                     <ExpensesByDate expensesFilter={expensesFilter}/>
                                 </div>
-                                <div className="grid gap-4">
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6 auto-rows-[1fr]">
+                                <div className="md:col-span-2">
                                     <Card>
                                         <CardBody>
                                             <h3 className="text-xl font-light mb-4">Gastos por categoría</h3>
                                             <ExpensesBreakdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
                                         </CardBody>
                                     </Card>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <FinancialTransactionsList  expensesFilter={expensesFilter} />
                                 </div>
                             </div>
                         </>

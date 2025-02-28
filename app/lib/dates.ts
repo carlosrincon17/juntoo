@@ -30,3 +30,7 @@ export const formatDateToISOString = (date: Date): string => {
 export const getUTCDate = (date: Date) => {
     return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
 }
+
+export const formateSimpleDate = (date: Date): string => {
+    return Intl.DateTimeFormat('es-CO', { dateStyle: 'long', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }).format(date);
+}

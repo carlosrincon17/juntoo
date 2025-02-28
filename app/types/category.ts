@@ -6,3 +6,8 @@ export type Category = {
     color: string;
     transactionType?: string;
 }
+
+export type ParentCategory = {
+    name: string;
+    color: string
+}
