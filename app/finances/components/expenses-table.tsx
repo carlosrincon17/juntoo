@@ -40,22 +40,27 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemsPerPage] = useState(0)
     const [transactions, setTransactions] = useState([] as Expense[])
-    const [totalPages, setTotalPages] = useState(0)
+    const [totalItems, setTotalItems] = useState(0)
 
     const loadTotalPages = async () => {
         const totalExpenses = await getCountExpensesByFilter(expensesFilter)
-        setTotalPages(Math.ceil(totalExpenses / itemsPerPage))
+        setTotalItems(totalExpenses)
     }
     const onLoadTransactions = async () => {
         const transactionsCreated= await getExpensesByFilter(currentPage, itemsPerPage, expensesFilter)
         setTransactions(transactionsCreated)
     }
 
-    const handlePageSizeChange = (newSize: number) => {
-        setItemsPerPage(newSize)
-        setCurrentPage(1)
-        loadTotalPages();
+    const handlePageSizeChange = async (newSize: number) => {
+        setItemsPerPage(newSize);
+        await loadTotalPages();
+        setCurrentPage(1);
     }
+
+    const getTotalPages = () => {
+        if (!itemsPerPage || !totalItems) return 0;
+        return Math.ceil(totalItems / itemsPerPage)
+    }   
 
     useEffect(() => {
         onLoadTransactions()
@@ -70,7 +75,7 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
             <Card className="w-full max-w-4xl mx-auto bg-[#FAFAFA]">
                 <CardHeader className="flex flex-col gap-2">
                     <div className="flex w-full">
-                        <h3 className="text-xl font-light mb-4">Lista de Gastos</h3>
+                        <h3 className="text-xl font-light mb-4">Lista de Movimientos</h3>
                     </div>
                 </CardHeader>
 
@@ -92,9 +97,8 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                                         </div>
                                         <div>
                                             <div className="font-medium text-sm">{transaction.category?.name}</div>
-                                            <div className="text-xs text-default-500 flex items-center gap-1">
+                                            <div className="text-xs text-default-500 grid items-center gap-1">
                                                 {formateSimpleDate(transaction.createdAt as Date)}
-                                                <span className="inline-block w-1 h-1 rounded-full bg-default-300 mx-1"></span>
                                                 <span className="capitalize">{transaction.category?.parent}</span>
                                             </div>
                                         </div>
@@ -111,11 +115,11 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mt-4 pt-4 border-t border-default-200">
                         <div className="flex items-center gap-2">
                             <span className="text-xs text-default-500">
-                                Mostrando {itemsPerPage} de {totalPages * itemsPerPage}
+                                Mostrando {itemsPerPage} de {totalItems}
                             </span>
                         </div>
 
-                        <Pagination total={totalPages} page={currentPage} onChange={setCurrentPage} showControls size="sm" />
+                        <Pagination total={getTotalPages()} page={currentPage} onChange={setCurrentPage} showControls size="sm" />
                     </div>
                 </CardBody>
             </Card>

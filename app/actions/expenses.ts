@@ -85,7 +85,7 @@ export async function getCountExpenses(): Promise<number> {
 export async function getCountExpensesByFilter(filters: ExpensesFilters): Promise<number> {
     const user = await getUser();
     const counterResult = await db.select({
-        count: count(ExpensesTable.id)
+        count: count(ExpensesTable.id).mapWith(Number)
     }).from(
         ExpensesTable
     ).where(
