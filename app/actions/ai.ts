@@ -19,7 +19,7 @@ export async function generateFeedback(savings: number, debts: number, patrimoni
                 2. Debts: ${debts} COP (mortgage)
                 3. Properties: ${+patrimonies + savings} COP (2 houses, 1 car. Im living in one house and the other one is rented by $2000000 COP per month)
 
-            currently we have a salaries of 20000000 COP per month (me) and 0 COP per month (my wife), 2000000 COP per rent and with a outcome of 22000000 COP per month.
+            currently we have a salaries of 20000000 COP per month (me) and 0 COP per month (my wife), 2000000 COP per rent (real state investment), 600000 COP per interest (bank investment) and with a outcome of 20000000 COP per month.
             
             Please answer the following three questions very briefly with very data oriented responses, its should be for the family in Spanish:
 
