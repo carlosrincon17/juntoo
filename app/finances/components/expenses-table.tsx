@@ -97,7 +97,7 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                                         </div>
                                         <div>
                                             <div className="font-medium text-sm">{transaction.category?.name}</div>
-                                            <div className="text-xs text-default-500 grid items-center gap-1">
+                                            <div className="text-xs text-default-500 grid items-center">
                                                 {formateSimpleDate(transaction.createdAt as Date)}
                                                 <span className="capitalize">{transaction.category?.parent}</span>
                                             </div>
