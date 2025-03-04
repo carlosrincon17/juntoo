@@ -13,6 +13,7 @@ import type {
 } from "@/app/types/financial"
 import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
 import { useEffect, useState } from "react"
+import { formatCurrency } from "@/app/lib/currency"
 
 // Import ApexCharts dynamically to avoid SSR issues
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
@@ -52,22 +53,22 @@ const formatChartData = (data: FinancialData[]): ChartData => {
 
     const series = [
         {
-            name: "Income",
+            name: "Ingresos",
             data: data.map((item) => item.income),
         },
         {
-            name: "Expenses",
+            name: "Gastos",
             data: data.map((item) => item.expenses),
         },
         {
-            name: "Savings",
+            name: "Ahorros",
             data: data.map((item) => item.savings),
         },
     ]
 
     const savingsPercentageSeries = [
         {
-            name: "Savings %",
+            name: "% Ahorro",
             data: data.map((item) => Math.round((item.savings / item.income) * 100)),
         },
     ]
@@ -101,8 +102,11 @@ const FinancialOverview: React.FC = () => {
             categories: months,
         },
         yaxis: {
+            title: {
+                text: "Valor en pesos",
+            },
             labels: {
-                formatter: (value: number) => `$${value}`,
+                formatter: (value: number) => formatCurrency(value).split('.')[0] + " M",
             },
         },
         tooltip: {
@@ -181,7 +185,7 @@ const FinancialOverview: React.FC = () => {
     useEffect(() => {
         getFinancialData()
     }, []);
-    
+
     return (
         <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
             <h1 className="text-2xl font-light text-center mb-6">Estadisticas mensuales</h1>
@@ -198,8 +202,8 @@ const FinancialOverview: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
                 <Card className="shadow-sm">
                     <CardHeader className="pb-0 pt-4 px-4 flex-col items-start">
-                        <h4 className="text-lg font-medium">Monthly Overview</h4>
-                        <small className="text-default-500">Income, expenses and savings for the last 12 months</small>
+                        <h4 className="text-lg font-medium">Vista de mes a mes</h4>
+                        <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
                     </CardHeader>
                     <CardBody className="overflow-hidden">
                         <div className="w-full h-[300px]">
@@ -212,8 +216,8 @@ const FinancialOverview: React.FC = () => {
 
                 <Card className="shadow-sm">
                     <CardHeader className="pb-0 pt-4 px-4 flex-col items-start">
-                        <h4 className="text-lg font-medium">Savings Percentage</h4>
-                        <small className="text-default-500">Monthly savings as percentage of income</small>
+                        <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
+                        <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
                     </CardHeader>
                     <CardBody className="overflow-hidden">
                         <div className="w-full h-[300px]">
@@ -228,27 +232,27 @@ const FinancialOverview: React.FC = () => {
             {/* Monthly Data Table */}
             <Card className="shadow-sm mt-6">
                 <CardHeader className="pb-0 pt-4 px-4">
-                    <h4 className="text-lg font-medium">Monthly Breakdown</h4>
+                    <h4 className="text-lg font-medium">Breakdown mensual</h4>
                 </CardHeader>
                 <CardBody>
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-sm">
                             <thead>
                                 <tr className="border-b">
-                                    <th className="text-left py-3 px-4">Month</th>
-                                    <th className="text-right py-3 px-4">Income</th>
-                                    <th className="text-right py-3 px-4">Expenses</th>
-                                    <th className="text-right py-3 px-4">Savings</th>
-                                    <th className="text-right py-3 px-4">Savings %</th>
+                                    <th className="text-left py-3 px-4">Mes</th>
+                                    <th className="text-right py-3 px-4">Ingresos</th>
+                                    <th className="text-right py-3 px-4">Gastos</th>
+                                    <th className="text-right py-3 px-4">Ahorros</th>
+                                    <th className="text-right py-3 px-4">% Ahorrado</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {stats.dataWithPercentage.map((month, index) => (
                                     <tr key={index} className="border-b last:border-0 hover:bg-gray-50">
                                         <td className="py-3 px-4">{month.month}</td>
-                                        <td className="text-right py-3 px-4 text-green-600">${month.income.toLocaleString()}</td>
-                                        <td className="text-right py-3 px-4 text-red-600">${month.expenses.toLocaleString()}</td>
-                                        <td className="text-right py-3 px-4 text-blue-600">${month.savings.toLocaleString()}</td>
+                                        <td className="text-right py-3 px-4 text-green-600">{formatCurrency(month.income)}</td>
+                                        <td className="text-right py-3 px-4 text-red-600">{formatCurrency(month.expenses)}</td>
+                                        <td className="text-right py-3 px-4 text-blue-600">{formatCurrency(month.savings)}</td>
                                         <td className="text-right py-3 px-4 text-purple-600">{month.savingsPercentage}%</td>
                                     </tr>
                                 ))}
