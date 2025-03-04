@@ -1,31 +1,22 @@
 import { formatCurrency } from "@/app/lib/currency";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, Divider } from "@nextui-org/react";
 import React from "react";
 
 export default function Kpi(props: { 
     title: string, 
     value: number, 
-    customClasses: string[], 
     isPressable?: boolean, 
     onPress?: () => void,
-    icon?: JSX.Element 
+    color?: string 
 }) {
-    const { title, value, isPressable, onPress, icon } = props;
+    const { title, value, isPressable, onPress, color } = props;
     return (
-        <Card isPressable={isPressable} onPress={onPress}>
-            <CardBody className="p-4">
-                <div className="flex flex-row justify-between">
-                    <div className="w-11/12">
-                        <div className="flex mb-2">
-                            <h3 className="text-2xl font-extralight">{title}</h3>
-                        </div>
-                        <p className="text-2xl font-semibold">{formatCurrency(value)}</p>
-                        <div className="flex items-center">
-                        </div>
-                    </div>
-                    <div className="w-1/12 flex items-end">
-                        {icon ? React.cloneElement(icon, { size: '32px' }): null}
-                    </div>
+        <Card className="shadow-sm" isPressable={isPressable} onPress={onPress}>
+            <CardBody className="py-5">
+                <div className="flex flex-col items-center justify-center text-center">
+                    <p className="text-sm text-default-500">{title}</p>
+                    <Divider className="my-2" />
+                    <p className={`text-2xl font-semibold ${color}`}>{formatCurrency(value)}</p>
                 </div>
             </CardBody>
         </Card>

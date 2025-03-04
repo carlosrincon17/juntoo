@@ -15,7 +15,6 @@ import { Card, CardBody } from "@nextui-org/react";
 import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
-import { FaAngleDoubleDown, FaAngleDoubleUp, FaBalanceScale} from "react-icons/fa";
 import { MonthlyBudget } from "./components/monthly-budget";
 import FinancialTransactionsList from "./components/expenses-table";
 
@@ -59,29 +58,28 @@ export default function Page() {
                     </div> :
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <Kpi 
-                                    title="Gastos" 
-                                    value={totalExpenses.totalExpenses} 
-                                    customClasses={["from-red-400", "to-pink-500"]} 
-                                    isPressable={true} 
-                                    onPress={() => router.push(FINANCE_ROUTES.EXPENSES.path)}
-                                    icon={(<FaAngleDoubleDown className="text-red-500 opacity-90" />)}
-                                />
-                                <Kpi 
-                                    title="Ingresos" 
-                                    value={totalExpenses.totalIncomes} 
-                                    customClasses={["from-green-400", "to-blue-500"]}
-                                    isPressable={true} 
-                                    onPress={() => router.push(FINANCE_ROUTES.EXPENSES.path)}
-                                    icon={(<FaAngleDoubleUp className="text-green-500 opacity-90" />)}
-                                />
-                                <Kpi 
-                                    title="Balance" 
-                                    value={totalExpenses.totalIncomes - totalExpenses.totalExpenses} 
-                                    customClasses={["from-blue-400", "to-cyan-500"]}
-                                    icon={(<FaBalanceScale  className="text-blue-500 opacity-90" />)}
-                                />
+                            <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <Kpi 
+                                        title="Ingresos" 
+                                        value={totalExpenses.totalIncomes} 
+                                        isPressable={true} 
+                                        onPress={() => router.push(FINANCE_ROUTES.EXPENSES.path)}
+                                        color="text-green-500"
+                                    />
+                                    <Kpi 
+                                        title="Gastos" 
+                                        value={totalExpenses.totalExpenses} 
+                                        isPressable={true} 
+                                        onPress={() => router.push(FINANCE_ROUTES.EXPENSES.path)}
+                                        color="text-red-500"
+                                    />
+                                    <Kpi 
+                                        title="Disponible" 
+                                        value={totalExpenses.totalIncomes - totalExpenses.totalExpenses} 
+                                        color="text-blue-500"
+                                    />
+                                </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                                 <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>

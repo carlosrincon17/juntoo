@@ -3,11 +3,12 @@
 import { CategoryTable, ExpensesTable, UserTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
 import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense } from "../types/expense";
-import { and, asc, count, desc, eq, gte, lte, not, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray, lte, not, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { addDaysToCurrentDate } from "../lib/dates";
 import { getUser } from "./auth";
+import { FinancialData } from "../types/financial";
 
 const totalsFilters = {
     totalExpenses: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Outcome} then ${ExpensesTable.value} else 0 end) as bigint)`.mapWith(Number),
@@ -226,4 +227,43 @@ export async function getExpensesByMonth(): Promise<ExpenseByDate[]> {
         .orderBy(sql<string>`MIN("createdAt") ASC`) 
         .limit(6)
     return expensesByDate as ExpenseByDate[];
+}
+
+export async function getFinancialOverviewByMonth(): Promise<FinancialData[]> {
+    const user = await getUser();
+    const expensesByDate = await db
+        .select({
+            month: sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`,
+            expenses: sql<number>`
+                COALESCE(
+                    SUM(CASE WHEN ${CategoryTable.transactionType} = ${TransactionType.Outcome} THEN ${ExpensesTable.value} ELSE 0 END),
+                    0
+                )
+            `.mapWith(Number),
+            income: sql<number>`
+                COALESCE(
+                    SUM(CASE WHEN ${CategoryTable.transactionType} = ${TransactionType.Income} THEN ${ExpensesTable.value} ELSE 0 END),
+                    0
+                )
+            `.mapWith(Number),
+            savings: sql<number>`
+                COALESCE(
+                    SUM(CASE WHEN ${CategoryTable.transactionType} = ${TransactionType.Income} THEN ${ExpensesTable.value} ELSE 0 END) -
+                    SUM(CASE WHEN ${CategoryTable.transactionType} = ${TransactionType.Outcome} THEN ${ExpensesTable.value} ELSE 0 END),
+                    0
+                )
+            `.mapWith(Number)
+        })
+        .from(ExpensesTable)
+        .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(
+            and(
+                eq(ExpensesTable.familyId, user.familyId),
+                inArray(ExpensesTable.transactionType, [TransactionType.Outcome, TransactionType.Income])
+            )
+        )
+        .groupBy(sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`)
+        .orderBy(sql<string>`MIN(${ExpensesTable.createdAt}) ASC`)
+        .limit(6);
+    return expensesByDate as FinancialData[];
 }

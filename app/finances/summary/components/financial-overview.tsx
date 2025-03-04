@@ -11,25 +11,12 @@ import type {
     ChartData,
     FinancialDataWithPercentage,
 } from "@/app/types/financial"
+import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
+import { useEffect, useState } from "react"
 
 // Import ApexCharts dynamically to avoid SSR issues
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
-// Sample data - replace with your actual data
-const financialData: FinancialData[] = [
-    { month: "Jan", expenses: 2100, income: 3500, savings: 1400 },
-    { month: "Feb", expenses: 2300, income: 3500, savings: 1200 },
-    { month: "Mar", expenses: 2000, income: 3600, savings: 1600 },
-    { month: "Apr", expenses: 2800, income: 3700, savings: 900 },
-    { month: "May", expenses: 2400, income: 3800, savings: 1400 },
-    { month: "Jun", expenses: 2200, income: 3800, savings: 1600 },
-    { month: "Jul", expenses: 2500, income: 3900, savings: 1400 },
-    { month: "Aug", expenses: 2700, income: 3900, savings: 1200 },
-    { month: "Sep", expenses: 2300, income: 4000, savings: 1700 },
-    { month: "Oct", expenses: 2100, income: 4000, savings: 1900 },
-    { month: "Nov", expenses: 2400, income: 4100, savings: 1700 },
-    { month: "Dec", expenses: 3000, income: 4200, savings: 1200 },
-]
 
 // Calculate averages and percentages
 const calculateStats = (data: FinancialData[]): FinancialStats => {
@@ -89,6 +76,7 @@ const formatChartData = (data: FinancialData[]): ChartData => {
 }
 
 const FinancialOverview: React.FC = () => {
+    const [financialData, setFinancialData] = useState<FinancialData[]>([]);
     const stats = calculateStats(financialData)
     const { months, series, savingsPercentageSeries } = formatChartData(financialData)
 
@@ -185,16 +173,25 @@ const FinancialOverview: React.FC = () => {
         },
     }
 
+    const getFinancialData = async ()  => {
+        const financialData = await getFinancialOverviewByMonth()
+        setFinancialData(financialData)
+    }
+
+    useEffect(() => {
+        getFinancialData()
+    }, []);
+    
     return (
         <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
-            <h1 className="text-2xl font-semibold text-center mb-6">Family Financial Overview</h1>
+            <h1 className="text-2xl font-light text-center mb-6">Estadisticas mensuales</h1>
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard title="Avg. Monthly Income" value={`$${stats.avgIncome.toLocaleString()}`} color="text-green-500" />
-                <StatCard title="Avg. Monthly Expenses" value={`$${stats.avgExpenses.toLocaleString()}`} color="text-red-500" />
-                <StatCard title="Avg. Monthly Savings" value={`$${stats.avgSavings.toLocaleString()}`} color="text-blue-500" />
-                <StatCard title="Avg. Savings Rate" value={`${stats.avgSavingsPercentage}%`} color="text-purple-500" />
+                <StatCard title="Prom. Ingresos" value={`$${stats.avgIncome.toLocaleString()}`} color="text-green-500" />
+                <StatCard title="Prom. Gastros" value={`$${stats.avgExpenses.toLocaleString()}`} color="text-red-500" />
+                <StatCard title="Prom. Ahorro" value={`$${stats.avgSavings.toLocaleString()}`} color="text-blue-500" />
+                <StatCard title="Porcentaje de ahorro" value={`${stats.avgSavingsPercentage}%`} color="text-purple-500" />
             </div>
 
             {/* Charts */}

@@ -127,37 +127,29 @@ export default function Page() {
             {
                 loading ?
                     <CustomLoading /> :
-                    <div>
-                        <div className="mb-6">
+                    <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <Kpi 
                                 title="Balance" 
-                                value={getBalance()} 
-                                customClasses={["from-cyan-500", "to-blue-300", "text-black"]} 
+                                color="text-blue-500"
+                                value={getBalance()}
                             />
-                        </div>
-                
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <Kpi 
                                 title="Ahorros" 
                                 value={totalSavings} 
-                                customClasses={["from-cyan-400", "to-green-500"]}
+                                color="text-green-500"
                                 isPressable
                                 onPress={() => router.push(FINANCE_ROUTES.SAVINGS.path)}
                             />
                             <Kpi 
                                 title="Deudas" 
-                                value={totalDebts} 
-                                customClasses={["from-rose-400", "to-red-500"]} 
+                                value={totalDebts}
+                                color="text-red-500" 
                             />
                             <Kpi 
                                 title="Patrimonio"
                                 value={totalPatrimonies} 
-                                customClasses={["from-purple-400", "to-violet-500"]} 
-                            />
-                            <Kpi 
-                                title="Prestamos"
-                                value={totalLoans} 
-                                customClasses={["from-purple-400", "to-violet-500"]} 
+                                color="text-green-500"
                             />
                         </div>
                         <div className="grid grid-cols-1 mt-6">
