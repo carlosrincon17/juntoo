@@ -93,7 +93,7 @@ const FinancialOverview: React.FC = () => {
             <h1 className="text-2xl font-light text-center mb-6">Estadisticas mensuales</h1>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-1">
                 <Kpi title="Prom. Ingresos" value={stats.avgIncome} color="text-green-500" />
                 <Kpi title="Prom. Gastros" value={stats.avgExpenses} color="text-red-500" />
                 <Kpi title="Prom. Ahorro" value={stats.avgSavings} color="text-blue-500" />
