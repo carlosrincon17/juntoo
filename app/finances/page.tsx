@@ -91,17 +91,19 @@ export default function Page() {
                             <div className="grid grid-cols-1 gap-4 mt-6">
                                 <ExpensesByDate expensesFilter={expensesFilter} />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-                                <div className="col-span-1 md:col-span-2">
-                                    <Card>
-                                        <CardBody>
-                                            <h3 className="text-xl font-light mb-4">Gastos por categoría</h3>
-                                            <ExpensesBreakdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
-                                        </CardBody>
-                                    </Card>
-                                </div>
-                                <div className="col-span-1 md:col-span-2">
-                                    <FinancialTransactionsList  expensesFilter={expensesFilter} />
+                            <div className="w-full max-w-7xl mx-auto space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                                    <div className="col-span-1 md:col-span-2">
+                                        <Card className="shadow-none">
+                                            <CardBody>
+                                                <h3 className="text-xl font-light mb-4">Gastos por categoría</h3>
+                                                <ExpensesBreakdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
+                                            </CardBody>
+                                        </Card>
+                                    </div>
+                                    <div className="col-span-1 md:col-span-2">
+                                        <FinancialTransactionsList  expensesFilter={expensesFilter} />
+                                    </div>
                                 </div>
                             </div>
                         </>

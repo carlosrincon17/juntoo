@@ -31,7 +31,7 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
 
     const chartOptions: ApexOptions  = {
         chart: {
-            type: "bar",
+            type: "line",
             height: 350,
         },
         plotOptions: {
@@ -46,9 +46,8 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
             enabled: false,
         },
         stroke: {
-            show: true,
-            width: 2,
-            colors: ["transparent"],
+            curve: "smooth",
+            width: 3,
         },
         xaxis: {
             categories: expensesByDate.map((item) => item.date),
@@ -79,12 +78,12 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
     ];
 
     return (
-        <>
+        <div className="flex flex-col justify-center items-center">
             {!loading ? (
-                <Card className="h-full">
+                <Card className="w-full h-full shadow-none max-w-7xl">
                     <CardBody className="p-4">
                         <h3 className="text-xl font-light mb-4">Gastos por día</h3>
-                        <Chart options={chartOptions} series={chartSeries} type="bar" height={350} />
+                        <Chart options={chartOptions} series={chartSeries} type="line" height={350} />
                     </CardBody>
                 </Card>
             ) : (
@@ -96,6 +95,6 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
                     </CardBody>
                 </Card>
             )}
-        </>
+        </div>
     );
 }

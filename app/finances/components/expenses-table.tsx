@@ -72,10 +72,10 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
 
     return (
         <>
-            <Card className="w-full max-w-4xl mx-auto bg-[#FAFAFA]">
+            <Card className="w-full max-w-4xl mx-auto shadow-none">
                 <CardHeader className="flex flex-col gap-2">
                     <div className="flex w-full">
-                        <h3 className="text-xl font-light mb-4">Lista de Movimientos</h3>
+                        <h3 className="text-xl font-light">Lista de Movimientos</h3>
                     </div>
                 </CardHeader>
 
@@ -89,7 +89,7 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                             return (
                                 <div
                                     key={transaction.id}
-                                    className={`flex items-center justify-between py-2 px-3 rounded-medium border-1 transition-all ${colors.hover}`}
+                                    className={`flex items-center justify-between py-2 px-3 rounded-medium border-1 bg-white transition-all ${colors.hover}`}
                                 >
                                     <div className="flex items-center gap-2">
                                         <div className={`flex items-center justify-center w-7 h-7 rounded-full bg-white/80 ${colors.text}`}>
