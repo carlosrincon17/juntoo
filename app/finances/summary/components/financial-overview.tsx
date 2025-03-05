@@ -3,7 +3,6 @@
 import type React from "react"
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
 import dynamic from "next/dynamic"
-import type { ApexOptions } from "apexcharts"
 import type {
     FinancialData,
     FinancialStats,
@@ -14,12 +13,11 @@ import type {
 import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
 import { useEffect, useState } from "react"
 import { formatCurrency } from "@/app/lib/currency"
+import { getAreaChartOptionsMonthly, getBarChartOptionsSavings } from "../constants/charts"
 
-// Import ApexCharts dynamically to avoid SSR issues
+
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
-
-// Calculate averages and percentages
 const calculateStats = (data: FinancialData[]): FinancialStats => {
     const totalMonths = data.length
 
@@ -47,7 +45,6 @@ const calculateStats = (data: FinancialData[]): FinancialStats => {
     }
 }
 
-// Format data for ApexCharts
 const formatChartData = (data: FinancialData[]): ChartData => {
     const months = data.map((item) => item.month)
 
@@ -81,101 +78,6 @@ const FinancialOverview: React.FC = () => {
     const stats = calculateStats(financialData)
     const { months, series, savingsPercentageSeries } = formatChartData(financialData)
 
-    // Area chart options
-    const areaChartOptions: ApexOptions = {
-        chart: {
-            type: "area",
-            height: 350,
-            toolbar: {
-                show: false,
-            },
-            fontFamily: "inherit",
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            curve: "smooth",
-            width: 2,
-        },
-        xaxis: {
-            categories: months,
-        },
-        yaxis: {
-            title: {
-                text: "Valor en pesos",
-            },
-            labels: {
-                formatter: (value: number) => formatCurrency(value).split('.')[0] + " M",
-            },
-        },
-        tooltip: {
-            y: {
-                formatter: (value: number) => `$${value}`,
-            },
-        },
-        colors: ["#22c55e", "#ef4444", "#3b82f6"],
-        fill: {
-            type: "gradient",
-            gradient: {
-                opacityFrom: 0.6,
-                opacityTo: 0.1,
-            },
-        },
-        legend: {
-            position: "top",
-            horizontalAlign: "right",
-        },
-        grid: {
-            borderColor: "#f1f1f1",
-            strokeDashArray: 4,
-        },
-        theme: {
-            mode: "light",
-        },
-    }
-
-    // Bar chart options
-    const barChartOptions: ApexOptions = {
-        chart: {
-            type: "bar",
-            height: 350,
-            toolbar: {
-                show: false,
-            },
-            fontFamily: "inherit",
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                columnWidth: "60%",
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        xaxis: {
-            categories: months,
-        },
-        yaxis: {
-            labels: {
-                formatter: (value: number) => `${value}%`,
-            },
-        },
-        tooltip: {
-            y: {
-                formatter: (value: number) => `${value}%`,
-            },
-        },
-        colors: ["#8b5cf6"],
-        grid: {
-            borderColor: "#f1f1f1",
-            strokeDashArray: 4,
-        },
-        theme: {
-            mode: "light",
-        },
-    }
 
     const getFinancialData = async ()  => {
         const financialData = await getFinancialOverviewByMonth()
@@ -208,7 +110,7 @@ const FinancialOverview: React.FC = () => {
                     <CardBody className="overflow-hidden">
                         <div className="w-full h-[300px]">
                             {typeof window !== "undefined" && (
-                                <Chart options={areaChartOptions} series={series} type="area" height={300} />
+                                <Chart options={getAreaChartOptionsMonthly(months)} series={series} type="area" height={300} />
                             )}
                         </div>
                     </CardBody>
@@ -222,7 +124,7 @@ const FinancialOverview: React.FC = () => {
                     <CardBody className="overflow-hidden">
                         <div className="w-full h-[300px]">
                             {typeof window !== "undefined" && (
-                                <Chart options={barChartOptions} series={savingsPercentageSeries} type="bar" height={300} />
+                                <Chart options={getBarChartOptionsSavings(months)} series={savingsPercentageSeries} type="bar" height={300} />
                             )}
                         </div>
                     </CardBody>

@@ -10,13 +10,11 @@ import { useRouter } from "next/navigation";
 import { FINANCE_ROUTES } from "@/utils/navigation/routes-constants";
 import { TotalExpenses } from "../types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import BalanceChart from "./components/balance-chart";
 import { Card, CardBody } from "@nextui-org/react";
-import IncomeBreakdown from "./components/Incomes-brackdown";
 import { CustomLoading } from "../components/customLoading";
 import ExpensesByDate from "./components/expenses-by-date";
-import { MonthlyBudget } from "./components/monthly-budget";
 import FinancialTransactionsList from "./components/expenses-table";
+import BudgetSimple from "./components/budget-usage";
 
 export default function Page() {
 
@@ -81,13 +79,11 @@ export default function Page() {
                                     />
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                                <BalanceChart totalExpenses={totalExpenses.totalExpenses} totalIncomes={totalExpenses.totalIncomes}/>
-                                <IncomeBreakdown expensesFilter={expensesFilter}/>
-                                <MonthlyBudget totalExpenses={totalExpenses.totalExpenses}/>
+                            <div>
+                                <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} />
                             </div>
-                            <div className="grid grid-cols-1 gap-4 mt-6 auto-rows-[1fr]">
-                                <ExpensesByDate expensesFilter={expensesFilter}/>
+                            <div className="grid grid-cols-1 gap-4 mt-6">
+                                <ExpensesByDate expensesFilter={expensesFilter} />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
                                 <div className="col-span-1 md:col-span-2">
