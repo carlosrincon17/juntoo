@@ -102,8 +102,8 @@ const FinancialOverview: React.FC = () => {
 
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-                <Card className="shadow-sm">
-                    <CardHeader className="pb-0 pt-4 px-4 flex-col items-start">
+                <Card className="shadow-none">
+                    <CardHeader className="pb-0 pt-4 flex-col items-start">
                         <h4 className="text-lg font-medium">Vista de mes a mes</h4>
                         <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
                     </CardHeader>
@@ -116,8 +116,8 @@ const FinancialOverview: React.FC = () => {
                     </CardBody>
                 </Card>
 
-                <Card className="shadow-sm">
-                    <CardHeader className="pb-0 pt-4 px-4 flex-col items-start">
+                <Card className="shadow-none">
+                    <CardHeader className="pb-0 pt-4 flex-col items-start">
                         <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
                         <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
                     </CardHeader>
