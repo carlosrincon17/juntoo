@@ -127,8 +127,8 @@ export default function Page() {
             {
                 loading ?
                     <CustomLoading /> :
-                    <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="w-full max-w-7xl mx-auto space-y-6">
+                        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-1">
                             <Kpi 
                                 title="Balance" 
                                 color="text-blue-500"

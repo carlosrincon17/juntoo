@@ -83,8 +83,8 @@ const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent =
     }
 
     return (
-        <div className="w-full max-w-7xl mx-auto p-4">
-            <Card className="shadow-sm">
+        <div className="w-full max-w-7xl mx-auto">
+            <Card className="shadow-none">
                 <CardHeader className="flex flex-col items-start pb-0">
                     <h2 className="text-xl font-semibold">Presupuesto Mensual</h2>
                     <p className="text-default-500 text-sm">Visualización de gastos vs presupuesto</p>
@@ -99,7 +99,7 @@ const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent =
                             )}
                         </div>
 
-                        <div className="flex flex-col justify-center space-y-6">
+                        <div className="flex flex-col justify-center space-y-6 mt-4">
 
                             <div className="space-y-4">
                                 <div>

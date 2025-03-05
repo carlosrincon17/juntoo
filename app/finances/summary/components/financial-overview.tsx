@@ -1,12 +1,11 @@
 "use client"
 
 import type React from "react"
-import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react"
+import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import dynamic from "next/dynamic"
 import type {
     FinancialData,
     FinancialStats,
-    StatCardProps,
     ChartData,
     FinancialDataWithPercentage,
 } from "@/app/types/financial"
@@ -14,6 +13,7 @@ import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
 import { useEffect, useState } from "react"
 import { formatCurrency } from "@/app/lib/currency"
 import { getAreaChartOptionsMonthly, getBarChartOptionsSavings } from "../constants/charts"
+import Kpi from "../../components/kpi"
 
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
@@ -93,11 +93,11 @@ const FinancialOverview: React.FC = () => {
             <h1 className="text-2xl font-light text-center mb-6">Estadisticas mensuales</h1>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard title="Prom. Ingresos" value={`$${stats.avgIncome.toLocaleString()}`} color="text-green-500" />
-                <StatCard title="Prom. Gastros" value={`$${stats.avgExpenses.toLocaleString()}`} color="text-red-500" />
-                <StatCard title="Prom. Ahorro" value={`$${stats.avgSavings.toLocaleString()}`} color="text-blue-500" />
-                <StatCard title="Porcentaje de ahorro" value={`${stats.avgSavingsPercentage}%`} color="text-purple-500" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <Kpi title="Prom. Ingresos" value={stats.avgIncome} color="text-green-500" />
+                <Kpi title="Prom. Gastros" value={stats.avgExpenses} color="text-red-500" />
+                <Kpi title="Prom. Ahorro" value={stats.avgSavings} color="text-blue-500" />
+                <Kpi title="Porcentaje de ahorro" value={stats.avgSavingsPercentage} color="text-purple-500" type="percentage" />
             </div>
 
             {/* Charts */}
@@ -164,21 +164,6 @@ const FinancialOverview: React.FC = () => {
                 </CardBody>
             </Card>
         </div>
-    )
-}
-
-// Stat Card Component
-const StatCard: React.FC<StatCardProps> = ({ title, value, color }) => {
-    return (
-        <Card className="shadow-sm">
-            <CardBody className="py-5">
-                <div className="flex flex-col items-center justify-center text-center">
-                    <p className="text-sm text-default-500">{title}</p>
-                    <Divider className="my-2" />
-                    <p className={`text-2xl font-semibold ${color}`}>{value}</p>
-                </div>
-            </CardBody>
-        </Card>
     )
 }
 

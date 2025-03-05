@@ -56,8 +56,8 @@ export default function Page() {
                     </div> :
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
-                            <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="w-full max-w-7xl mx-auto space-y-6">
+                                <div className="grid grid-cols-2 md:grid-cols-2 gap-1">
                                     <Kpi 
                                         title="Ingresos" 
                                         value={totalExpenses.totalIncomes} 
@@ -76,6 +76,12 @@ export default function Page() {
                                         title="Disponible" 
                                         value={totalExpenses.totalIncomes - totalExpenses.totalExpenses} 
                                         color="text-blue-500"
+                                    />
+                                    <Kpi
+                                        title="Porcentaje de ahorro"
+                                        value={totalExpenses.totalExpenses ? (totalExpenses.totalIncomes - totalExpenses.totalExpenses) / totalExpenses.totalIncomes * 100 : 0}
+                                        color="text-purple-500"
+                                        type="percentage"
                                     />
                                 </div>
                             </div>

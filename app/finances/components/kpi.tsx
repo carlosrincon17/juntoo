@@ -8,15 +8,23 @@ export default function Kpi(props: {
     isPressable?: boolean, 
     onPress?: () => void,
     color?: string 
+    type?: string
 }) {
-    const { title, value, isPressable, onPress, color } = props;
+    const { title, value, isPressable, onPress, color, type = 'currency' } = props;
+
+    const getValues = () => {
+        if (type === 'percentage') {
+            return `${value.toFixed(2)}%`;
+        }
+        return formatCurrency(value);
+    }
     return (
-        <Card className="shadow-sm" isPressable={isPressable} onPress={onPress}>
+        <Card className="shadow-none" isPressable={isPressable} onPress={onPress}>
             <CardBody className="py-5">
                 <div className="flex flex-col items-center justify-center text-center">
-                    <p className="text-sm text-default-500">{title}</p>
+                    <p className="text-sm text-default-500 font-light">{title}</p>
                     <Divider className="my-2" />
-                    <p className={`text-2xl font-semibold ${color}`}>{formatCurrency(value)}</p>
+                    <p className={`text-2xl ${color}`}>{getValues()}</p>
                 </div>
             </CardBody>
         </Card>
