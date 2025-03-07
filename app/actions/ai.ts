@@ -16,18 +16,18 @@ export async function generateFeedback(savings: number, debts: number, patrimoni
             You are a modern financial advisor, I need a concise feedback on my family financial situation based on colombia context.   
             My current assets include:
                 1. Savings:${savings} COP (invested with 12% of annual interest rate in a account of easy access)
-                2. Debts: ${debts} COP (mortgage)
-                3. Properties: ${+patrimonies + savings} COP (2 houses, 1 car. Im living in one house and the other one is rented by $2000000 COP per month)
+                2. Debts: ${debts} COP (100M of mortgage) and other is related with a new house we are buying
+                3. Real state: ${+patrimonies} COP (2 houses, 1 car. Im living in one house and the other one is rented by $2000000 COP per month)
 
-            currently we have a salaries of 20000000 COP per month (me) and 0 COP per month (my wife), 2000000 COP per rent (real state investment), 600000 COP per interest (bank investment) and with a outcome of 20000000 COP per month.
+            currently we have a salaries of 20000000 COP per month (me) and 0 COP per month (my wife), 2000000 COP per rent (real state investment), 600000 COP per interest (bank investment) and with a outcome of 17000000 COP per month.
+            All monthly savings will be added to the bank investment.
             
-            Please answer the following three questions very briefly with very data oriented responses, its should be for the family in Spanish:
+            Please answer the following three questions very briefly taking in account the Colombian context and that the salaries in this country, its should be for the family in Spanish:
 
             1. How healthy are my finances overall?
-            2. What is our financial situation considering we are a young couple, aged 30 and 33?
+            2. What is our financial situation considering we are a young couple, aged 30 and 33 located in colombia?
             3. How healthy is my liquidity status?
 
-            They should fe formated  like this: "[Positive, Negative, Neutral]: [Here the explanation brief about the answer]"
             Using this JSON schema:Recipe = {'healthy': string, 'familiar_financial_status': string, 'financial_liquidity': string} Return: Recipe`;
     const result = await model.generateContent(prompt);
     return extractJson(result.response.text());
