@@ -51,21 +51,25 @@ export default function Page() {
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
                             <div className="w-full max-w-7xl mx-auto space-y-6">
-                                <div className="w-full">
-                                    <h5 className="text-default-500">Agrega tus gastos para que siempre tengas un buen control de ellos</h5>
-                                </div>
-                                <div className="flex justify-center gap-4 mb-6">    
-                                    <Button
-                                        className="rounded-full w-24 h-24 bg-green-500 hover:bg-green-600 shadow-lg flex items-center justify-center p-0"
-                                    >
-                                        <span className="text-white font-semibold">Ingreso</span>
-                                    </Button>
-                                    <Button
-                                        className="rounded-full w-24 h-24 bg-red-500 hover:bg-red-600 shadow-lg flex items-center justify-center p-0"
-                                    >
-                                        <span className="text-white font-semibold">Gasto</span>
-                                    </Button>
-                                </div>
+                                <Card className="shadow-md">
+                                    <div className="w-full p-5">
+                                        <h2 className="text-xl font-semibold">Administra tus gastos</h2>
+                                        <h5 className="text-default-500 text-sm">Agrega tus gastos para que siempre tengas un buen control de ellos</h5>
+                                    </div>
+                                    <div className="flex justify-center gap-4 mb-6">    
+                                        <Button
+                                            className="rounded-full w-24 h-24 bg-green-500 hover:bg-green-600 shadow-lg flex items-center justify-center p-0"
+                                        >
+                                            <span className="text-white font-semibold">Ingreso</span>
+                                        </Button>
+                                        <Button
+                                            className="rounded-full w-24 h-24 bg-red-500 hover:bg-red-600 shadow-lg flex items-center justify-center p-0"
+                                        >
+                                            <span className="text-white font-semibold">Gasto</span>
+                                        </Button>
+                                    </div>
+                                </Card>
+                               
                                 <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} />
                             </div>
                         </>
