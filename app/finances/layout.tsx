@@ -32,21 +32,20 @@ export default function Layout({
 
     return (
         <>
-            <div className="min-h-screen">
+            <div className="min-h-screen  bg-gray-50">
                 <Sidebar />
                 <div className="flex-1 p-6 md:p-8">
-                    <Breadcrumbs underline="hover" color="primary">
-                        {parentRoute && 
-                            <BreadcrumbItem href={parentRoute?.path}>
-                                {parentRoute?.labelBreadcrumb || parentRoute?.label}
-                            </BreadcrumbItem>
-                        }
-                        <BreadcrumbItem href={currentRoute?.path} isCurrent>{currentRoute?.label}</BreadcrumbItem>
-                    </Breadcrumbs>
-                    <div className="mt-6 mb-4">
-                        <h1 className="text-3xl">{currentRoute?.label}</h1>
+                    <div className="max-w-7xl mx-auto p-4">
+                        <Breadcrumbs underline="hover" color="primary" className="mb-6">
+                            {parentRoute && 
+                                <BreadcrumbItem href={parentRoute?.path}>
+                                    {parentRoute?.labelBreadcrumb || parentRoute?.label}
+                                </BreadcrumbItem>
+                            }
+                            <BreadcrumbItem href={currentRoute?.path} isCurrent>{currentRoute?.label}</BreadcrumbItem>
+                        </Breadcrumbs>
+                        {children}
                     </div>
-                    {children}
                 </div>
             </div>
             <div><Toaster position="top-right"/></div>

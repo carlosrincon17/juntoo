@@ -89,11 +89,11 @@ const FinancialOverview: React.FC = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-7xl mx-auto space-y-6">
-            <h1 className="text-2xl font-light text-center mb-6">Estadisticas mensuales</h1>
+        <div className="w-full mx-auto space-y-6">
+            <h1 className="text-2xl font-light mb-6">Estadisticas mensuales</h1>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-1">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                 <Kpi title="Prom. Ingresos" value={stats.avgIncome} color="text-green-500" />
                 <Kpi title="Prom. Gastros" value={stats.avgExpenses} color="text-red-500" />
                 <Kpi title="Prom. Ahorro" value={stats.avgSavings} color="text-blue-500" />
@@ -101,8 +101,8 @@ const FinancialOverview: React.FC = () => {
             </div>
 
             {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-                <Card className="shadow-none">
+            <div className="grid grid-cols-1 gap-6 mt-8">
+                <Card className="shadow-md">
                     <CardHeader className="pb-0 pt-4 flex-col items-start">
                         <h4 className="text-lg font-medium">Vista de mes a mes</h4>
                         <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
@@ -116,7 +116,7 @@ const FinancialOverview: React.FC = () => {
                     </CardBody>
                 </Card>
 
-                <Card className="shadow-none">
+                <Card className="shadow-md">
                     <CardHeader className="pb-0 pt-4 flex-col items-start">
                         <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
                         <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
@@ -132,7 +132,7 @@ const FinancialOverview: React.FC = () => {
             </div>
 
             {/* Monthly Data Table */}
-            <Card className="shadow-sm mt-6">
+            <Card className="shadow-md mt-6">
                 <CardHeader className="pb-0 pt-4 px-4">
                     <h4 className="text-lg font-medium">Breakdown mensual</h4>
                 </CardHeader>

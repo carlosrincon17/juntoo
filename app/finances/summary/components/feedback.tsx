@@ -4,7 +4,7 @@ import { generateFeedback} from "@/app/actions/ai";
 import { CustomLoading } from "@/app/components/customLoading";
 import { Card, CardBody } from "@nextui-org/react";
 import { useEffect, useState } from "react"
-import { FaRegLightbulb } from "react-icons/fa";
+import { FaMagic } from "react-icons/fa";
 
 export default function Feedback(props: {
     patrimonies: number,
@@ -35,22 +35,22 @@ export default function Feedback(props: {
     }, [patrimonies, savings, debts]);
 
     return (
-        <Card className="flex justify-center items-center  bg-gradient-to-br from-blue-100 to-purple-100 p-4 mb-6">
+        <Card className="flex justify-center items-center  bg-gradient-to-br from-white to-purple-100 p-4 mb-6">
             <CardBody>
                 {loading ? 
                     <CustomLoading /> :
-                    <div>
+                    <div className="text-small">
                         <ul className="space-y-4">
                             <li className="flex items-start">
-                                <FaRegLightbulb className="w-6 h-6 mr-2 text-yellow-400 flex-shrink-0 mt-1" />
+                                <FaMagic className="w-3 h-3 mr-2 flex-shrink-0 mt-1 text-gray-600" />
                                 <p>{feedback?.healthy}</p>
                             </li>
                             <li className="flex items-start">
-                                <FaRegLightbulb className="w-6 h-6 mr-2 text-yellow-400 flex-shrink-0 mt-1" />
+                                <FaMagic className="w-3 h-3 mr-2 flex-shrink-0 mt-1  text-gray-600" />
                                 <p>{feedback?.familiar_financial_status}</p>
                             </li>
                             <li className="flex items-start">
-                                <FaRegLightbulb className="w-6 h-6 mr-2 text-yellow-400 flex-shrink-0 mt-1" />
+                                <FaMagic className="w-3 h-3 mr-2 flex-shrink-0 mt-1  text-gray-600" />
                                 <p>{feedback?.financial_liquidity}</p>
                             </li>
                         </ul>

@@ -57,7 +57,7 @@ export default function Page() {
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
                             <div className="w-full max-w-7xl mx-auto space-y-6">
-                                <div className="grid grid-cols-2 md:grid-cols-2 gap-1">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <Kpi 
                                         title="Ingresos" 
                                         value={totalExpenses.totalIncomes} 
