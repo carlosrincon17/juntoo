@@ -1,13 +1,17 @@
 'use client'
 
 import { useState } from "react";
-import { getTotalsExpenses } from "../actions/expenses";
-import { ExpensesFilters } from "../types/filters";
-import { TotalExpenses } from "../types/expense";
-import { Button, Card, CardBody } from "@nextui-org/react";
-import { CustomLoading } from "../components/customLoading";
-import BudgetSimple from "./components/budget-usage";
+import { TransactionType } from "@/utils/enums/transaction-type";
+import { Card, CardBody } from "@nextui-org/react";
+import { TotalExpenses } from "@/app/types/expense";
+import { ExpensesFilters } from "@/app/types/filters";
+import { getTotalsExpenses } from "@/app/actions/expenses";
 import ExpenseFilter from "./components/filter";
+import { CustomLoading } from "@/app/components/customLoading";
+import MonthlySummaryCard from "./components/monthly-summary";
+import FinancialTransactionsList from "./components/expenses-table";
+import { ExpensesBreakdown } from "./components/expenses-breackdown";
+import ExpensesByDate from "./components/expenses-by-date";
 
 export default function Page() {
 
@@ -40,9 +44,7 @@ export default function Page() {
 
     return (
         <div>
-            <div className="hidden">
-                <ExpenseFilter onChange={onChangeFilters}/>
-            </div>
+            <ExpenseFilter onChange={onChangeFilters}/>
             {
                 loading ?
                     <div className="flex justify-center items-center">
@@ -51,22 +53,23 @@ export default function Page() {
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
                             <div className="w-full max-w-7xl mx-auto space-y-6">
-                                <div className="w-full">
-                                    <h5 className="text-default-500">Agrega tus gastos para que siempre tengas un buen control de ellos</h5>
+                                <div className="flex items-start justify-start max-h-full flex-wrap">
+                                    <div className="grid grid-cols-1 gap-4 w-full md:w-1/3">
+                                        <MonthlySummaryCard income={totalExpenses.totalIncomes} outcome={totalExpenses.totalExpenses} />
+                                        <Card className="shadow-md">
+                                            <CardBody>
+                                                <h3 className="text-xl font-light mb-4">Gastos por categoría</h3>
+                                                <ExpensesBreakdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome}/>
+                                            </CardBody>
+                                        </Card>
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:pl-6 sm:px-4 w-full md:w-2/3 mt-6 sm:mt-0">
+                                        <FinancialTransactionsList  expensesFilter={expensesFilter} />
+                                    </div>
                                 </div>
-                                <div className="flex justify-center gap-4 mb-6">    
-                                    <Button
-                                        className="rounded-full w-24 h-24 bg-green-500 hover:bg-green-600 shadow-lg flex items-center justify-center p-0"
-                                    >
-                                        <span className="text-white font-semibold">Ingreso</span>
-                                    </Button>
-                                    <Button
-                                        className="rounded-full w-24 h-24 bg-red-500 hover:bg-red-600 shadow-lg flex items-center justify-center p-0"
-                                    >
-                                        <span className="text-white font-semibold">Gasto</span>
-                                    </Button>
+                                <div className="grid grid-cols-1 w-full">
+                                    <ExpensesByDate  expensesFilter={expensesFilter} />
                                 </div>
-                                <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} />
                             </div>
                         </>
                         : 

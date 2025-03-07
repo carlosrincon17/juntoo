@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { getTotalSavings } from "../savings/actions/savings";
-import { Divider } from "@nextui-org/react";
 import { getTotalDebts } from "./actions/debts";
 import { getTotalPatrimonies } from "./actions/patrimonies";
 import Feedback from "./components/feedback";
@@ -90,8 +89,7 @@ export default function Page() {
                                 />
                                 <Feedback patrimonies={totalPatrimonies} savings={totalSavings + totalLoans} debts={totalDebts} />
                             </div>
-                            <Divider orientation="vertical" className="bg-gray-800"/>
-                            <div className="grid grid-cols-1 sm:ml-6 sm:px-4  max-h-full overflow-y-auto md-w-2/3 mt-6 sm:mt-0">
+                            <div className="grid grid-cols-1 sm:pl-6 sm:px-4  max-h-full overflow-y-auto md:w-2/3 mt-6 sm:mt-0">
                                 <FinancialOverview />
                             </div>
                         </div>

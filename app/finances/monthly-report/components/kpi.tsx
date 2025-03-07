@@ -1,6 +1,7 @@
 import { formatCurrency } from "@/app/lib/currency";
 import { Card, CardBody } from "@nextui-org/react";
 import React from "react";
+import NumberWithTooltip from "./money";
 
 export default function Kpi(props: { 
     title: string, 
@@ -9,14 +10,17 @@ export default function Kpi(props: {
     onPress?: () => void,
     color?: string, 
     type?: string,
+    shorted?: boolean
 }) {
-    const { title, value, isPressable, onPress, color, type = 'currency' } = props;
+    const { title, value, isPressable, onPress, color, type = 'currency', shorted } = props;
 
     const getValues = () => {
         if (type === 'percentage') {
             return `${value.toFixed(2)}%`;
         }
-        return formatCurrency(value);
+        return shorted ? (
+            <NumberWithTooltip value={value} />
+        ): formatCurrency(value);
     }
     return (
         <Card isPressable={isPressable} onPress={onPress} className="shadow-md">

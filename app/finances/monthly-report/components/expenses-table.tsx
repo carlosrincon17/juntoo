@@ -72,7 +72,7 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
 
     return (
         <>
-            <Card className="w-full max-w-4xl mx-auto shadow-none">
+            <Card className="w-full max-w-4xl mx-auto shadow-md">
                 <CardHeader className="flex flex-col gap-2">
                     <div className="flex w-full">
                         <h3 className="text-xl font-light">Lista de Movimientos</h3>
@@ -96,9 +96,8 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                                             {getCategoryIcon(transaction.category?.transactionType as TransactionType)}
                                         </div>
                                         <div>
-                                            <div className="font-medium text-sm">{transaction.category?.name}</div>
+                                            <div className="font-medium text-sm">{transaction.category?.name} <span className="text-xs text-default-500 font-light">({formateSimpleDate(transaction.createdAt as Date)})</span></div>
                                             <div className="text-xs text-default-500 grid items-center">
-                                                {formateSimpleDate(transaction.createdAt as Date)}
                                                 <span className="capitalize">{transaction.category?.parent}</span>
                                             </div>
                                         </div>
@@ -112,13 +111,12 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                         })
                     )}
 
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mt-4 pt-4 border-t border-default-200">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-default-200 mb-2">
                         <div className="flex items-center gap-2">
                             <span className="text-xs text-default-500">
                                 Mostrando {itemsPerPage} de {totalItems}
                             </span>
                         </div>
-
                         <Pagination total={getTotalPages()} page={currentPage} onChange={setCurrentPage} showControls size="sm" />
                     </div>
                 </CardBody>

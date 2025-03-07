@@ -8,13 +8,18 @@ export type Routes = {
 
 export const FINANCE_ROUTES: Record<string, Routes> = {
     CATEGORIES: {
-        label: "Nuevo Gasto",
+        label: "Categoria",
         path: "/finances/categories",
     },
     DASHBOARD: {
-        label: "Tu mes",
+        label: "Gastos",
         path: "/finances",
-        labelBreadcrumb: "Inicio",
+        labelBreadcrumb: "Gastos",
+    },
+    MONTHlY_REPORT: {
+        label: "Reporte mensual",
+        path: "/finances/monthly-report",
+        parent: "/finances",
     },
     SUMMARY: {
         label: "Consolidado",
@@ -66,6 +71,7 @@ export const ROUTES_LIST: Routes[] = [
         path: "/finances",
         subItems: [
             FINANCE_ROUTES.CATEGORIES,
+            FINANCE_ROUTES.MONTHlY_REPORT,
             FINANCE_ROUTES.DASHBOARD,
             FINANCE_ROUTES.SUMMARY,
             FINANCE_ROUTES.BUDGETS,

@@ -16,9 +16,8 @@ export default function Feedback(props: {
 
     const [loading, setLoading] = useState(true);
     const [feedback, setFeedback] = useState<{
-        healthy: string,
-        familiar_financial_status: string,
-        financial_liquidity: string,
+        tips: string,
+        feedback: string,
     }>();
 
     const getCashlyFeedback = async () => { 
@@ -43,15 +42,11 @@ export default function Feedback(props: {
                         <ul className="space-y-4">
                             <li className="flex items-start">
                                 <FaMagic className="w-3 h-3 mr-2 flex-shrink-0 mt-1 text-gray-600" />
-                                <p>{feedback?.healthy}</p>
+                                <p>{feedback?.tips}</p>
                             </li>
                             <li className="flex items-start">
                                 <FaMagic className="w-3 h-3 mr-2 flex-shrink-0 mt-1  text-gray-600" />
-                                <p>{feedback?.familiar_financial_status}</p>
-                            </li>
-                            <li className="flex items-start">
-                                <FaMagic className="w-3 h-3 mr-2 flex-shrink-0 mt-1  text-gray-600" />
-                                <p>{feedback?.financial_liquidity}</p>
+                                <p>{feedback?.feedback}</p>
                             </li>
                         </ul>
                     </div>
