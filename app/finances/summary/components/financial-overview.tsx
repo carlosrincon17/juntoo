@@ -95,7 +95,7 @@ const FinancialOverview: React.FC = () => {
             {/* Summary Cards */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                 <Kpi title="Prom. Ingresos" value={stats.avgIncome} color="text-green-500" />
-                <Kpi title="Prom. Gastros" value={stats.avgExpenses} color="text-red-500" />
+                <Kpi title="Prom. Gastos" value={stats.avgExpenses} color="text-red-500" />
                 <Kpi title="Prom. Ahorro" value={stats.avgSavings} color="text-blue-500" />
                 <Kpi title="Porcentaje de ahorro" value={stats.avgSavingsPercentage} color="text-purple-500" type="percentage" />
             </div>

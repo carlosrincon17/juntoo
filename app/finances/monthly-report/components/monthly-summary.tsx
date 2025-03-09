@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
-import { FaDollarSign, FaMoneyBill, FaPiggyBank } from "react-icons/fa"
+import { FaChartLine, FaDollarSign, FaMoneyBill, FaPiggyBank } from "react-icons/fa"
 import { formatCurrency } from "@/app/lib/currency"
 
 interface TransactionsSummaryProps {
@@ -30,21 +30,21 @@ const MonthlySummaryCard: React.FC<TransactionsSummaryProps> = ({
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <span className="w-5 text-center text-emerald-500 font-bold">+</span>
-                            <FaMoneyBill size={18} className="text-green-500" />
+                            <FaMoneyBill size={18} className="text-emerald-500" />
                             <span className="text-default-600">Ingresos</span>
                         </div>
-                        <span className="text-purple-500 font-semibold">{formatCurrency(income)}</span>
+                        <span className="text-emerald-500 font-semibold">{formatCurrency(income)}</span>
                     </div>
 
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <span className="w-5 text-center text-emerald-500 font-bold">+</span>
+                            <span className="w-5 text-center text-red-500 font-bold">-</span>
                             <div className="flex items-center gap-2">
-                                <FaDollarSign size={18} className="text-emerald-500" />
+                                <FaDollarSign size={18} className="text-red-500" />
                                 <span className="text-default-600">Gastos</span>
                             </div>
                         </div>
-                        <span className="text-emerald-500 font-semibold">{formatCurrency(outcome)}</span>
+                        <span className="text-red-500 font-semibold">{formatCurrency(outcome)}</span>
                     </div>
 
                     <div className="border-t border-default-200 pt-2"></div>
@@ -63,9 +63,10 @@ const MonthlySummaryCard: React.FC<TransactionsSummaryProps> = ({
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
+                            <span className="w-5 text-center text-primary font-bold">%</span>
                             <div className="flex items-center gap-2">
-                                <FaPiggyBank size={18} className={isPositiveBalance ? "text-primary" : "text-red-500"} />
-                                <span className="font-semibold">% Ahorrado</span>
+                                <FaChartLine size={18} className={isPositiveBalance ? "text-primary" : "text-red-500"} />
+                                <span className="font-semibold">Ahorrado</span>
                             </div>
                         </div>
                         <span className={`text-lg font-bold ${isPositiveBalance ? "text-primary" : "text-red-500"}`}>
