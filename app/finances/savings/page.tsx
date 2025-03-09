@@ -6,7 +6,7 @@ import { deleteSaving, getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import SavingsManagerModal from "./component/savings-manager";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
+import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
 import { FaEllipsisV, FaPlus } from "react-icons/fa";
 import ConfirmModal from "@/app/components/confirmModal";
 
@@ -76,45 +76,50 @@ export default function Page() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                             {savings.map((saving) => (
-                                <div className="group bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors"
+                                <Card className="shadow-md"
                                     key={saving.id} 
                                 >
-                                    <div className="flex justify-between items-center mb-2">
-                                        <div>
-                                            <h2 className="text-lg font-bold text-gray-800">{saving.name}</h2>
+                                    <CardBody>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <div>
+                                                <h2 className="text-lg font-extralight text-gray-800">{saving.name}</h2>
+                                            </div>
+                                            <div className="text-right">
+                                                <Dropdown>
+                                                    <DropdownTrigger>
+                                                        <FaEllipsisV className="hover:cursor-pointer"></FaEllipsisV>
+                                                    </DropdownTrigger>
+                                                    <DropdownMenu aria-label="Static Actions">
+                                                        <DropdownItem onClick={() => onClickSavings(saving)}>
+                                                            Editar
+                                                        </DropdownItem>
+                                                        <DropdownItem onClick={() => onClickDeleteSaving(saving)} className="text-red-600">
+                                                            Eliminar
+                                                        </DropdownItem>
+                                                    </DropdownMenu>
+                                                </Dropdown>
+                                            </div>
                                         </div>
-                                        <div className="text-right">
-                                            <Dropdown>
-                                                <DropdownTrigger>
-                                                    <FaEllipsisV className="hover:cursor-pointer"></FaEllipsisV>
-                                                </DropdownTrigger>
-                                                <DropdownMenu aria-label="Static Actions">
-                                                    <DropdownItem onClick={() => onClickSavings(saving)}>
-                                                        Editar
-                                                    </DropdownItem>
-                                                    <DropdownItem onClick={() => onClickDeleteSaving(saving)} className="text-red-600">
-                                                        Eliminar
-                                                    </DropdownItem>
-                                                </DropdownMenu>
-                                            </Dropdown>
+                                        <div className="grid flex-row grid-cols-1 md:grid-cols-2 gap-2">
+                                            <div>
+                                                <p className="text-2xl font-medium">
+                                                    {formatCurrency(saving.value)}
+                                                    <span className="text-xs font-light"> / {saving.currency}</span>
+                                                </p>
+                                                <p className="text-xs font-medium text-gray-500">{saving.user?.name}</p>
+                                            </div>
+                                            <div className="md:text-right">
+                                                <p className="text-xs font-medium">Interes anual</p>
+                                                <p className={"font-light text-xl "}>{
+                                                    saving.isInvestment ? 
+                                                        <span> {saving.annualInterestRate} % </span>:
+                                                        <span className="text-gray-500"> -- </span>
+                                                }
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="grid flex-row grid-cols-1 md:grid-cols-2 gap-2">
-                                        <div>
-                                            <p className="text-2xl font-bold text-gray-800">{formatCurrency(saving.value)}</p>
-                                            <p className="text-sm font-medium text-gray-500">{saving.currency}</p>
-                                        </div>
-                                        <div className="md:text-right">
-                                            <p className="text-sm font-medium text-gray-500">Interes anual</p>
-                                            <p className={"text-2xl font-bold text-green-500"}>{
-                                                saving.isInvestment ? 
-                                                    <span> {saving.annualInterestRate} % </span>:
-                                                    <span className="text-gray-500"> -- </span>
-                                            }
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </CardBody>
+                                </Card>
                             ))}
                         </div>
                         <SavingsManagerModal isOpen={isOpen} savings={selectedSavings} onOpenChange={onOpenChange} afterSaveSavings={afterSaveSavings} />
