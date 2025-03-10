@@ -18,7 +18,7 @@ export default function Page() {
     
     const [totalSavings, setTotalSavings] = useState<number>(0);
     const [totalSavingsCOP, setTotalSavingsCOP] = useState<number>(0);
-    const [totalSavingsUsdInCop, setTotalSavingsUsdInCop] = useState<number>(0);
+    const [totalSavingsUsdInCop, setTotalSavingsUsdInCop] = useState<number | undefined>();
     const [loading, setLoading] = useState(true);
 
     const [totalDebts, setTotalDebts] = useState<number>(0);
@@ -54,7 +54,7 @@ export default function Page() {
 
 
     useEffect(() => { 
-        if (totalSavingsCOP && totalSavingsUsdInCop) {
+        if (totalSavingsCOP && totalSavingsUsdInCop !== undefined) {
             setTotalSavings(+totalSavingsCOP + totalSavingsUsdInCop);
             setLoading(false);
         }

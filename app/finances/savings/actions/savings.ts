@@ -31,7 +31,7 @@ export async function getTotalSavings(currency: Currency = Currency.COP): Promis
                 eq(SavingsTable.familyId, user.familyId)
             )
         )
-    return totalSavings[0].totalSavings as number;
+    return totalSavings[0].totalSavings as number | 0;
 }
 
 export async function updateSavings(savings: Savings): Promise<void> {
