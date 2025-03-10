@@ -6,9 +6,10 @@ import { deleteSaving, getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import SavingsManagerModal from "./component/savings-manager";
-import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
-import { FaEllipsisV, FaPlus } from "react-icons/fa";
+import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
+import { FaEllipsisV } from "react-icons/fa";
 import ConfirmModal from "@/app/components/confirmModal";
+import { FloatingAddButton } from "@/app/components/floating-buttton";
 
 const savingBase: Savings = {
     id: 0,
@@ -69,11 +70,10 @@ export default function Page() {
                 loading ? 
                     <CustomLoading /> :
                     <div>
-                        <div className="flex w-full flex-wrap flex-row-reverse justify-items-end">
-                            <Button onClick={onCreateNewSavingClick} color="primary" variant="shadow" className="w-full md:w-auto">
-                                <FaPlus /> Agregar ahorro
-                            </Button>
-                        </div>
+                        <FloatingAddButton 
+                            onClick={onCreateNewSavingClick}
+                            label="Agregar ahorro"
+                        />
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                             {savings.map((saving) => (
                                 <Card className="shadow-md"
@@ -100,20 +100,20 @@ export default function Page() {
                                                 </Dropdown>
                                             </div>
                                         </div>
-                                        <div className="grid flex-row grid-cols-1 md:grid-cols-2 gap-2">
+                                        <div className="grid flex-row grid-cols-1 md:grid-cols-2">
                                             <div>
                                                 <p className="text-2xl font-medium">
                                                     {formatCurrency(saving.value)}
                                                     <span className="text-xs font-light"> / {saving.currency}</span>
                                                 </p>
-                                                <p className="text-xs font-medium text-gray-500">{saving.user?.name}</p>
+                                                <p className="text-xs font-light">{saving.user?.name}</p>
                                             </div>
                                             <div className="md:text-right">
-                                                <p className="text-xs font-medium">Interes anual</p>
-                                                <p className={"font-light text-xl "}>{
+                                                <p className="text-xs font-light">Interes anual</p>
+                                                <p className={"font-light text-2xl "}>{
                                                     saving.isInvestment ? 
                                                         <span> {saving.annualInterestRate} % </span>:
-                                                        <span className="text-gray-500"> -- </span>
+                                                        <span> N/A </span>
                                                 }
                                                 </p>
                                             </div>
