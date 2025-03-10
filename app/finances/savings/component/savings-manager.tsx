@@ -73,6 +73,7 @@ export default function SavingsManagerPanel(props: {
                             size="lg"
                             labelPlacement="inside"
                             value={savingsValue}
+                            inputMode="numeric"
                             onChange={(e) => {
                                 const intValue = currencyToInteger(e.target.value)
                                 setSavingsValue(formatCurrency(intValue))
@@ -118,7 +119,6 @@ export default function SavingsManagerPanel(props: {
                                 type="number"
                                 labelPlacement="inside"
                                 max={100}
-                                inputMode="numeric"
                                 defaultValue={selectedSavings?.annualInterestRate?.toString()}
                                 onChange={(e) => {
                                     const intValue = Number.parseInt(e.target.value, 10)
@@ -134,10 +134,7 @@ export default function SavingsManagerPanel(props: {
                     </div>
 
                     <div className="p-4 border-t flex justify-end gap-2">
-                        <Button variant="flat" onClick={() => onOpenChange(false)}>
-              Cerrar
-                        </Button>
-                        <Button color="primary" onClick={onSaveSavings}>
+                        <Button color="primary" size="lg" onClick={onSaveSavings} className="w-full">
               Guardar
                         </Button>
                     </div>
