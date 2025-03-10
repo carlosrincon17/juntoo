@@ -118,6 +118,7 @@ export default function SavingsManagerPanel(props: {
                                 type="number"
                                 labelPlacement="inside"
                                 max={100}
+                                inputMode="numeric"
                                 defaultValue={selectedSavings?.annualInterestRate?.toString()}
                                 onChange={(e) => {
                                     const intValue = Number.parseInt(e.target.value, 10)
