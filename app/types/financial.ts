@@ -29,3 +29,14 @@ export interface ChartData {
   savingsPercentageSeries: ApexAxisChartSeries
 }
 
+export interface FinancialMetric {
+  total: number;
+  variationPercentage: number;
+  average: number;
+}
+
+export interface FinancialMetrics {
+  expenses: FinancialMetric;
+  investmentIncome: FinancialMetric;
+  savings: FinancialMetric;
+}
