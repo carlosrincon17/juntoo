@@ -1,91 +1,295 @@
-import { currencyToInteger, formatCurrency } from "@/app/lib/currency";
-import { Budget } from "@/app/types/budget";
-import { Category } from "@/app/types/category";
-import { Expense } from "@/app/types/expense";
-import { TransactionType } from "@/utils/enums/transaction-type";
-import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+"use client"
 
-export default function NewExpenseModal(props: {
-    isOpen: boolean, 
-    onOpenChange: (isOpen: boolean) => void,
-    onSaveExpense: (onClose: () => void, expense: Expense) => void,
-    category: Category | null,
-    budgets: Budget[],
+import type { Category, ParentCategory } from "@/app/types/category"
+import type { Expense } from "@/app/types/expense"
+import { TransactionType } from "@/utils/enums/transaction-type"
+import { Button, Card, CardBody, ScrollShadow } from "@nextui-org/react"
+import { useEffect, useState } from "react"
+import { getCategories } from "../actions/categories"
+import { FaCreditCard, FaTimes } from "react-icons/fa"
+import { CustomLoading } from "@/app/components/customLoading"
+import { addExpense } from "@/app/actions/expenses"
+import toast from "react-hot-toast"
+import ToastCustom from "@/app/components/toastCustom"
+
+// Currency utility functions
+const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat("es-ES", {
+        style: "decimal",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(value)
+}
+
+const currencyToInteger = (value: string): number => {
+    // Remove all non-numeric characters except decimal point
+    const numericValue = value.replace(/[^\d]/g, "")
+    return Number.parseInt(numericValue || "0", 10)
+}
+
+const colors: Record<string, string> = {
+    indigo: "border-2 border-indigo-500",
+    fuchsia: "border-2 border-fuchsia-500",
+    emerald: "border-2 border-emerald-500",
+    amber: "border-2 border-amber-500",
+    sky: "border-2 border-sky-500",
+    rose: "border-2 border-rose-500",
+    cyan: "border-2 border-cyan-500",
+    violet: "border-2 border-violet-500",
+    green: "border-2 border-green-500",
+    blue: "border-2 border-blue-500",
+    stone: "border-2 border-stone-500",
+    pink: "border-2 border-pink-500",
+    lime: "border-2 border-lime-500",
+    teal: "border-2 border-teal-500",
+}
+
+const bgSelectedColors: Record<string, string> = {
+    indigo: "bg-indigo-200",
+    fuchsia: "bg-fuchsia-200",
+    emerald: "bg-emerald-200",
+    amber: "bg-amber-200",
+    sky: "bg-sky-200",
+    rose: "bg-rose-200",
+    cyan: "bg-cyan-200",
+    violet: "bg-violet-200",
+    green: "bg-green-200",
+    blue: "bg-blue-200",
+    stone: "bg-stone-200",
+    pink: "bg-pink-200",
+    lime: "bg-lime-200",
+    teal: "bg-teal-200",
+}
+
+const bgSelectedColorsButton: Record<string, string> = {
+    indigo: "bg-indigo-700",
+    fuchsia: "bg-fuchsia-700",
+    emerald: "bg-emerald-700",
+    amber: "bg-amber-700",
+    sky: "bg-sky-700",
+    rose: "bg-rose-700",
+    cyan: "bg-cyan-700",
+    violet: "bg-violet-700",
+    green: "bg-green-700",
+    blue: "bg-blue-700",
+    stone: "bg-stone-700",
+    pink: "bg-pink-700",
+    lime: "bg-lime-700",
+    teal: "bg-teal-700",
+}
+
+export default function NewExpensePanel(props: {
+  isOpen: boolean
+  onOpenChange: () => void
+  transactionType: TransactionType
 }) {
-    const { isOpen, onOpenChange, onSaveExpense, category, budgets } = props;
-    const [expenseValue, setExpenseValue] = useState('');
+    const { isOpen, onOpenChange, transactionType } = props
+
+    const [categories, setCategories] = useState<Category[]>([])
+    const [categoryList, setCategoryList] = useState<Category[]>([])
+    const [categoryParents, setCategoryParents] = useState<ParentCategory[]>([])
+    const [selectedParentCategory, setSelectedParentCategory] = useState<ParentCategory | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoadingSaveExpense, setIsLoadingSaveExpense] = useState(false)
+    const [expenseValue, setExpenseValue] = useState("")
     const [expense, setExpense] = useState<Expense>({
         value: 0,
         category_id: 0,
         budgetId: null,
         userId: null,
-    });
+    })
+
+    const loadParentsCategories = (categoriesToFilter: Category[]) => {
+        const loadedParents = Array.from(
+            new Map(categoriesToFilter.map(({ parent, color }) => [parent, { name: parent, color }])).values(),
+        )
+        setCategoryParents(loadedParents)
+    }
+
+    const loadCategories = async () => {
+        setIsLoading(true)
+        const categories = await getCategories(transactionType)
+        setCategories(categories)
+        loadParentsCategories(categories)
+        setIsLoading(false)
+    }
+
+    const onSelectParentCategory = (parentCategory: ParentCategory | null = null) => {
+        setCategoryList([])
+        if (parentCategory) {
+            const categoryList = categories.filter((category) => category.parent === parentCategory.name)
+            setCategoryList(categoryList)
+        }
+        setSelectedParentCategory(parentCategory)
+        setSelectedCategory(null)
+        setExpenseValue("")
+        setExpense({ value: 0, category_id: 0, budgetId: null, userId: null })
+    }
 
     useEffect(() => {
-        setExpenseValue('');
-        setExpense({ value: 0, category_id: 0, budgetId: null, userId: null});
-    }, [isOpen]);
-    
+        if (isOpen) {
+            setExpense({ value: 0, category_id: 0, budgetId: null, userId: null })
+            setCategoryList([])
+            setSelectedParentCategory(null)
+            setCategoryParents([])
+            loadCategories()
+        }
+    }, [isOpen])
+
+    const handleSaveExpense = async () => {
+        setIsLoadingSaveExpense(true)
+        await addExpense({...expense, category_id: Number(selectedCategory?.id)})
+        toast.custom((t) => <ToastCustom message={`Tu gasto de ${formatCurrency(expense.value as number)} por ${expense.category?.name} se ha agregado correctamente`} toast={t}/>);
+        setIsLoadingSaveExpense(false)
+        onOpenChange()
+    }
+
+    if (!isOpen) return null
+
+    if (isLoading) return <CustomLoading message="Preparando todo para crear tu gasto " />
+
     return (
-        <Modal 
-            isOpen={isOpen} 
-            onOpenChange={onOpenChange}
-            placement="center"
-            size="2xl"
-        >
-            <ModalContent>
-                {(onClose) => (
-                    <>
-                        <ModalHeader className="flex gap-4 items-center">
-                            <h2 className="text-2xl font-extralight"> {category?.name}</h2>
-                            <Chip color="primary" size="sm" variant="flat">
-                                {category?.parent}
-                            </Chip>
-                        </ModalHeader>
-                        <ModalBody>
-                            <Input
-                                autoFocus
-                                type="text"
-                                label="Valor"
-                                placeholder="Cuanto gastaste?"
-                                size="lg"
-                                labelPlacement="inside"
-                                value={expenseValue}
-                                onChange={(e) => {
-                                    const intValue = currencyToInteger(e.target.value);
-                                    setExpenseValue(formatCurrency(intValue));
-                                    setExpense({...expense, value: intValue})}
-                                }
-                                endContent={
-                                    <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">COP</span>
+        <>
+            <div className="fixed inset-0 bg-black/30 z-40 transition-opacity" onClick={onOpenChange} />
+            <div
+                className={`fixed inset-y-0 right-0 z-50 w-full sm:w-1/3 bg-background shadow-xl transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+            >
+                <div className="flex flex-col h-full">
+                    <div className="flex justify-between items-center p-4 border-b">
+                        <div className="flex items-center gap-2">
+                            <h2 className="text-2xl font-extralight">Nuevo Registro</h2>
+                        </div>
+                        <Button isIconOnly variant="light" onClick={onOpenChange}>
+                            <FaTimes size={24} />
+                        </Button>
+                    </div>
+
+                    <ScrollShadow className="flex-1 overflow-y-auto bg-gray-50">
+                        <form
+                            className="p-4 space-y-6"
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                handleSaveExpense()
+                            }}
+                        >
+                            {" "}
+                            {!selectedParentCategory ? (
+                                <div className="space-y-3">
+                                    <label className="text-sm font-light">
+                    Seleccione el tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"} :
+                                    </label>
+
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+                                        {categoryParents.map((parentCategory) => (
+                                            <Card
+                                                key={parentCategory.name}
+                                                isPressable
+                                                onPress={() => onSelectParentCategory(parentCategory)}
+                                                className={`shadow-md ${colors[parentCategory.color]} h-16 bg-background`}
+                                                radius="sm"
+                                            >
+                                                <CardBody className="p-4 flex flex-col items-center justify-center">
+                                                    <h2
+                                                        className="text-sm text-center w-full font-medium"
+                                                    >
+                                                        {parentCategory.name}
+                                                    </h2>
+                                                </CardBody>
+                                            </Card>
+                                        ))}
                                     </div>
-                                }
-                            />
-                            <Select 
-                                label="Presupuesto" 
-                                size="lg"
-                                onChange={(e) => setExpense({...expense, budgetId: parseInt(e.target.value, 10)})}
-                            >
-                                {budgets.map((budget) => (
-                                    <SelectItem key={budget.id}>
-                                        {budget.name}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button variant="flat" onPress={onClose}>
-                                    Cerrar
-                            </Button>
-                            <Button color="primary" onPress={() => onSaveExpense(onClose, expense)}>
-                                    Agregar {category?.transactionType === TransactionType.Outcome ? 'Gasto' : 'Ingreso'}  
-                            </Button>
-                        </ModalFooter>
-                    </>
-                )}
-            </ModalContent>
-        </Modal>
+                                </div>
+                            ) : null}
+                            {selectedParentCategory && categoryList.length && (
+                                <>
+                                    <div className="space-y-3 ">
+                                        <label className="text-sm font-light w-full">Tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"}: </label>
+                                        <div className="grid gap-2 mb-2 grid-cols-1">
+                                            {selectedParentCategory && (
+                                                <Card
+                                                    key={selectedParentCategory.name}
+                                                    isPressable
+                                                    onPress={() => onSelectParentCategory(null)}
+                                                    className={`shadow-md ${colors[selectedParentCategory.color]} h-16 bg-background`}
+                                                    radius="sm"
+                                                >
+                                                    <CardBody className="p-4 flex flex-col items-center justify-center">
+                                                        <h2 className="text-sm text-center text-ellipsis w-full">{selectedParentCategory.name}</h2>
+                                                    </CardBody>
+                                                </Card>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3">  
+                                        <label className="text-sm font-light">Seleccione una categoria:</label>
+                                        <div className="grid grid-cols-3 gap-2 mt-2">
+                                            {categoryList.map((category) => (
+                                                <Card
+                                                    key={category.id}
+                                                    isPressable
+                                                    className={`shadow-md ${colors[category.color]} h-16 ${selectedCategory?.id === category.id ? bgSelectedColors[category.color]: null}`}
+                                                    radius="sm"
+                                                    onPress={() => setSelectedCategory(category)}
+                                                >
+                                                    <CardBody className="p-4 flex flex-col items-center justify-center">
+                                                        <h2
+                                                            className="text-sm text-center text-ellipsis w-full font-medium"
+                                                        >
+                                                            {category.name}
+                                                        </h2>
+                                                    </CardBody>
+                                                </Card>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                            {selectedParentCategory && selectedCategory && (
+                                <div className="space-y-6">
+                                    <div>
+                                        <label className="text-sm font-light">
+                                            {transactionType === TransactionType.Outcome ? "Valor del gasto" : "Valor del ingreso"} :
+                                        </label>
+                                        <div className="relative mt-4">
+                                            <div
+                                                className="absolute inset-y-0 left-0 flex items-center pl-3"
+                                            >
+                                                <FaCreditCard size={20} />
+                                            </div>
+                                            <input
+                                                type="text"
+                                                className={`w-full py-3 pl-10 pr-12 text-lg rounded-lg border-2 focus:outline-none ${selectedCategory?.color && colors[selectedCategory.color]}`}
+                                                placeholder="0"
+                                                inputMode="numeric"
+                                                value={expenseValue}
+                                                onChange={(e) => {
+                                                    const intValue = currencyToInteger(e.target.value)
+                                                    setExpenseValue(formatCurrency(intValue))
+                                                    setExpense({ ...expense, value: intValue })
+                                                }}
+                                                autoFocus
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </form>
+                    </ScrollShadow>
+
+                    <div className="p-4 border-t flex justify-end gap-2">
+                        <Button
+                            variant="flat"
+                            onClick={handleSaveExpense}
+                            isDisabled={Boolean(!selectedCategory || !expense.value || isLoadingSaveExpense)}
+                            className={`w-full text-white font-semibold ${selectedCategory?.color && bgSelectedColorsButton[selectedCategory?.color]}`}
+                        >
+              Agregar {transactionType === TransactionType.Outcome ? "Gasto" : "Ingreso"}
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
+

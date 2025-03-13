@@ -3,8 +3,8 @@
 import { Category } from "@/app/types/category";
 import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 
-export default function CategoryList(props: { categories: Category[], onAddExpense: (category: Category) => void }) {
-    const { categories, onAddExpense } = props;
+export default function CategoryList(props: { categories: Category[] }) {
+    const { categories,  } = props;
 
     const groupedCategories = categories.reduce((acc, category) => {
         const key = category.parent;
@@ -43,9 +43,7 @@ export default function CategoryList(props: { categories: Category[], onAddExpen
         return categories.map((category) => {
             return (
                 <Card className={`${colors[category.color]} dark:bg-default-100/50 w-full text-white`} key={category.id} 
-                    isBlurred 
-                    isPressable
-                    onPress={() => onAddExpense(category)}>
+                    isBlurred >
                     <CardBody className="pb-0">
                         <h4 className="font-light text-medium">{category.name}</h4>
                     </CardBody>

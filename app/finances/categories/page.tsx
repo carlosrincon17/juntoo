@@ -5,32 +5,18 @@ import { getCategories } from "./actions/categories";
 import { Category } from "@/app/types/category";
 import CategoryList from "./components/category-list";
 import { CustomLoading } from "@/app/components/customLoading";
-import { Button, ButtonGroup, Input, useDisclosure } from "@nextui-org/react";
-import { addExpense } from "@/app/actions/expenses";
-import toast from "react-hot-toast";
-import NewExpenseModal from "./components/new-expense-modal";
-import { Expense } from "@/app/types/expense";
-import { getUser } from "@/app/actions/auth";
+import { Button, ButtonGroup, Input, } from "@nextui-org/react";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { getBudgets } from "../budgets/actions/bugdets";
-import { Budget } from "@/app/types/budget";
-import ToastCustom from "@/app/components/toastCustom";
-import { formatCurrency } from "@/app/lib/currency";
 import { FaSearch } from "react-icons/fa";
-import { User } from "@/app/types/user";
 
 export default function Page() {
 
     const [categories, setCategories] = useState<Category[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [filteredCategories, setFilteredCategories] = useState<Category[]>([]);
     const [searchCategory, setSearchCategory] = useState<string>('');
-    const [user, setUser] = useState<User>();
     const [selectedCategoryTransactionType, setSelectedCategoryTransactionType] = useState<TransactionType>(TransactionType.Outcome);
-    const [budgets, setBudgets] = useState<Budget[]>([]);
 
     const [loading, setLoading] = useState(true);
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     const getCategoriesData = async () => {
         setLoading(true)
@@ -39,36 +25,6 @@ export default function Page() {
         setSearchCategory('');
         setFilteredCategories(categoriesData);
         setLoading(false);
-    }
-
-    const getUserData = async () => {
-        const userData = await getUser();
-        setUser(userData);
-    }
-
-    const getBudgetsData = async () => {
-        const budgetsData = await getBudgets();
-        setBudgets(budgetsData);
-    }
-
-    const saveExpense = async (onClose: () => void, expense: Expense) => {
-        const expenseToAdd: Expense = {
-            ...expense,
-            category_id: selectedCategory?.id || 0,
-            category: selectedCategory,
-            createdBy: user?.email,
-            transactionType: selectedCategory?.transactionType,
-        };
-        await addExpense(expenseToAdd);
-        const typeLabel = selectedCategoryTransactionType === TransactionType.Outcome ? 'gasto' : 'ingreso';
-        const toastMessage = `Agregado ${typeLabel} de ${formatCurrency(expenseToAdd.value as number)} por ${expenseToAdd.category?.name}.`;
-        toast.custom((t) => <ToastCustom message={toastMessage} toast={t}/>);
-        onClose();
-    }
-
-    const onAddExpense = async (category: Category) => {
-        setSelectedCategory(category);
-        onOpen()
     }
 
     const getFilteredCategories = () => {
@@ -83,11 +39,6 @@ export default function Page() {
     useEffect(() => {
         getFilteredCategories();
     }, [searchCategory]);
-
-    useEffect(() => {
-        getUserData();
-        getBudgetsData();
-    }, []);
     
     useEffect(() => {
         getCategoriesData();
@@ -125,14 +76,7 @@ export default function Page() {
             {loading ? 
                 <CustomLoading className="pt-12" /> :
                 <div>
-                    <CategoryList categories={filteredCategories} onAddExpense={(category: Category) => onAddExpense(category)}/>
-                    <NewExpenseModal
-                        budgets={budgets}
-                        isOpen={isOpen} 
-                        onOpenChange={onOpenChange} 
-                        onSaveExpense={saveExpense} 
-                        category={selectedCategory}
-                    />
+                    <CategoryList categories={filteredCategories} />
                 </div>
             }
             

@@ -45,7 +45,7 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
     const [itemsPerPage, setItemsPerPage] = useState(0)
     const [transactions, setTransactions] = useState([] as Expense[])
     const [totalItems, setTotalItems] = useState(0)
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const loadTotalPages = async () => {
         const totalExpenses = await getCountExpensesByFilter(expensesFilter)

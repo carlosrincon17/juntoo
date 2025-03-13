@@ -9,7 +9,6 @@ import { TransactionType } from "@/utils/enums/transaction-type"
 import { CategoryGrid } from "./components/category-grid"
 
 export default function Page() {
-    const [selectedParentCategory, setSelectedParentCategory] = useState<ParentCategory | null >(null)
     const [parents, setParents] = useState<ParentCategory[]>([])
     const [categories, setCategories] = useState<Category[]>([])
 
@@ -24,9 +23,7 @@ export default function Page() {
         setParents(loadedParents)
     }
 
-    const handleParentCategorySelect = (parent: ParentCategory): void => {
-        console.log(selectedParentCategory)
-        setSelectedParentCategory(parent)
+    const handleParentCategorySelect = (): void => {
     }
 
     useEffect(() => {

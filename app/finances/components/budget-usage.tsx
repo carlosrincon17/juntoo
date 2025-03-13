@@ -1,86 +1,93 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react"
-import dynamic from "next/dynamic"
-import type { ApexOptions } from "apexcharts"
-import { formatCurrency } from "@/app/lib/currency"
+import type React from "react";
+import { useState, useEffect, useMemo } from "react";
+import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react";
+import dynamic from "next/dynamic";
+import type { ApexOptions } from "apexcharts";
+import { formatCurrency } from "@/app/lib/currency";
 
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface BudgetSimpleProps {
-  totalBudget: number
-  spent: number
+  totalBudget: number;
+  spent: number;
 }
 
 const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent = 2100 }) => {
-    // Calculate remaining and percentage
-    const remaining = totalBudget - spent
-    const percentageUsed = Math.round((spent / totalBudget) * 100)
-    const percentageRemaining = 100 - percentageUsed
+    const [series, setSeries] = useState<number[]>([spent, totalBudget - spent]);
 
-    // Donut chart options
-    const donutChartOptions: ApexOptions = {
-        chart: {
-            type: "donut",
-            fontFamily: "inherit",
-        },
-        labels: ["Gastado", "Disponible"],
-        colors: ["#ef4444", "#22c55e"],
-        legend: {
-            position: "bottom",
-            fontWeight: 600,
-        },
-        plotOptions: {
-            pie: {
-                donut: {
-                    size: "65%",
-                    labels: {
-                        show: true,
-                        name: {
+    useEffect(() => {
+        setSeries([spent, totalBudget - spent]);
+    }, [spent, totalBudget]);
+
+    const percentageUsed = Math.round((spent / totalBudget) * 100);
+    const percentageRemaining = 100 - percentageUsed;
+
+    const donutChartOptions: ApexOptions = useMemo(
+        () => ({
+            chart: {
+                type: "donut",
+                fontFamily: "inherit",
+            },
+            labels: ["Gastado", "Disponible"],
+            colors: ["#ef4444", "#22c55e"],
+            legend: {
+                position: "bottom",
+                fontWeight: 600,
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: "65%",
+                        labels: {
                             show: true,
-                            fontSize: "16px",
-                            fontWeight: 600,
-                        },
-                        value: {
-                            show: true,
-                            fontSize: "22px",
-                            fontWeight: 700,
-                            formatter: (val) => `$${Number(val).toLocaleString()}`,
-                        },
-                        total: {
-                            show: true,
-                            label: "Total",
-                            fontSize: "16px",
-                            fontWeight: 600,
-                            formatter: () => `$${totalBudget.toLocaleString()}`,
+                            name: {
+                                show: true,
+                                fontSize: "16px",
+                                fontWeight: 600,
+                            },
+                            value: {
+                                show: true,
+                                fontSize: "22px",
+                                fontWeight: 700,
+                                formatter: (val) => `${formatCurrency(Number(val))}`,
+                            },
+                            total: {
+                                show: true,
+                                label: "Total",
+                                fontSize: "16px",
+                                fontWeight: 600,
+                                formatter: () => `${formatCurrency(totalBudget)}`,
+                            },
                         },
                     },
                 },
             },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        tooltip: {
-            y: {
-                formatter: (val) => `$${Number(val).toLocaleString()}`,
+            dataLabels: {
+                enabled: false,
             },
-        },
-        responsive: [
-            {
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: 300,
-                    },
-                    legend: {
-                        position: "bottom",
-                    },
+            tooltip: {
+                y: {
+                    formatter: (val) => `${formatCurrency(val)}`,
                 },
             },
-        ],
-    }
+            responsive: [
+                {
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            height: 300,
+                        },
+                        legend: {
+                            position: "bottom",
+                        },
+                    },
+                },
+            ],
+        }),
+        [totalBudget]
+    );
 
     return (
         <div className="w-full max-w-7xl mx-auto mt-4">
@@ -92,15 +99,13 @@ const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent =
 
                 <CardBody>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Chart */}
                         <div className="flex items-center justify-center">
-                            {typeof window !== "undefined" && (
-                                <Chart options={donutChartOptions} series={[spent, remaining]} type="donut" height={300} />
+                            {series.length > 0 && (
+                                <Chart options={donutChartOptions} series={series} type="donut" height={300} />
                             )}
                         </div>
 
                         <div className="flex flex-col justify-center space-y-6 mt-4">
-
                             <div className="space-y-4">
                                 <div>
                                     <div className="flex justify-between mb-1">
@@ -126,7 +131,9 @@ const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent =
                                 <div>
                                     <div className="flex justify-between mb-1">
                                         <span className="text-sm font-medium">Disponible</span>
-                                        <span className="text-sm font-medium text-green-500">${remaining.toLocaleString()}</span>
+                                        <span className="text-sm font-medium text-green-500">
+                                            {formatCurrency(totalBudget - spent)}
+                                        </span>
                                     </div>
                                     <Progress
                                         value={percentageRemaining}
@@ -155,8 +162,7 @@ const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent =
                 </CardBody>
             </Card>
         </div>
-    )
-}
+    );
+};
 
-export default BudgetSimple
-
+export default BudgetSimple;

@@ -4,10 +4,13 @@ import { useState } from "react";
 import { getTotalsExpenses } from "../actions/expenses";
 import { ExpensesFilters } from "../types/filters";
 import { TotalExpenses } from "../types/expense";
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, useDisclosure } from "@nextui-org/react";
 import { CustomLoading } from "../components/customLoading";
 import BudgetSimple from "./components/budget-usage";
 import ExpenseFilter from "./components/filter";
+import NewExpensePanel from "./categories/components/new-expense-modal";
+import { TransactionType } from "@/utils/enums/transaction-type";
+import FloatingManageButton from "./components/floating-manage-buttons";
 
 export default function Page() {
 
@@ -17,12 +20,19 @@ export default function Page() {
     });
     const [expensesFilter, setExpensesFilter] = useState<ExpensesFilters | null>(null);
     const [loading, setLoading] = useState(true);
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [selectedTransactionType, setSelectedTransactionType] = useState<TransactionType>(TransactionType.Outcome);
 
     const getTotalExpensesData = async (filters: ExpensesFilters) => {
         setLoading(true);
         const totalExpensesData = await getTotalsExpenses(filters);
         setLoading(false);
         setTotalExpenses(totalExpensesData);
+    }
+
+    const onCreateExpenseClick = (transactionType: TransactionType) => {
+        setSelectedTransactionType(transactionType);
+        onOpen();
     }
 
     const onChangeFilters = (year: number, month: number) => {
@@ -50,27 +60,12 @@ export default function Page() {
                     </div> :
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
-                            <div className="w-full max-w-7xl mx-auto space-y-6">
-                                <Card className="shadow-md">
-                                    <div className="w-full p-5">
-                                        <h2 className="text-xl font-semibold">Administra tus gastos</h2>
-                                        <h5 className="text-default-500 text-sm">Agrega tus gastos para que siempre tengas un buen control de ellos</h5>
-                                    </div>
-                                    <div className="flex justify-center gap-4 mb-6">    
-                                        <Button
-                                            className="rounded-full w-24 h-24 bg-green-500 hover:bg-green-600 shadow-lg flex items-center justify-center p-0"
-                                        >
-                                            <span className="text-white font-semibold">Ingreso</span>
-                                        </Button>
-                                        <Button
-                                            className="rounded-full w-24 h-24 bg-red-500 hover:bg-red-600 shadow-lg flex items-center justify-center p-0"
-                                        >
-                                            <span className="text-white font-semibold">Gasto</span>
-                                        </Button>
-                                    </div>
-                                </Card>
+                            <div className="w-full max-w-7xl mx-auto">
+                                <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />
                                
-                                <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} />
+                                <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} key="budget-chart"/>
+
+                                <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />
                             </div>
                         </>
                         : 
