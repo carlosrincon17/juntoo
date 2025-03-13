@@ -74,7 +74,7 @@ export default function Page() {
                             <div className="w-full max-w-7xl mx-auto space-y-6">
                                 <div className="flex items-start justify-start max-h-full flex-wrap space-y-6 md:space-y-0">
                                     <div className="w-full md:w-1/3">
-                                        <Card className="w-full shadow-md">
+                                        <Card className="p-4 w-full shadow-md">
                                             <CardHeader className="space-y-2 block">
                                                 <h1 className="text-2xl font-extralight">Hola {user?.name}</h1> 
                                                 <div className="flex flex-col">
