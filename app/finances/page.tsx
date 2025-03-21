@@ -85,11 +85,11 @@ export default function Page() {
                                     </div>
                                     <div className="w-full md:w-2/3 sm:pl-4 gap-4 grid grid-cols-1 md:grid-cols-3">
                                         <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} key="budget-chart"/>
-                                        <div className="md:col-span-2 grid gap-4 grid-cols-2">
+                                        <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
                                             <div className="flex items-center justify-between bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg p-3 text-white shadow-md hover:shadow-lg transition-all duration-300">
                                                 <div className="flex items-center space-x-3">
                                                     <div className="bg-white/20 p-2 rounded-lg">
-                                                        <FaPiggyBank className="h-4 w-4" />
+                                                        <FaPiggyBank className="h-4 w-4 " />
                                                     </div>
                                                     <div>
                                                         <h3 className="text-xs md:text-sm font-medium">Ahorros</h3>
