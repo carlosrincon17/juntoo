@@ -7,14 +7,14 @@ export type Routes = {
 }
 
 export const FINANCE_ROUTES: Record<string, Routes> = {
+    DASHBOARD: {
+        label: "Dashboard",
+        path: "/finances",
+        labelBreadcrumb: "Dashboard",
+    },
     CATEGORIES: {
         label: "Categoria",
         path: "/finances/categories",
-    },
-    DASHBOARD: {
-        label: "Gastos",
-        path: "/finances",
-        labelBreadcrumb: "Gastos",
     },
     MONTHlY_REPORT: {
         label: "Reporte mensual",
