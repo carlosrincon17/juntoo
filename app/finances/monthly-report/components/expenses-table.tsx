@@ -40,7 +40,7 @@ const transactionColors = {
     },
 }
 
-export default function FinancialTransactionsList({ expensesFilter }: { expensesFilter: ExpensesFilters }) {
+export default function FinancialTransactionsList({ expensesFilter, title = "Lista de Movimientos" }: { expensesFilter?: ExpensesFilters, title?: string }) {
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemsPerPage] = useState(0)
     const [transactions, setTransactions] = useState([] as Expense[])
@@ -88,14 +88,14 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
         <>
             {isLoading ? 
                 <CustomLoading /> :
-                <Card className="w-full max-w-4xl mx-auto shadow-md">
+                <Card className="w-full max-w-4xl mx-auto shadow-md p-2">
                     <CardHeader className="flex flex-col gap-2">
                         <div className="flex w-full">
-                            <h3 className="text-xl font-light">Lista de Movimientos</h3>
+                            <h3 className="text-xl font-extralight">{title}</h3>
                         </div>
                     </CardHeader>
 
-                    <CardBody className="gap-2">
+                    <CardBody className="gap-1">
                         {transactions.length === 0 ? (
                             <div className="text-center py-4 text-default-500 text-sm">No se encontraron transacciones</div>
                         ) : (
@@ -105,17 +105,17 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                                 return (
                                     <div
                                         key={transaction.id}
-                                        className={`flex items-center justify-between py-2 px-3 rounded-medium border-1 bg-white transition-all ${colors.hover}`}
+                                        className={`flex items-center justify-between py-1 px-1 border-b-1 border-gray-100 bg-white transition-all ${colors.hover}`}
                                     >
                                         <div className="flex items-center gap-2">
                                             <div className={`flex items-center justify-center w-7 h-7 rounded-full bg-white/80 ${colors.text}`}>
                                                 {getCategoryIcon(transaction.category?.transactionType as TransactionType)}
                                             </div>
                                             <div>
-                                                <div className="font-medium text-sm">{transaction.category?.name}</div>
+                                                <div className="font-light text-sm">{transaction.category?.name}</div>
                                                 <div className="text-xs text-default-500 grid items-center">
                                                     <span className="text-xs text-default-500 font-light">({formateSimpleDate(transaction.createdAt as Date)})</span>
-                                                    <span className="capitalize">{transaction.category?.parent}</span>
+                                                    <span className="text-xs font-light text-default-500">{transaction.category?.parent}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -135,15 +135,19 @@ export default function FinancialTransactionsList({ expensesFilter }: { expenses
                                 )
                             })
                         )}
-
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-default-200 mb-2">
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs text-default-500">
-                                    Mostrando {itemsPerPage} de {totalItems}
-                                </span>
-                            </div>
-                            <Pagination total={getTotalPages()} page={currentPage} onChange={setCurrentPage} showControls size="sm" />
-                        </div>
+                        {
+                            expensesFilter ?
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-default-200 mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs text-default-500">
+                                            Mostrando {itemsPerPage} de {totalItems}
+                                        </span>
+                                    </div>
+                                    <Pagination total={getTotalPages()} page={currentPage} onChange={setCurrentPage} showControls size="sm" />
+                                </div> 
+                                : 
+                                null
+                        }
                     </CardBody>
                 </Card>
             }

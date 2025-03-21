@@ -63,7 +63,7 @@ export default function Page() {
                                             </CardBody>
                                         </Card>
                                     </div>
-                                    <div className="grid grid-cols-1 sm:pl-6 sm:px-4 w-full md:w-2/3 mt-6 sm:mt-0">
+                                    <div className="grid grid-cols-2 sm:pl-6 sm:px-4 w-full md:w-2/3 mt-6 sm:mt-0">
                                         <FinancialTransactionsList  expensesFilter={expensesFilter} />
                                     </div>
                                 </div>

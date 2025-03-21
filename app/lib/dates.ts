@@ -32,8 +32,9 @@ export const getUTCDate = (date: Date) => {
 }
 
 export const formateSimpleDate = (date: Date): string => {
-    const fixedDate = date.toISOString().split("T")[0]; // "2025-03-01"
-    const [year, month, day] = fixedDate.split("-").map(Number);
-    const correctDate = new Date(year, month - 1, day);
-    return Intl.DateTimeFormat('es-CO', { dateStyle: 'long', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }).format(correctDate);
+    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+    return date.toLocaleDateString('es-CO', options)
+        .replace(/\./g, '')
+        .replace(/ de /g, '/')
+        .trim(); 
 }

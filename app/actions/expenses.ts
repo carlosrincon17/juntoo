@@ -44,24 +44,6 @@ export async function getExpenses(page: number, perPage: number): Promise<Expens
     });
 }
 
-export async function getExpensesByFilter(page: number, perPage: number, filters: ExpensesFilters): Promise<Expense[]> {
-    const user = await getUser();
-    return await db.query.ExpensesTable.findMany({
-        where: and(
-            eq(ExpensesTable.familyId, user.familyId),
-            gte(ExpensesTable.createdAt, filters.startDate),
-            lte(ExpensesTable.createdAt, filters.endDate),
-        ),
-        limit: perPage,
-        offset: (page -1) * perPage,
-        with: {
-            category: true,
-            user: true
-        },
-        orderBy: desc(ExpensesTable.id),
-    });
-}
-
 export async function removeExpense(expense: Expense): Promise<void> {
     if (!expense.id) {
         return;
@@ -83,18 +65,36 @@ export async function getCountExpenses(): Promise<number> {
     return counterResult[0].count as number;
 }
 
-export async function getCountExpensesByFilter(filters: ExpensesFilters): Promise<number> {
+export async function getExpensesByFilter(page: number, perPage: number, filters?: ExpensesFilters): Promise<Expense[]> {
     const user = await getUser();
+    const condition = filters ? and(
+        gte(ExpensesTable.createdAt, filters.startDate),
+        lte(ExpensesTable.createdAt, filters.endDate),
+    ) : and();
+    return await db.query.ExpensesTable.findMany({
+        where: condition?.append(eq(ExpensesTable.familyId, user.familyId)),
+        limit: perPage,
+        offset: (page -1) * perPage,
+        with: {
+            category: true,
+            user: true
+        },
+        orderBy: desc(ExpensesTable.id),
+    });
+}
+
+export async function getCountExpensesByFilter(filters?: ExpensesFilters): Promise<number> {
+    const user = await getUser();
+    const condition = filters ? and(
+        gte(ExpensesTable.createdAt, filters.startDate),
+        lte(ExpensesTable.createdAt, filters.endDate),
+    ) : and();
     const counterResult = await db.select({
         count: count(ExpensesTable.id).mapWith(Number)
     }).from(
         ExpensesTable
     ).where(
-        and(
-            eq(ExpensesTable.familyId, user.familyId),
-            gte(ExpensesTable.createdAt, filters.startDate),
-            lte(ExpensesTable.createdAt, filters.endDate),
-        )
+        condition?.append(eq(ExpensesTable.familyId, user.familyId))
     )
     return counterResult[0].count as number;
 }

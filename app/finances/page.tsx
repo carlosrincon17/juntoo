@@ -4,7 +4,7 @@ import { useState } from "react";
 import { getTotalsExpenses } from "../actions/expenses";
 import { ExpensesFilters } from "../types/filters";
 import { TotalExpenses } from "../types/expense";
-import { Card, CardBody, CardFooter, CardHeader, Divider, useDisclosure } from "@nextui-org/react";
+import { Card, CardBody, useDisclosure } from "@nextui-org/react";
 import { CustomLoading } from "../components/customLoading";
 import BudgetSimple from "./components/budget-usage";
 import ExpenseFilter from "./components/filter";
@@ -15,8 +15,8 @@ import { User } from "../types/user";
 import { getUser } from "../actions/auth";
 import { getFinancialMetrics } from "./actions/financial-metrics";
 import { FinancialMetrics } from "../types/financial";
-import { formatCurrency } from "../lib/currency";
-import { VariationIndicator } from "./components/variation-indicator";
+import FinancialSummary from "./components/financial-summary";
+import FinancialTransactionsList from "./monthly-report/components/expenses-table";
 
 export default function Page() {
 
@@ -74,49 +74,27 @@ export default function Page() {
                             <div className="w-full max-w-7xl mx-auto space-y-6">
                                 <div className="flex items-start justify-start max-h-full flex-wrap space-y-6 md:space-y-0">
                                     <div className="w-full md:w-1/3">
-                                        <Card className="p-4 w-full shadow-md">
-                                            <CardHeader className="space-y-2 block">
-                                                <h1 className="text-2xl font-extralight">Hola {user?.name}</h1> 
-                                                <div className="flex flex-col">
-                                                    <p className="text-sm text-default-500">Este es tu resumen financiero de tu familia 
-                                                        comparado con los datos promedio de los meses anteriores
-                                                    </p>
-                                                </div>
-                                            </CardHeader>
-                                            <CardBody className="py-4">
-                                                <div className="grid grid-cols-1 gap-4">
-                                                    <div className="flex flex-col gap-1">
-                                                        <span className="text-sm text-default-600">Gastos</span>
-                                                        <span className="text-xl font-bold text-danger">{formatCurrency(financialMetrics?.expenses.total || 0)}</span>
-                                                        <div className="flex items-center">
-                                                            <VariationIndicator value={financialMetrics?.expenses.variationPercentage || 0}  />
-                                                            <span className="text-xs ml-1 text-default-500">vs. meses anteriores</span>
-                                                        </div>
-                                                    </div>
-                                                    <Divider />
-                                                    <div className="flex flex-col gap-1">
-                                                        <span className="text-sm text-default-600">Ingresos</span>
-                                                        <span className="text-xl font-bold text-success">{formatCurrency(financialMetrics?.investmentIncome.total || 0)}</span>
-                                                        <div className="flex items-center">
-                                                            <VariationIndicator value={financialMetrics?.investmentIncome.variationPercentage || 0} />
-                                                            <span className="text-xs ml-1 text-default-500">vs. meses anteriores</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </CardBody>
-                                            <CardFooter className="pt-0">
-                                                <div className="w-full flex justify-between items-center">
-                                                    <span className="text-sm font-medium">Balance</span>
-                                                    <span className="text-lg font-bold">{formatCurrency((financialMetrics?.investmentIncome.total || 0) - (financialMetrics?.expenses.total || 0))}</span>
-                                                </div>
-                                            </CardFooter>
-                                        </Card>
+                                        {
+                                            user && financialMetrics ?
+                                                <FinancialSummary financialMetrics={financialMetrics} user={user} />
+                                                :
+                                                <CustomLoading className="mt-24" />
+                                        }
                                     </div>
-                                    <div className="w-full md:w-2/3 sm:pl-6">
-                                        <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />
+                                    <div className="w-full md:w-2/3 sm:pl-4 gap-4 grid grid-cols-1 md:grid-cols-3">
                                         <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} key="budget-chart"/>
-                                        <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />
+                                        <div>
+
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                        <div className="sm:col-span-3">
+                                            <FinancialTransactionsList title="Ultimas Transacciones" />
+                                        </div>
                                     </div>
+                                    <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />    
+                                    <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />
                                 </div>
                             </div>
                         </>

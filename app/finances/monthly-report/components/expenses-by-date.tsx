@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { ExpensesFilters } from "@/app/types/filters";
 import { ExpenseByDate } from "@/app/types/expense";
 import { getExpensesByDate } from "@/app/actions/expenses";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency, formatToShortCurrency } from "@/app/lib/currency";
 import { CustomLoading } from "@/app/components/customLoading";
 import { ApexOptions } from "apexcharts";
 
@@ -51,13 +51,13 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
         },
         xaxis: {
             categories: expensesByDate.map((item) => item.date),
+            title: {
+                text: "Dia del mes",
+            }
         },
         yaxis: {
-            title: {
-                text: "Valor en pesos",
-            },
             labels: {
-                formatter: (value: number) => formatCurrency(value),
+                formatter: (value: number) => formatToShortCurrency(value),
             },
         },
         fill: {
@@ -83,7 +83,7 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
                 <Card className="w-full h-full shadow-md max-w-7xl">
                     <CardBody className="p-4">
                         <h3 className="text-xl font-light mb-4">Gastos por día</h3>
-                        <Chart options={chartOptions} series={chartSeries} type="line" height={350} />
+                        <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
                     </CardBody>
                 </Card>
             ) : (
