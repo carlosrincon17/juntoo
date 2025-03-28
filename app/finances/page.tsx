@@ -91,10 +91,10 @@ export default function Page() {
                                             <FinancialTransactionsList title="Ultimas Transacciones" />
                                         </div>
                                     </div>
-                                    <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />    
                                     <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />
                                 </div>
                             </div>
+                            <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />    
                         </>
                         : 
                         <div>
