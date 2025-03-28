@@ -54,7 +54,7 @@ export const ExpensesBreakdown = (props: { totalExpenses: number, expensesFilter
                 <>
                     <div>
                         <div id="chart">
-                            <Chart options={options} series={series} type="pie" />
+                            <Chart options={options} series={series} type="donut" />
                         </div>
                         <div id="html-dist"></div>
                     </div>

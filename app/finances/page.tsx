@@ -17,8 +17,7 @@ import { getFinancialMetrics } from "./actions/financial-metrics";
 import { FinancialMetrics } from "../types/financial";
 import FinancialSummary from "./components/financial-summary";
 import FinancialTransactionsList from "./monthly-report/components/expenses-table";
-import { formatCurrency } from "../lib/currency";
-import { FaCreditCard, FaPiggyBank, FaWallet } from "react-icons/fa";
+import FinancialConsolidated from "./components/financial-consolidated";
 
 export default function Page() {
 
@@ -86,50 +85,7 @@ export default function Page() {
                                     <div className="w-full md:w-2/3 sm:pl-4 gap-4 grid grid-cols-1 md:grid-cols-3">
                                         <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} key="budget-chart"/>
                                         <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
-                                            <div className="flex items-center justify-between bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg p-3 text-white shadow-md hover:shadow-lg transition-all duration-300">
-                                                <div className="flex items-center space-x-3">
-                                                    <div className="bg-white/20 p-2 rounded-lg">
-                                                        <FaPiggyBank className="h-4 w-4 " />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-xs md:text-sm font-medium">Ahorros</h3>
-                                                        <p className="text-lg md:font-bold font-light">{formatCurrency(15000000)}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center justify-between bg-gradient-to-r from-rose-500 to-red-500  rounded-lg p-3 text-white shadow-md hover:shadow-lg transition-all duration-300">
-                                                <div className="flex items-center space-x-3">
-                                                    <div className="bg-white/20 p-2 rounded-lg">
-                                                        <FaCreditCard className="h-4 w-4" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-xs md:text-sm font-medium">Deudas</h3>
-                                                        <p className="text-lg md:font-bold font-light">{formatCurrency(15000000)}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg p-3 text-white shadow-md hover:shadow-lg transition-all duration-300">
-                                                <div className="flex items-center space-x-3">
-                                                    <div className="bg-white/20 p-2 rounded-lg">
-                                                        <FaWallet className="h-4 w-4" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-xs md:text-sm font-medium">Patrimonio</h3>
-                                                        <p className="text-lg md:font-bold font-light">{formatCurrency(15000000)}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center justify-between bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg p-3 text-white shadow-md hover:shadow-lg transition-all duration-300">
-                                                <div className="flex items-center space-x-3">
-                                                    <div className="bg-white/20 p-2 rounded-lg">
-                                                        <FaPiggyBank className="h-4 w-4" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-xs md:text-sm font-medium">Balance</h3>
-                                                        <p className="text-lg md:font-bold font-light">{formatCurrency(15000000)}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <FinancialConsolidated />
                                         </div>
                                         <div className="md:col-span-3">
                                             <FinancialTransactionsList title="Ultimas Transacciones" />
