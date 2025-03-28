@@ -15,7 +15,7 @@ const BudgetSimple: React.FC<BudgetSimpleProps> = ({ totalBudget = 3500, spent =
     const percentageUsed = Math.round((spent / totalBudget) * 100);
 
     return (
-        <div className="w-full max-w-7xl mx-auto">
+        <div className="w-full max-w-8xl mx-auto">
             <Card className="p-2 shadow-md">
                 <CardHeader className="flex flex-col items-start pb-0">
                     <h2 className="text-xl font-extralight">Presupuesto Mensual</h2>

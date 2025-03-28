@@ -80,7 +80,7 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
     return (
         <div className="flex flex-col justify-center items-center">
             {!loading ? (
-                <Card className="w-full h-full shadow-md max-w-7xl">
+                <Card className="w-full h-full shadow-md max-w-8xl">
                     <CardBody className="p-4">
                         <h3 className="text-xl font-light mb-4">Gastos por día</h3>
                         <Chart options={chartOptions} series={chartSeries} type="area" height={350} />

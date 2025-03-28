@@ -72,7 +72,7 @@ export default function Page() {
                     </div> :
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
-                            <div className="w-full max-w-7xl mx-auto space-y-6">
+                            <div className="w-full max-w-8xl mx-auto space-y-6">
                                 <div className="flex items-start justify-start max-h-full flex-wrap space-y-6 md:space-y-0">
                                     <div className="w-full md:w-1/3">
                                         {

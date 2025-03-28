@@ -12,7 +12,7 @@ interface FloatingAddButtonProps {
 export default function FloatingManageButton (props: FloatingAddButtonProps) {
     const { onNewIncomeClick, onNewOutcomeClick } = props;
     return (
-        <div className="fixed bottom-6 right-6 z-50 opacity-100 space-x-2">
+        <div className="fixed bottom-6 right-6 z-20 opacity-100 space-x-2">
             <Button
                 className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-green-500 hover:bg-green-600 shadow-lg justify-center p-0 text-white "
                 onClick={onNewIncomeClick}

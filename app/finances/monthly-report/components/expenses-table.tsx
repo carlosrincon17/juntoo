@@ -88,7 +88,7 @@ export default function FinancialTransactionsList({ expensesFilter, title = "Lis
         <>
             {isLoading ? 
                 <CustomLoading /> :
-                <Card className="w-full max-w-4xl mx-auto shadow-md p-2">
+                <Card className="w-full mx-auto shadow-md p-2">
                     <CardHeader className="flex flex-col gap-2">
                         <div className="flex w-full">
                             <h3 className="text-xl font-extralight">{title}</h3>

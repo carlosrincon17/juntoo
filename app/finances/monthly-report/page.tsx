@@ -52,7 +52,7 @@ export default function Page() {
                     </div> :
                     expensesFilter?.endDate && totalExpenses.totalExpenses ?
                         <>
-                            <div className="w-full max-w-7xl mx-auto space-y-6">
+                            <div className="w-full max-w-8xl mx-auto space-y-6">
                                 <div className="flex items-start justify-start max-h-full flex-wrap">
                                     <div className="grid grid-cols-1 gap-4 w-full md:w-1/3">
                                         <MonthlySummaryCard income={totalExpenses.totalIncomes} outcome={totalExpenses.totalExpenses} />
