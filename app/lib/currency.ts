@@ -9,8 +9,5 @@ export const currencyToInteger = (value: string) => {
 }
 
 export const formatToShortCurrency = (value: number) => {
-    if (value >= 1_000_000) {
-        return (value / 1_000_000).toFixed(value < 10_000_000 ? 1 : 0) + 'M';
-    }
-    return value.toLocaleString();
+    return (value / 1_000_000).toFixed(value < 10_000_000 ? 1 : 0) + 'M';
 }
