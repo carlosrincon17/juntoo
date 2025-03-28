@@ -16,8 +16,9 @@ import { getUser } from "../actions/auth";
 import { getFinancialMetrics } from "./actions/financial-metrics";
 import { FinancialMetrics } from "../types/financial";
 import FinancialSummary from "./components/financial-summary";
-import FinancialTransactionsList from "./monthly-report/components/expenses-table";
 import FinancialConsolidated from "./components/financial-consolidated";
+import { ExpensesBreakdown } from "./components/expenses-breackdown";
+import ExpensesByDate from "./components/expenses-by-date";
 
 export default function Page() {
 
@@ -74,21 +75,22 @@ export default function Page() {
                         <>
                             <div className="w-full max-w-8xl mx-auto space-y-6">
                                 <div className="flex items-start justify-start max-h-full flex-wrap space-y-6 md:space-y-0">
-                                    <div className="w-full md:w-1/3">
+                                    <div className="w-full md:w-1/3 space-y-6">
                                         {
                                             user && financialMetrics ?
                                                 <FinancialSummary financialMetrics={financialMetrics} user={user} />
                                                 :
                                                 <CustomLoading className="mt-24" />
                                         }
+                                        <ExpensesBreakdown totalExpenses={totalExpenses.totalExpenses} expensesFilter={expensesFilter} transactionType={selectedTransactionType} />
                                     </div>
                                     <div className="w-full md:w-2/3 sm:pl-4 gap-4 grid grid-cols-1 md:grid-cols-3">
                                         <BudgetSimple totalBudget={19000000} spent={totalExpenses.totalExpenses} key="budget-chart"/>
                                         <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
                                             <FinancialConsolidated />
                                         </div>
-                                        <div className="md:col-span-3">
-                                            <FinancialTransactionsList title="Ultimas Transacciones" />
+                                        <div className=" md:col-span-4">
+                                            <ExpensesByDate expensesFilter={expensesFilter} />
                                         </div>
                                     </div>
                                     <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />

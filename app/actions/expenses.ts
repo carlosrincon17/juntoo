@@ -100,8 +100,12 @@ export async function getCountExpensesByFilter(filters?: ExpensesFilters): Promi
 }
 
 
-export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters, transactionType: TransactionType): Promise<CategoryExpense[]> {
+export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters | undefined, transactionType: TransactionType): Promise<CategoryExpense[]> {
     const user = await getUser();
+    const condition =  filters ? [
+        gte(ExpensesTable.createdAt, filters.startDate),
+        lte(ExpensesTable.createdAt, filters.endDate),
+    ]: [];
     const topCategoriesWithMostExpenses = await db
         .select({
             categoryName: CategoryTable.parent,
@@ -111,9 +115,8 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters,
         .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
         .where(
             and(
+                ...condition,
                 eq(ExpensesTable.familyId, user.familyId),
-                gte(ExpensesTable.createdAt, filters.startDate),
-                lte(ExpensesTable.createdAt, filters.endDate),
                 eq(ExpensesTable.transactionType, transactionType),
                 not(eq(CategoryTable.parent, 'Deudas')) 
             )
@@ -184,8 +187,12 @@ export async function getIncomesByCategory(filters: ExpensesFilters): Promise<Ca
     return incomesByCategory as CategoryExpense[];
 }
 
-export async function getExpensesByDate(filters: ExpensesFilters): Promise<ExpenseByDate[]> {
+export async function getExpensesByDate(filters?: ExpensesFilters): Promise<ExpenseByDate[]> {
     const user = await getUser();
+    const initialFilters = filters ? [
+        gte(ExpensesTable.createdAt, filters.startDate),
+        lte(ExpensesTable.createdAt, filters.endDate),
+    ] : [];
     const expensesByDate = await db
         .select({
             date: sql<string>`EXTRACT(DAY FROM "createdAt")`,
@@ -195,10 +202,9 @@ export async function getExpensesByDate(filters: ExpensesFilters): Promise<Expen
         .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
         .where(
             and(
+                ...initialFilters,
                 eq(ExpensesTable.familyId, user.familyId),
                 eq(ExpensesTable.transactionType, TransactionType.Outcome),
-                gte(ExpensesTable.createdAt, filters.startDate),
-                lte(ExpensesTable.createdAt, filters.endDate),
                 not(eq(CategoryTable.parent, 'Deudas'))
             )
         )
