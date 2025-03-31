@@ -61,6 +61,7 @@ export default function Page() {
             debts: debtsSum,
             balance: balanceSum,
         });
+        setLoading(false);
     }
 
     const getSavingsData = async () => {
@@ -110,7 +111,6 @@ export default function Page() {
         await getPatrimoniesData();
         await getDebtsData();
         loadSummaryData();
-        setLoading(false);
     }
 
     useEffect(() => {

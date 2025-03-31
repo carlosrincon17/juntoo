@@ -1,3 +1,5 @@
+'use client'
+
 import { formatCurrency } from "@/app/lib/currency";
 import { Savings } from "@/app/types/saving";
 import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
