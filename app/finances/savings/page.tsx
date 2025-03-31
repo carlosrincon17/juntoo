@@ -1,7 +1,7 @@
 'use client'
 
 import { Savings } from "@/app/types/saving";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { deleteSaving, getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
@@ -32,6 +32,7 @@ type SummaryData = {
     assets: number,
     debts: number,
     balance: number,
+    loading: boolean,
 }
 
 export default function Page() {
@@ -44,6 +45,7 @@ export default function Page() {
         assets: 0,
         debts: 0,
         balance: 0,
+        loading: true,
     });
     const [selectedSavings, setSelectedSavings] = useState<Savings>({...savingBase});
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -60,6 +62,7 @@ export default function Page() {
             assets: assetsSum,
             debts: debtsSum,
             balance: balanceSum,
+            loading: false,
         });
         setLoading(false);
     }
@@ -117,10 +120,15 @@ export default function Page() {
         loadInitialData();
     }, []);
 
+    useEffect(() => {
+       if(debts.length > 0 && patrimonies.length > 0 && savings.length > 0) {
+           loadSummaryData();
+       }
+    }, [debts, patrimonies, savings]);
     return (
         <div>
             {
-                loading ? 
+                loading  ?
                     <CustomLoading /> :
                     <div className="space-y-6">
                         <SummarySection savings={summaryData.savings} assets={summaryData.assets} debts={summaryData.debts} balance={summaryData.balance} />

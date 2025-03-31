@@ -1,3 +1,5 @@
+'use client'
+
 import { formatCurrency } from "@/app/lib/currency"
 import { Card } from "@heroui/react"
 import { FaArrowUp, FaBuilding, FaChartPie, FaChevronUp, FaCreditCard, FaDollarSign, FaWallet } from "react-icons/fa"
@@ -10,7 +12,6 @@ interface SummarySectionProps {
 }
 
 export default function SummarySection({ savings, assets, debts, balance }: SummarySectionProps) {
-
 
     return (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
