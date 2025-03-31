@@ -121,9 +121,9 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-       if(debts.length > 0 && patrimonies.length > 0 && savings.length > 0) {
-           loadSummaryData();
-       }
+        if(debts.length > 0 && patrimonies.length > 0 && savings.length > 0) {
+            loadSummaryData();
+        }
     }, [debts, patrimonies, savings]);
     return (
         <div>
