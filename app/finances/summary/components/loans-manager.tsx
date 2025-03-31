@@ -1,4 +1,4 @@
-import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import toast from "react-hot-toast";
 import ToastCustom from "@/app/components/toastCustom";
 import { Loan } from "@/app/types/loans";

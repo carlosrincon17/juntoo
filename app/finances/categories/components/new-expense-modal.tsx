@@ -3,7 +3,7 @@
 import type { Category, ParentCategory } from "@/app/types/category"
 import type { Expense } from "@/app/types/expense"
 import { TransactionType } from "@/utils/enums/transaction-type"
-import { Button, Card, CardBody, ScrollShadow } from "@nextui-org/react"
+import { Button, Card, CardBody, ScrollShadow } from "@heroui/react"
 import { useEffect, useState } from "react"
 import { getCategories } from "../actions/categories"
 import { FaCreditCard, FaTimes } from "react-icons/fa"

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import type React from "react"
 import { ParentCategory } from "@/app/types/category"
-import { Button } from "@nextui-org/react"
+import { Button } from "@heroui/react"
 
 interface CategoryGridProps {
   parentCategories: ParentCategory[]

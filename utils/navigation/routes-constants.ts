@@ -12,12 +12,8 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
         path: "/finances",
         labelBreadcrumb: "Dashboard",
     },
-    CATEGORIES: {
-        label: "Categoria",
-        path: "/finances/categories",
-    },
     SUMMARY: {
-        label: "Consolidado",
+        label: "Reportes",
         path: "/finances/summary",
         parent: "/finances",
     },
@@ -27,14 +23,13 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
         parent: "/finances",
     },
     SAVINGS: {
-        label: "Ahorros",
+        label: "Activos y pasivos",
         path: "/finances/savings", 
         parent: "/finances",
     },
-    SETTINGS: {
-        label: "Configuraciones",
-        path: "/finances/settings", 
-        parent: "/finances",
+    CATEGORIES: {
+        label: "Categorias",
+        path: "/finances/categories",
     },
 }
 
@@ -70,7 +65,6 @@ export const ROUTES_LIST: Routes[] = [
             FINANCE_ROUTES.SUMMARY,
             FINANCE_ROUTES.BUDGETS,
             FINANCE_ROUTES.SAVINGS,
-            FINANCE_ROUTES.SETTINGS
         ]
     },
     {

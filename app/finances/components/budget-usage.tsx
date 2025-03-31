@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Progress } from "@heroui/react";
 import { formatCurrency } from "@/app/lib/currency";
 
 

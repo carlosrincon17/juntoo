@@ -1,6 +1,6 @@
 import { formatCurrency } from "@/app/lib/currency";
 import { Savings } from "@/app/types/saving";
-import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { FaEllipsisV } from "react-icons/fa";
 
 export default function SavingCard(props: { saving: Savings, onClickSavings: (saving: Savings) => void, onClickDeleteSaving: (saving: Savings) => void }) {
@@ -42,11 +42,11 @@ export default function SavingCard(props: { saving: Savings, onClickSavings: (sa
                                         <FaEllipsisV className="hover:cursor-pointer"></FaEllipsisV>
                                     </DropdownTrigger>
                                     <DropdownMenu aria-label="Static Actions">
-                                        <DropdownItem onClick={() => onClickSavings(saving)}>
-                                    Editar
+                                        <DropdownItem onPress={() => onClickSavings(saving)} key={`edit-${saving.id}`}>
+                                            Editar
                                         </DropdownItem>
-                                        <DropdownItem onClick={() => onClickDeleteSaving(saving)} className="text-red-600">
-                                    Eliminar
+                                        <DropdownItem onPress={() => onClickDeleteSaving(saving)} className="text-red-600" key={`delete-${saving.id}`}>
+                                            Eliminar
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>

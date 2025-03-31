@@ -5,7 +5,7 @@ import { getCategories } from "./actions/categories";
 import { Category } from "@/app/types/category";
 import CategoryList from "./components/category-list";
 import { CustomLoading } from "@/app/components/customLoading";
-import { Button, ButtonGroup, Input, } from "@nextui-org/react";
+import { Button, ButtonGroup, Input, } from "@heroui/react";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { FaSearch } from "react-icons/fa";
 

@@ -1,5 +1,5 @@
 import { Patrimony } from "@/app/types/patrimony";
-import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { updatePatrimony } from "../actions/patrimonies";
 import toast from "react-hot-toast";
 import ToastCustom from "@/app/components/toastCustom";

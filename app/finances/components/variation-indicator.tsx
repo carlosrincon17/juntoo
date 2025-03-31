@@ -1,4 +1,4 @@
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 
 export const  VariationIndicator = ({ value, inverted = false }: { value: number; inverted?: boolean }) => {

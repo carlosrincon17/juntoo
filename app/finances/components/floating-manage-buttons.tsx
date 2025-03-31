@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@nextui-org/react"
+import { Button } from "@heroui/react"
 import { FaMinus, FaPlus } from "react-icons/fa"
 
 interface FloatingAddButtonProps {

@@ -6,10 +6,16 @@ import { deleteSaving, getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import SavingsManagerModal from "./component/savings-manager";
-import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
+import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
 import { FaEllipsisV } from "react-icons/fa";
 import ConfirmModal from "@/app/components/confirmModal";
 import { FloatingAddButton } from "@/app/components/floating-buttton";
+import SummarySection from "./component/summary-section";
+import TabsActive from "./component/tabs-active";
+import { Patrimony } from "@/app/types/patrimony";
+import { Debts } from "@/app/types/debts";
+import { getPatrimonies } from "../summary/actions/patrimonies";
+import { getDebts } from "../summary/actions/debts";
 
 const savingBase: Savings = {
     id: 0,
@@ -21,18 +27,55 @@ const savingBase: Savings = {
     isInvestment: false,
 }
 
+type SummaryData = {
+    savings: number,
+    assets: number,
+    debts: number,
+    balance: number,
+}
+
 export default function Page() {
-    const [savings, setSavings] = useState<Savings[]>([]);    
+    const [savings, setSavings] = useState<Savings[]>([]);
+    const [patrimonies, setPatrimonies] = useState<Patrimony[]>([]);
+    const [debts, setDebts] = useState<Debts[]>([]);
     const [loading, setLoading] = useState(true);
+    const [summaryData, setSummaryData] = useState<SummaryData>({
+        savings: 0,
+        assets: 0,
+        debts: 0,
+        balance: 0,
+    });
     const [selectedSavings, setSelectedSavings] = useState<Savings>({...savingBase});
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
 
+
+    const loadSummaryData = async () => {
+        const savingsSum = savings.reduce((total, saving) => total + saving.value, 0);
+        const assetsSum = patrimonies.reduce((total, saving) => total + saving.value, 0);
+        const debtsSum = debts.reduce((total, saving) => total + saving.value, 0);
+        const balanceSum = savingsSum + assetsSum - debtsSum;
+        setSummaryData({
+            savings: savingsSum,
+            assets: assetsSum,
+            debts: debtsSum,
+            balance: balanceSum,
+        });
+    }
+
     const getSavingsData = async () => {
-        setLoading(true);
         const savingsData = await getSavings();
         setSavings(savingsData);
-        setLoading(false);
+    }
+
+    const getPatrimoniesData = async () => {
+        const patrimoniesData = await getPatrimonies();
+        setPatrimonies(patrimoniesData);
+    }
+
+    const getDebtsData = async () => {
+        const debtsData = await getDebts();
+        setDebts(debtsData);
     }
 
     const afterSaveSavings = async () => {
@@ -60,8 +103,18 @@ export default function Page() {
         onClose();
         getSavingsData();
     }
+
+    const loadInitialData = async () => {
+        setLoading(true);
+        await getSavingsData();
+        await getPatrimoniesData();
+        await getDebtsData();
+        loadSummaryData();
+        setLoading(false);
+    }
+
     useEffect(() => {
-        getSavingsData();
+        loadInitialData();
     }, []);
 
     return (
@@ -69,12 +122,14 @@ export default function Page() {
             {
                 loading ? 
                     <CustomLoading /> :
-                    <div>
+                    <div className="space-y-6">
+                        <SummarySection savings={summaryData.savings} assets={summaryData.assets} debts={summaryData.debts} balance={summaryData.balance} />
+                        <TabsActive onSelectTab={(tab) => console.log(tab)} />
                         <FloatingAddButton 
                             onClick={onCreateNewSavingClick}
                             label="Agregar ahorro"
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
                             {savings.map((saving) => (
                                 <Card className="shadow-md"
                                     key={saving.id} 
@@ -90,10 +145,10 @@ export default function Page() {
                                                         <FaEllipsisV className="hover:cursor-pointer"></FaEllipsisV>
                                                     </DropdownTrigger>
                                                     <DropdownMenu aria-label="Static Actions">
-                                                        <DropdownItem onClick={() => onClickSavings(saving)}>
+                                                        <DropdownItem onPress={() => onClickSavings(saving)} key={`edit-${saving.id}`}>
                                                             Editar
                                                         </DropdownItem>
-                                                        <DropdownItem onClick={() => onClickDeleteSaving(saving)} className="text-red-600">
+                                                        <DropdownItem onPress={() => onClickDeleteSaving(saving)} className="text-red-600" key={`delete-${saving.id}`}>
                                                             Eliminar
                                                         </DropdownItem>
                                                     </DropdownMenu>
@@ -104,9 +159,9 @@ export default function Page() {
                                             <div>
                                                 <p className="text-2xl font-medium">
                                                     {formatCurrency(saving.value)}
-                                                    <span className="text-xs font-light"> / {saving.currency}</span>
+                                                    <span className="text-xs font-light"></span>
                                                 </p>
-                                                <p className="text-xs font-light">{saving.user?.name}</p>
+                                                <p className="text-xs font-light">{saving.currency} / {saving.user?.name}</p>
                                             </div>
                                             <div className="md:text-right">
                                                 <p className="text-xs font-light">Interes anual</p>

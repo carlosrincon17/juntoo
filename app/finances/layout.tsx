@@ -1,6 +1,6 @@
 'use client'
 
-import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
+import { Breadcrumbs, BreadcrumbItem } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import { Routes, ROUTES_LIST } from "@/utils/navigation/routes-constants";
 import { Toaster } from "react-hot-toast";

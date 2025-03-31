@@ -8,7 +8,7 @@ import { TransactionType } from "@/utils/enums/transaction-type";
 import { useEffect, useState } from "react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { Card, CardHeader } from "@nextui-org/react";
+import { Card, CardHeader } from "@heroui/react";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 

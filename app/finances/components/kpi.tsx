@@ -1,5 +1,5 @@
 import { formatCurrency } from "@/app/lib/currency";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 import React from "react";
 
 export default function Kpi(props: { 

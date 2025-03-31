@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 
 export default function ConfirmModal(props: { 
     isOpen: boolean, 

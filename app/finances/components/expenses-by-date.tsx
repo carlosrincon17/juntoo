@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { ExpensesFilters } from "@/app/types/filters";

@@ -1,7 +1,7 @@
 'use client'
 
 import { Category } from "@/app/types/category";
-import { Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Chip } from "@heroui/react";
 
 export default function CategoryList(props: { categories: Category[] }) {
     const { categories,  } = props;

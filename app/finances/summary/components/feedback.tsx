@@ -2,7 +2,7 @@
 
 import { generateFeedback} from "@/app/actions/ai";
 import { CustomLoading } from "@/app/components/customLoading";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 import { useEffect, useState } from "react"
 import { FaMagic } from "react-icons/fa";
 

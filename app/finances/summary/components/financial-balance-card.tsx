@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Card, CardBody } from "@nextui-org/react"
+import { Card, CardBody } from "@heroui/react"
 import { FaCreditCard, FaDollarSign, FaMoneyBill, FaPiggyBank } from "react-icons/fa"
 import { formatCurrency } from "@/app/lib/currency"
 

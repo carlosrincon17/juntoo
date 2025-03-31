@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from "@/app/types/user";
-import { Button, Card, Checkbox, Input, Progress } from "@nextui-org/react";
+import { Button, Card, Checkbox, Input, Progress } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { FaCheckCircle, FaPlus } from "react-icons/fa";
 

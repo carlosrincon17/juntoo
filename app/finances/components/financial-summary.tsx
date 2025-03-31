@@ -1,4 +1,4 @@
-import { Card, CardBody, CardFooter, CardHeader, Divider } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
 import { VariationIndicator } from "./variation-indicator";
 import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
@@ -6,7 +6,7 @@ import { User } from "@/app/types/user";
 
 export default function FinancialSummary({ financialMetrics, user }: { financialMetrics: FinancialMetrics, user: User }) {
     return (
-        <Card className="p-2 w-full shadow-md">
+        <Card className="p-2 w-full shadow-md" radius="md">
             <CardHeader className="space-y-2 block">
                 <h1 className="text-xl font-extralight">Hola {user?.name},</h1> 
                 <div className="flex flex-col">

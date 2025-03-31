@@ -1,7 +1,7 @@
 "use client"
 
 import type { Savings } from "@/app/types/saving"
-import { Button, Checkbox, Input, Select, SelectItem, type SharedSelection } from "@nextui-org/react"
+import { Button, Checkbox, Input, Select, SelectItem, type SharedSelection } from "@heroui/react"
 import toast from "react-hot-toast"
 import { createSavings, updateSavings } from "../actions/savings"
 import ToastCustom from "@/app/components/toastCustom"

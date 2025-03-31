@@ -4,7 +4,7 @@ import { useState } from "react";
 import { getTotalsExpenses } from "../actions/expenses";
 import { ExpensesFilters } from "../types/filters";
 import { TotalExpenses } from "../types/expense";
-import { Card, CardBody, useDisclosure } from "@nextui-org/react";
+import { Card, CardBody, useDisclosure } from "@heroui/react";
 import { CustomLoading } from "../components/customLoading";
 import BudgetSimple from "./components/budget-usage";
 import ExpenseFilter from "./components/filter";
