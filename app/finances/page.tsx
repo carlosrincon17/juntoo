@@ -66,6 +66,9 @@ export default function Page() {
             <div className="hidden">
                 <ExpenseFilter onChange={onChangeFilters}/>
             </div>
+
+            <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />
+            <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />
             {
                 loading ?
                     <div className="flex justify-center items-center">
@@ -93,10 +96,8 @@ export default function Page() {
                                             <ExpensesByDate expensesFilter={expensesFilter} />
                                         </div>
                                     </div>
-                                    <FloatingManageButton onNewIncomeClick={() => onCreateExpenseClick(TransactionType.Income)} onNewOutcomeClick={() => onCreateExpenseClick(TransactionType.Outcome)} />
                                 </div>
-                            </div>
-                            <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />    
+                            </div>    
                         </>
                         : 
                         <div>

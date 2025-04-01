@@ -17,13 +17,8 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
         path: "/finances/summary",
         parent: "/finances",
     },
-    BUDGETS: {
-        label: "Presupuestos",
-        path: "/finances/budgets",
-        parent: "/finances",
-    },
-    SAVINGS: {
-        label: "Activos y pasivos",
+    CONSOLIDATED: {
+        label: "Consolidado",
         path: "/finances/savings", 
         parent: "/finances",
     },
@@ -61,10 +56,9 @@ export const ROUTES_LIST: Routes[] = [
         path: "/finances",
         subItems: [
             FINANCE_ROUTES.DASHBOARD,
-            FINANCE_ROUTES.CATEGORIES,
+            FINANCE_ROUTES.CONSOLIDATED,
             FINANCE_ROUTES.SUMMARY,
-            FINANCE_ROUTES.BUDGETS,
-            FINANCE_ROUTES.SAVINGS,
+            FINANCE_ROUTES.CATEGORIES,
         ]
     },
     {
