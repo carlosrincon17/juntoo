@@ -27,7 +27,8 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
           SELECT
             COALESCE(SUM(CASE WHEN transaction_type = 'OUTCOME' THEN value ELSE 0 END), 0) as total_expenses,
             COALESCE(SUM(CASE WHEN transaction_type = 'INCOME' THEN value ELSE 0 END), 0) as total_investment_income,
-            COALESCE(SUM(CASE WHEN transaction_type = 'saving' THEN value ELSE 0 END), 0) as total_savings
+            COALESCE(SUM(CASE WHEN transaction_type = 'INCOME' THEN value ELSE 0 END), 0) -
+            COALESCE(SUM(CASE WHEN transaction_type = 'OUTCOME' THEN value ELSE 0 END), 0) as total_savings
           FROM ${ExpensesTable}
           WHERE 
             family_id = ${user.familyId} AND
@@ -46,7 +47,8 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
               EXTRACT(MONTH FROM "createdAt") as month,
               COALESCE(SUM(CASE WHEN transaction_type = 'OUTCOME' THEN value ELSE 0 END), 0) as monthly_expenses,
               COALESCE(SUM(CASE WHEN transaction_type = 'INCOME' THEN value ELSE 0 END), 0) as monthly_investment_income,
-              COALESCE(SUM(CASE WHEN transaction_type = 'saving' THEN value ELSE 0 END), 0) as monthly_savings
+              COALESCE(SUM(CASE WHEN transaction_type = 'INCOME' THEN value ELSE 0 END), 0) - 
+              COALESCE(SUM(CASE WHEN transaction_type = 'OUTCOME' THEN value ELSE 0 END), 0) AS monthly_savings
             FROM ${ExpensesTable}
             WHERE 
               family_id = ${user.familyId} AND

@@ -20,7 +20,7 @@ const chartOptions: ApexOptions = {
         palette: "palette2",
     },
     legend: {
-        position: "bottom",
+        position: "right",
         fontFamily: "inherit",
     },
     plotOptions: {
@@ -98,17 +98,11 @@ export const ExpensesBreakdown = (props: { totalExpenses: number, expensesFilter
                 <>
                     <Card className="shadow-md p-2">
                         <CardHeader className="space-y-2 block">
-                            <h1 className="text-xl font-extralight">Gastos por categoria</h1> 
-                            <div className="flex flex-col">
-                                <p className="text-xs text-default-500">
-                                    Conoce siempre las categorías con las que más gastas en tus presupuestos.
-                                </p>
-                            </div>
+                            <h2 className="text-xl font-extralight">{transactionType === TransactionType.Outcome ? "Gastos" : "Ingresos"} por categoria</h2>
                         </CardHeader>
                         <div id="chart">
                             <Chart options={options} series={series} type="donut" />
                         </div>
-                        <div id="html-dist"></div>
                     </Card>
                 </>
             }
