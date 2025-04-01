@@ -13,6 +13,9 @@ import SavingsList from "./component/savings-list";
 import DebtsList from "./component/debts-list";
 import { Tab, Tabs } from "@heroui/react";
 import PatrimoniesList from "./component/patrimonies-list";
+import LoansList from "./component/loans-list";
+import { Loan } from "@/app/types/loans";
+import { getLoans } from "../summary/actions/loans";
 
 type SummaryData = {
     savings: number,
@@ -26,6 +29,7 @@ export default function Page() {
     const [savings, setSavings] = useState<Savings[]>([]);
     const [patrimonies, setPatrimonies] = useState<Patrimony[]>([]);
     const [debts, setDebts] = useState<Debts[]>([]);
+    const [loans, setLoans] = useState<Loan[]>([]);
     const [loading, setLoading] = useState(true);
     const [summaryData, setSummaryData] = useState<SummaryData>({
         savings: 0,
@@ -40,7 +44,8 @@ export default function Page() {
         const savingsSum = savings.reduce((total, saving) => total + saving.value, 0);
         const assetsSum = patrimonies.reduce((total, saving) => total + saving.value, 0);
         const debtsSum = debts.reduce((total, saving) => total + saving.value, 0);
-        const balanceSum = savingsSum + assetsSum - debtsSum;
+        const loansSum = loans.reduce((total, saving) => total + saving.value, 0);
+        const balanceSum = savingsSum + assetsSum - debtsSum + loansSum;
         setSummaryData({
             savings: savingsSum,
             assets: assetsSum,
@@ -66,11 +71,17 @@ export default function Page() {
         setDebts(debtsData);
     }
 
+    const getLoansData = async () => {
+        const loansData = await getLoans();
+        setLoans(loansData);
+    }
+
     const loadInitialData = async () => {
         setLoading(true);
         await getSavingsData();
         await getPatrimoniesData();
         await getDebtsData();
+        await getLoansData();
         loadSummaryData();
     }
 
@@ -79,10 +90,10 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        if(debts.length > 0 && patrimonies.length > 0 && savings.length > 0) {
+        if(debts.length > 0 && patrimonies.length > 0 && savings.length > 0 && loans.length > 0) {
             loadSummaryData();
         }
-    }, [debts, patrimonies, savings]);
+    }, [debts, patrimonies, savings, loans]);
     return (
         <div>
             {
@@ -90,8 +101,16 @@ export default function Page() {
                     <CustomLoading /> :
                     <div>
                         <SummarySection savings={summaryData.savings} assets={summaryData.assets} debts={summaryData.debts} balance={summaryData.balance} />
-                        <div className="mt-6 w-full content-end">
-                            <Tabs  aria-label="Tabs colors" color="primary" radius="full" >
+                        <div className="mt-6 w-full">
+                            <Tabs 
+                                aria-label="Tabs colors" 
+                                radius="full" 
+                                size="sm" 
+                                color="primary" 
+                                classNames={{
+                                    base: "w-full flex justify-end ",
+                                }}
+                            >
                                 <Tab key="savings" title="Ahorro">
                                     <SavingsList savings={savings} afterSaveSavings={getSavingsData} />
                                 </Tab>
@@ -100,6 +119,9 @@ export default function Page() {
                                 </Tab>
                                 <Tab key="patrimonies" title="Patrimonio">
                                     <PatrimoniesList patrimonies={patrimonies} />
+                                </Tab>
+                                <Tab key="loans" title="Prestamos">
+                                    <LoansList loans={loans} />
                                 </Tab>
                             </Tabs>
                         </div>
