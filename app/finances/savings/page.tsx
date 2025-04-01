@@ -12,6 +12,7 @@ import { getDebts } from "../summary/actions/debts";
 import SavingsList from "./component/savings-list";
 import DebtsList from "./component/debts-list";
 import { Tab, Tabs } from "@heroui/react";
+import PatrimoniesList from "./component/patrimonies-list";
 
 type SummaryData = {
     savings: number,
@@ -98,6 +99,7 @@ export default function Page() {
                                     <DebtsList debts={debts} />
                                 </Tab>
                                 <Tab key="patrimonies" title="Patrimonio">
+                                    <PatrimoniesList patrimonies={patrimonies} />
                                 </Tab>
                             </Tabs>
                         </div>
