@@ -139,7 +139,7 @@ export default function NewExpensePanel(props: {
 
     const handleSaveExpense = async () => {
         setIsLoadingSaveExpense(true)
-        await addExpense({...expense, category_id: Number(selectedCategory?.id)})
+        await addExpense({...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType})
         toast.custom((t) => <ToastCustom message={`Tu gasto de ${formatCurrency(expense.value as number)} por ${expense.category?.name} se ha agregado correctamente`} toast={t}/>);
         setIsLoadingSaveExpense(false)
         onOpenChange()
