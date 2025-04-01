@@ -2,30 +2,16 @@
 
 import { Savings } from "@/app/types/saving";
 import {  useEffect, useState } from "react";
-import { deleteSaving, getSavings } from "./actions/savings";
+import { getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
-import { formatCurrency } from "@/app/lib/currency";
-import SavingsManagerModal from "./component/savings-manager";
-import { Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
-import { FaEllipsisV } from "react-icons/fa";
-import ConfirmModal from "@/app/components/confirmModal";
-import { FloatingAddButton } from "@/app/components/floating-buttton";
 import SummarySection from "./component/summary-section";
-import TabsActive from "./component/tabs-active";
 import { Patrimony } from "@/app/types/patrimony";
 import { Debts } from "@/app/types/debts";
 import { getPatrimonies } from "../summary/actions/patrimonies";
 import { getDebts } from "../summary/actions/debts";
-
-const savingBase: Savings = {
-    id: 0,
-    name: "",
-    value: 0,
-    owner: "",
-    userId: null,
-    familyId: null,
-    isInvestment: false,
-}
+import SavingsList from "./component/savings-list";
+import DebtsList from "./component/debts-list";
+import { Tab, Tabs } from "@heroui/react";
 
 type SummaryData = {
     savings: number,
@@ -47,9 +33,6 @@ export default function Page() {
         balance: 0,
         loading: true,
     });
-    const [selectedSavings, setSelectedSavings] = useState<Savings>({...savingBase});
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
 
 
     const loadSummaryData = async () => {
@@ -82,32 +65,6 @@ export default function Page() {
         setDebts(debtsData);
     }
 
-    const afterSaveSavings = async () => {
-        getSavingsData();
-    }
-
-    const onClickSavings = (savings: Savings) => {
-        setSelectedSavings(savings);
-        onOpen();
-    }
-
-    const onClickDeleteSaving = (savings: Savings) => {
-        setSelectedSavings(savings);
-        onDeleteModalOpen();
-    }
-
-    const onCreateNewSavingClick = async () => {
-        const newSaving: Savings = {...savingBase};
-        setSelectedSavings(newSaving);
-        onOpen();
-    }
-
-    const onConfirmDeleteSaving = async (onClose: () => void) => {
-        await deleteSaving(selectedSavings?.id as number);
-        onClose();
-        getSavingsData();
-    }
-
     const loadInitialData = async () => {
         setLoading(true);
         await getSavingsData();
@@ -130,63 +87,20 @@ export default function Page() {
             {
                 loading  ?
                     <CustomLoading /> :
-                    <div className="space-y-6">
+                    <div>
                         <SummarySection savings={summaryData.savings} assets={summaryData.assets} debts={summaryData.debts} balance={summaryData.balance} />
-                        <TabsActive onSelectTab={(tab) => console.log(tab)} />
-                        <FloatingAddButton 
-                            onClick={onCreateNewSavingClick}
-                            label="Agregar ahorro"
-                        />
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-                            {savings.map((saving) => (
-                                <Card className="shadow-md"
-                                    key={saving.id} 
-                                >
-                                    <CardBody>
-                                        <div className="flex justify-between items-center mb-2">
-                                            <div>
-                                                <h2 className="text-lg font-extralight text-gray-800">{saving.name}</h2>
-                                            </div>
-                                            <div className="text-right">
-                                                <Dropdown>
-                                                    <DropdownTrigger>
-                                                        <FaEllipsisV className="hover:cursor-pointer"></FaEllipsisV>
-                                                    </DropdownTrigger>
-                                                    <DropdownMenu aria-label="Static Actions">
-                                                        <DropdownItem onPress={() => onClickSavings(saving)} key={`edit-${saving.id}`}>
-                                                            Editar
-                                                        </DropdownItem>
-                                                        <DropdownItem onPress={() => onClickDeleteSaving(saving)} className="text-red-600" key={`delete-${saving.id}`}>
-                                                            Eliminar
-                                                        </DropdownItem>
-                                                    </DropdownMenu>
-                                                </Dropdown>
-                                            </div>
-                                        </div>
-                                        <div className="grid flex-row grid-cols-1 md:grid-cols-2">
-                                            <div>
-                                                <p className="text-2xl font-medium">
-                                                    {formatCurrency(saving.value)}
-                                                    <span className="text-xs font-light"></span>
-                                                </p>
-                                                <p className="text-xs font-light">{saving.currency} / {saving.user?.name}</p>
-                                            </div>
-                                            <div className="md:text-right">
-                                                <p className="text-xs font-light">Interes anual</p>
-                                                <p className={"font-light text-2xl "}>{
-                                                    saving.isInvestment ? 
-                                                        <span> {saving.annualInterestRate} % </span>:
-                                                        <span> N/A </span>
-                                                }
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            ))}
+                        <div className="mt-6 w-full content-end">
+                            <Tabs  aria-label="Tabs colors" color="primary" radius="full" >
+                                <Tab key="savings" title="Ahorro">
+                                    <SavingsList savings={savings} afterSaveSavings={getSavingsData} />
+                                </Tab>
+                                <Tab key="debts" title="Deudas">
+                                    <DebtsList debts={debts} />
+                                </Tab>
+                                <Tab key="patrimonies" title="Patrimonio">
+                                </Tab>
+                            </Tabs>
                         </div>
-                        <SavingsManagerModal isOpen={isOpen} savings={selectedSavings} onOpenChange={onOpenChange} afterSaveSavings={afterSaveSavings} />
-                        <ConfirmModal isOpen={isDeleteModalOpen} onOpenChange={onDeleteModalChange} title="Eliminar ahorro" message="¿Estás seguro de que quieres eliminar este ahorro?" onConfirm={onConfirmDeleteSaving} />
                     </div>
             }
         </div>
