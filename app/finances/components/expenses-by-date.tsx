@@ -9,6 +9,7 @@ import { getExpensesByDate } from "@/app/actions/expenses";
 import { formatCurrency, formatToShortCurrency } from "@/app/lib/currency";
 import { CustomLoading } from "@/app/components/customLoading";
 import { ApexOptions } from "apexcharts";
+import TransactionsList from "./transactions-list";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -78,14 +79,19 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
     ];
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {!loading ? (
-                <Card className="w-full h-full shadow-md max-w-8xl">
-                    <CardBody className="p-4">
-                        <h3 className="text-xl font-light mb-4">Gastos por día</h3>
-                        <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
-                    </CardBody>
-                </Card>
+                <>
+                    <div>
+                        <Card className="w-full shadow-md max-w-8xl ">
+                            <CardBody className="p-4">
+                                <h3 className="text-xl font-light mb-4">Gastos por día</h3>
+                                <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
+                            </CardBody>
+                        </Card>
+                    </div>
+                    <TransactionsList />
+                </>
             ) : (
                 <Card>
                     <CardBody className="p-4">

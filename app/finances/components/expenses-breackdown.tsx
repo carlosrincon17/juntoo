@@ -22,6 +22,7 @@ const chartOptions: ApexOptions = {
     legend: {
         position: "right",
         fontFamily: "inherit",
+        fontWeight: '200',
     },
     plotOptions: {
         pie: {
