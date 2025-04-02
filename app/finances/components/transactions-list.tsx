@@ -5,13 +5,13 @@ import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { Button, Card } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { FaAngleDoubleDown, FaAngleDoubleUp, FaChevronLeft } from "react-icons/fa";
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaChevronRight } from "react-icons/fa";
 
 export default function TransactionsList() {
     const [transactions, setTransactions] = useState<Expense[]>([]);
 
     const getTransactionsData = async () => {
-        const transactionsData = await getExpenses(1, 10);
+        const transactionsData = await getExpenses(1, 7);
         setTransactions(transactionsData);
     }
 
@@ -25,13 +25,10 @@ export default function TransactionsList() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
 
-            <div className="mb-6 relative z-10">
+            <div className="relative z-10">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="text-xl font-medium text-[#121432]">Últimas Transacciones</h2>
-                        <p className="text-sm font-light text-[#121432]/70 mt-1">
-                Movimientos recientes en todas tus cuentas
-                        </p>
                     </div>
                 </div>
 
@@ -79,8 +76,8 @@ export default function TransactionsList() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between relative z-10">
-                    <Button variant="ghost" size="sm" className="text-xs font-medium text-[#5a6bff] hover:bg-[#5a6bff]/10 flex items-center">
-                        Ver todas <FaChevronLeft className="h-3 w-3 ml-1" />
+                    <Button variant="light" size="lg" className="text-xs font-normal flex items-center w-full">
+                        Ver todas <FaChevronRight className="h-3 w-3 ml-1" />
                     </Button>
                 </div>
             </div>
