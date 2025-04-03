@@ -1,8 +1,7 @@
 import { Patrimony } from "@/app/types/patrimony";
-import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
+import { addToast, Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { updatePatrimony } from "../actions/patrimonies";
-import toast from "react-hot-toast";
-import ToastCustom from "@/app/components/toastCustom";
+import { FaCheck } from "react-icons/fa";
 
 export default function PatrimonyManagerModal(props: {
     isOpen: boolean, 
@@ -13,7 +12,11 @@ export default function PatrimonyManagerModal(props: {
 
     const onSavePatrimony = async (onClose: () => void) => {
         await updatePatrimony(patrimony);
-        toast.custom((t) => <ToastCustom message="Tu patrimonio se actualizó correctamente" toast={t}/>);
+        addToast({
+            title: "¡Todo en orden!",
+            description: "Tu patrimonio se ha actualizado correctamente",
+            icon: <FaCheck size={24} />,
+        });
         onClose();
     }
     

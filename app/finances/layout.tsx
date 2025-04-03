@@ -3,7 +3,6 @@
 import { Breadcrumbs, BreadcrumbItem } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import { Routes, ROUTES_LIST } from "@/utils/navigation/routes-constants";
-import { Toaster } from "react-hot-toast";
 import { Sidebar } from "../components/sidebar/sidebar";
 import { useEffect, useState } from "react";
 
@@ -48,7 +47,6 @@ export default function Layout({
                     </div>
                 </div>
             </div>
-            <div><Toaster position="top-right"/></div>
         </>
     );
 }

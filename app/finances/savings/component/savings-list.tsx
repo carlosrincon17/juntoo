@@ -1,11 +1,11 @@
 import { Savings } from "@/app/types/saving"
-import { Card, useDisclosure } from "@heroui/react";
+import { addToast, Card, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { deleteSaving } from "../actions/savings";
 import AccountCard from "./account-card";
 import ConfirmModal from "@/app/components/confirmModal";
 import SavingsManagerModal from "../component/savings-manager";
-import { FaPlus } from "react-icons/fa";
+import { FaCheck, FaPlus } from "react-icons/fa";
 
 const savingBase: Savings = {
     id: 0,
@@ -50,6 +50,11 @@ export default function SavingsList({
     
     const onConfirmDeleteSaving = async (onClose: () => void) => {
         await deleteSaving(selectedSavings?.id as number);
+        addToast({
+            title: "¡Todo en orden!",
+            description: "Tu ahorro se ha eliminado correctamente",
+            icon: <FaCheck size={24} />,
+        });
         onClose();
         afterSaveSavings();
     }

@@ -1,10 +1,9 @@
-import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
-import toast from "react-hot-toast";
-import ToastCustom from "@/app/components/toastCustom";
+import { addToast, Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { Loan } from "@/app/types/loans";
 import { useEffect, useState } from "react";
 import { createLoan, updateLoan } from "../actions/loans";
 import { currencyToInteger, formatCurrency } from "@/app/lib/currency";
+import { FaCheck } from "react-icons/fa";
 
 export default function LoansManagerModal(props: {
     isOpen: boolean, 
@@ -18,7 +17,11 @@ export default function LoansManagerModal(props: {
     const onSaveLoan = async (onClose: () => void) => {
         const methodToUpdate = selectedLoan?.id ? updateLoan : createLoan;
         await methodToUpdate(selectedLoan as Loan);
-        toast.custom((t) => <ToastCustom message="Tu patrimonio se actualizó correctamente" toast={t}/>);
+        addToast({
+            title: "¡Todo en orden!",
+            description: "Tu prestamo se ha actualizado correctamente",
+            icon: <FaCheck size={24} />,
+        });
         onClose();
     }
 

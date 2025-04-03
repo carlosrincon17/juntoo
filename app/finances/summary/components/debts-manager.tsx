@@ -1,8 +1,7 @@
-import { Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
-import toast from "react-hot-toast";
-import ToastCustom from "@/app/components/toastCustom";
+import { addToast, Button,Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { Debts } from "@/app/types/debts";
 import { updateDebt } from "../actions/debts";
+import { FaCheck } from "react-icons/fa";
 
 export default function DebtManagerModal(props: {
     isOpen: boolean, 
@@ -13,7 +12,11 @@ export default function DebtManagerModal(props: {
 
     const onSaveDebt = async (onClose: () => void) => {
         await updateDebt(debt);
-        toast.custom((t) => <ToastCustom message="Tu deuda se actualizó correctamente" toast={t}/>);
+        addToast({
+            title: "¡Todo en orden!",
+            description: "Tu deuda se ha actualizado correctamente",
+            icon: <FaCheck size={24} />,
+        });
         onClose();
     }
     

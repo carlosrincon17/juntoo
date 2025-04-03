@@ -1,13 +1,11 @@
 "use client"
 
 import type { Savings } from "@/app/types/saving"
-import { Button, Checkbox, Input, Select, SelectItem, type SharedSelection } from "@heroui/react"
-import toast from "react-hot-toast"
+import { addToast, Button, Checkbox, Input, Select, SelectItem, type SharedSelection } from "@heroui/react"
 import { createSavings, updateSavings } from "../actions/savings"
-import ToastCustom from "@/app/components/toastCustom"
 import { useEffect, useState } from "react"
 import { currencyToInteger, formatCurrency } from "@/app/lib/currency"
-import { FaTimes } from "react-icons/fa"
+import { FaCheck, FaTimes } from "react-icons/fa"
 
 export default function SavingsManagerPanel(props: {
   isOpen: boolean
@@ -25,7 +23,11 @@ export default function SavingsManagerPanel(props: {
         const message = selectedSavings?.id
             ? "Tus ahorros se actualizaron correctamente"
             : "Tus ahorros se agregaron correctamente"
-        toast.custom((t) => <ToastCustom message={message} toast={t} />)
+        addToast({
+            description: message, 
+            title: "¡Todo en orden!",
+            icon: <FaCheck size={24} />,
+        });
         onOpenChange(false)
         afterSaveSavings()
     }

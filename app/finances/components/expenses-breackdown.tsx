@@ -27,7 +27,6 @@ const chartOptions: ApexOptions = {
     plotOptions: {
         pie: {
             donut: {
-                size: "70%",
                 background: "transparent",
                 labels: {
                     show: true,

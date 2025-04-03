@@ -3,14 +3,12 @@
 import type { Category, ParentCategory } from "@/app/types/category"
 import type { Expense } from "@/app/types/expense"
 import { TransactionType } from "@/utils/enums/transaction-type"
-import { Button, Card, CardBody, ScrollShadow } from "@heroui/react"
+import { addToast, Button, Card, CardBody, ScrollShadow } from "@heroui/react"
 import { useEffect, useState } from "react"
 import { getCategories } from "../actions/categories"
-import { FaCreditCard, FaTimes } from "react-icons/fa"
+import { FaCheck, FaCreditCard, FaTimes } from "react-icons/fa"
 import { CustomLoading } from "@/app/components/customLoading"
 import { addExpense } from "@/app/actions/expenses"
-import toast from "react-hot-toast"
-import ToastCustom from "@/app/components/toastCustom"
 
 // Currency utility functions
 const formatCurrency = (value: number): string => {
@@ -140,7 +138,11 @@ export default function NewExpensePanel(props: {
     const handleSaveExpense = async () => {
         setIsLoadingSaveExpense(true)
         await addExpense({...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType})
-        toast.custom((t) => <ToastCustom message={`Tu gasto de ${formatCurrency(expense.value as number)} por ${expense.category?.name} se ha agregado correctamente`} toast={t}/>);
+        addToast({
+            title: "¡Todo en orden!",
+            description: `Tu gasto de ${formatCurrency(expense.value as number)} por ${selectedCategory?.name} se ha agregado correctamente`, 
+            icon: <FaCheck size={24} />,
+        });
         setIsLoadingSaveExpense(false)
         onOpenChange()
     }
