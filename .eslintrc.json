@@ -3,5 +3,6 @@
   "rules": {
     "indent": ["error", 4],
     "react-hooks/exhaustive-deps": "off"
-  }
+  },
+  "ignorePatterns": ["node_modules", "build", "dist", "public"]
 }
