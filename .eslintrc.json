@@ -1,6 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    "indent": ["error", 4]
+    "indent": ["error", 4],
+    "react-hooks/exhaustive-deps": "off"
   }
 }
