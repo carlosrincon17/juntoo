@@ -1,4 +1,4 @@
-'use-server'
+'use server'
 
 import { cookies } from 'next/headers'
 import { SESSION_KEY } from '@/utils/storage/constants'
