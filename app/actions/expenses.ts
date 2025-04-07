@@ -6,7 +6,6 @@ import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense } f
 import { and, asc, count, desc, eq, gte, inArray, lte, not, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { addDaysToCurrentDate } from "../lib/dates";
 import { getUser } from "./auth";
 import { FinancialData } from "../types/financial";
 
@@ -16,7 +15,7 @@ const totalsFilters = {
 }
 
 export async function addExpense(expense: Expense) {
-    const date = addDaysToCurrentDate(0);
+    const date = new Date(new Date().toISOString())
     const user = await getUser()
     await db.insert(ExpensesTable).values({
         createdBy: expense.createdBy ?? "",
@@ -30,10 +29,14 @@ export async function addExpense(expense: Expense) {
     });
 }   
 
-export async function getExpenses(page: number, perPage: number): Promise<Expense[]> {
+export async function getExpenses(page: number, perPage: number, transactionType?: TransactionType): Promise<Expense[]> {
     const user = await getUser();
+    const filter = [eq(ExpensesTable.familyId, user.familyId)];
+    if (transactionType) {
+        filter.push(eq(ExpensesTable.transactionType, transactionType));
+    }
     return await db.query.ExpensesTable.findMany({
-        where: eq(ExpensesTable.familyId, user.familyId),
+        where: and(...filter),
         limit: perPage,
         offset: (page -1) * perPage,
         with: {

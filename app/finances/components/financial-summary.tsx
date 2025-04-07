@@ -1,7 +1,7 @@
 import { Card } from "@heroui/react";
 import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
-import { FaChevronUp, FaDollarSign } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaDollarSign } from "react-icons/fa";
 import { ExpensesBreakdown } from "./expenses-breackdown";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { ExpensesFilters } from "@/app/types/filters";
@@ -28,8 +28,12 @@ export default function FinancialSummary({ financialMetrics, expensesFilter }: {
         
                     <div className="flex items-center gap-3 relative">
                         <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
-                            <FaChevronUp className="h-3 w-3 text-white" />
-                            <span className="text-xs font-light text-white">{Math.round(financialMetrics.savings.variationPercentage)}%</span>
+                            {
+                                financialMetrics.savings.variationPercentage > 0 ?
+                                    <FaChevronUp className="h-3 w-3 text-white" /> :
+                                    <FaChevronDown className="h-3 w-3 text-white" />
+                            }
+                            <span className="text-xs font-light text-white">{Math.abs(Math.round(financialMetrics.savings.variationPercentage))}%</span>
                         </div>
                         <span className="text-xs font-extralight text-white/70">vs. mes anterior</span>
                     </div>
@@ -39,10 +43,32 @@ export default function FinancialSummary({ financialMetrics, expensesFilter }: {
                             <div>
                                 <p className="text-md font-light text-white/70">Gastos Totales</p>
                                 <p className="text-2xl font-extralight text-white">{formatCurrency(financialMetrics.expenses.total || 0)}</p>
+                                <div className="flex items-center gap-3 relative">
+                                    <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
+                                        {
+                                            financialMetrics.expenses.variationPercentage > 0 ?
+                                                <FaChevronUp className="h-3 w-3 text-white" /> :
+                                                <FaChevronDown className="h-3 w-3 text-white" />
+                                        }
+                                        <span className="text-xs font-light text-white">{Math.abs(Math.round(financialMetrics.expenses.variationPercentage))}%</span>
+                                    </div>
+                                    <span className="text-xs font-extralight text-white/70">vs. mes anterior</span>
+                                </div>
                             </div>
                             <div className="mt-4 md:mt-0">
                                 <p className="text-md font-light text-white/70">Ingresos Totales</p>
                                 <p className="text-2xl font-extralight text-white">{formatCurrency(financialMetrics.investmentIncome.total || 0)}</p>
+                                <div className="flex items-center gap-3 relative">
+                                    <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
+                                        {
+                                            financialMetrics.investmentIncome.variationPercentage > 0 ?
+                                                <FaChevronUp className="h-3 w-3 text-white" /> :
+                                                <FaChevronDown className="h-3 w-3 text-white" />
+                                        }
+                                        <span className="text-xs font-light text-white">{Math.abs(Math.round(financialMetrics.investmentIncome.variationPercentage))}%</span>
+                                    </div>
+                                    <span className="text-xs font-extralight text-white/70">vs. mes anterior</span>
+                                </div>
                             </div>
                         </div>
                     </div>
