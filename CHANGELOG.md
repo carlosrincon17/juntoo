@@ -1,3 +1,11 @@
+# [1.15.0](https://github.com/carlosrincon17/cashly/compare/v1.14.0...v1.15.0) (2025-04-07)
+
+
+### Features
+
+* Improved dashboard data ([af9e1e3](https://github.com/carlosrincon17/cashly/commit/af9e1e32426f90082cba864cae8718908516bacd))
+* Improved dashboard data ([fadca6a](https://github.com/carlosrincon17/cashly/commit/fadca6a5838160fb0bfe2a07715c153ec71110b1))
+
 # [1.14.0](https://github.com/carlosrincon17/cashly/compare/v1.13.1...v1.14.0) (2025-04-04)
 
 
