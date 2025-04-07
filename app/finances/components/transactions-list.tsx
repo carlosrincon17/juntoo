@@ -3,21 +3,43 @@ import { formatCurrency } from "@/app/lib/currency";
 import { formateSimpleDate } from "@/app/lib/dates";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { Button, Card } from "@heroui/react";
+import { Button, ButtonGroup, Card } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaChevronRight } from "react-icons/fa";
 
 export default function TransactionsList() {
     const [transactions, setTransactions] = useState<Expense[]>([]);
+    const [transactionTypeSelected, setTransactionTypeSelected] = useState<TransactionType>(TransactionType.Outcome);
+    const [currentTransactionsPage, setCurrentTransactionsPage] = useState<number>(1);
 
     const getTransactionsData = async () => {
-        const transactionsData = await getExpenses(1, 7);
-        setTransactions(transactionsData);
+        const transactionsData = await getExpenses(currentTransactionsPage, 7, transactionTypeSelected);
+        if(currentTransactionsPage == 1) {
+            setTransactions(transactionsData);
+            return;
+        }
+        setTransactions([...transactions, ...transactionsData]);
+    }
+
+    const getColorByTransactionType = (transactionType: TransactionType) => {
+        return transactionType === transactionTypeSelected ? 'primary' : 'default';
+    }
+
+    const onLoadMoreTransactions = async () => {
+        setCurrentTransactionsPage(currentTransactionsPage + 1);
     }
 
     useEffect(() => {
         getTransactionsData();
+    }, [currentTransactionsPage]);
+
+    useEffect(() => {
+        getTransactionsData();
     },  []);
+
+    useEffect(() => {
+        setCurrentTransactionsPage(1);
+    }, [transactionTypeSelected]);
 
     return (
         
@@ -31,8 +53,23 @@ export default function TransactionsList() {
                         <h2 className="text-xl font-medium text-[#121432]">Últimas Transacciones</h2>
                     </div>
                 </div>
-
-                <div className="space-y-2 relative z-10 mt-4">
+                <div className="flex justify-end gap-2 mt-3 w-full">
+                    <ButtonGroup variant="flat" size="sm">
+                        <Button 
+                            color={getColorByTransactionType(TransactionType.Outcome)} 
+                            onPress={() => setTransactionTypeSelected(TransactionType.Outcome)}
+                        >
+                             Gastos
+                        </Button>
+                        <Button 
+                            color={getColorByTransactionType(TransactionType.Income)}
+                            onPress={() => setTransactionTypeSelected(TransactionType.Income)}
+                        >
+                            Ingresos
+                        </Button>
+                    </ButtonGroup>
+                </div>
+                <div className="space-y-2 relative z-10 mt-3">
                     {transactions.map((transaction) => (
                         <div 
                             key={transaction.id} 
@@ -76,8 +113,13 @@ export default function TransactionsList() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between relative z-10">
-                    <Button variant="light" size="lg" className="text-xs font-normal flex items-center w-full">
-                        Ver todas <FaChevronRight className="h-3 w-3 ml-1" />
+                    <Button 
+                        variant="light" 
+                        size="lg" 
+                        className="text-xs font-normal flex items-center w-full"
+                        onPress={onLoadMoreTransactions}
+                    >
+                        Ver más <FaChevronRight className="h-3 w-3 ml-1" />
                     </Button>
                 </div>
             </div>
