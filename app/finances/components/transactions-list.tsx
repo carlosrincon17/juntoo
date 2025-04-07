@@ -39,6 +39,11 @@ export default function TransactionsList() {
 
     useEffect(() => {
         setCurrentTransactionsPage(1);
+        getTransactionsData();
+    }, [transactionTypeSelected]);
+
+    useEffect(() => {
+        setCurrentTransactionsPage(1);
     }, [transactionTypeSelected]);
 
     return (
