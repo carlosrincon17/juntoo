@@ -1,3 +1,11 @@
+## [1.15.1](https://github.com/carlosrincon17/cashly/compare/v1.15.0...v1.15.1) (2025-04-07)
+
+
+### Bug Fixes
+
+* fixed navigation ([d5112aa](https://github.com/carlosrincon17/cashly/commit/d5112aa72b76e3e0b707f2cd54fa843454855f0d))
+* fixed navigation ([#3](https://github.com/carlosrincon17/cashly/issues/3)) ([e413e57](https://github.com/carlosrincon17/cashly/commit/e413e57d754f1fda169e1abb42a7a369f61794fb))
+
 # [1.15.0](https://github.com/carlosrincon17/cashly/compare/v1.14.0...v1.15.0) (2025-04-07)
 
 
