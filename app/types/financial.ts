@@ -31,8 +31,8 @@ export interface ChartData {
 
 export interface FinancialMetric {
   total: number;
+  last: number;
   variationPercentage: number;
-  average: number;
 }
 
 export interface FinancialMetrics {
