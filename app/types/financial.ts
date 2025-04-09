@@ -33,6 +33,7 @@ export interface FinancialMetric {
   total: number;
   last: number;
   variationPercentage: number;
+  variationTotal: number;
 }
 
 export interface FinancialMetrics {
