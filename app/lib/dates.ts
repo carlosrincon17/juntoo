@@ -31,10 +31,17 @@ export const getUTCDate = (date: Date) => {
     return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
 }
 
-export const formateSimpleDate = (date: Date): string => {
-    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-    return date.toLocaleDateString('es-CO', options)
-        .replace(/\./g, '')
-        .replace(/ de /g, '/')
-        .trim(); 
-}
+export const formateSimpleDate = (date: Date, locale = 'es-CO'): string => {
+    const formatter = new Intl.DateTimeFormat(locale, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'UTC', // force UTC formatting
+    });
+
+    return formatter
+        .format(date)
+        .replace(/\./g, '') // remove any periods in short month names
+        .replace(/ de /g, '/') // optional: replace ' de ' with '/'
+        .trim();
+};
