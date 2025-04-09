@@ -79,17 +79,20 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
         expenses: {
             total: Number(current_expenses),
             last: Number(last_expenses),
-            variationPercentage: calculateVariation(Number(current_expenses), Number(last_expenses))
+            variationPercentage: calculateVariation(Number(current_expenses), Number(last_expenses)),
+            variationTotal: Number(current_expenses) - Number(last_expenses)
         },
         investmentIncome: {
             total: Number(current_investment_income),
             last: Number(last_investment_income),
-            variationPercentage: calculateVariation(Number(current_investment_income), Number(last_investment_income))
+            variationPercentage: calculateVariation(Number(current_investment_income), Number(last_investment_income)),
+            variationTotal: Number(current_investment_income) - Number(last_investment_income)
         },
         savings: {
             total: Number(current_savings),
             last: Number(last_savings),
-            variationPercentage: calculateVariation(Number(current_savings), Number(last_savings))
+            variationPercentage: calculateVariation(Number(current_savings), Number(last_savings)),
+            variationTotal: Number(current_savings) - Number(last_savings)
         }
     };
 }
