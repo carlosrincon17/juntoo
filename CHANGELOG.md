@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/carlosrincon17/cashly/compare/v1.17.0...v1.17.1) (2025-04-09)
+
+
+### Bug Fixes
+
+* fixed transactions dates to UTC as expected ([b560800](https://github.com/carlosrincon17/cashly/commit/b560800e00a95f52405a9100dad7616a9e66b42b))
+
 # [1.17.0](https://github.com/carlosrincon17/cashly/compare/v1.16.0...v1.17.0) (2025-04-09)
 
 
