@@ -1,3 +1,11 @@
+# [1.16.0](https://github.com/carlosrincon17/cashly/compare/v1.15.1...v1.16.0) (2025-04-09)
+
+
+### Features
+
+* fixed current and last month calculations ([5d1d48a](https://github.com/carlosrincon17/cashly/commit/5d1d48a79151590266a9ccfc4c2082db2094582e))
+* fixed moht variation comparation ([0311f6d](https://github.com/carlosrincon17/cashly/commit/0311f6d3d9c95b9e39fce7ae5665d5903e01724d))
+
 ## [1.15.1](https://github.com/carlosrincon17/cashly/compare/v1.15.0...v1.15.1) (2025-04-07)
 
 
