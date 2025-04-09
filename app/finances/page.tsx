@@ -35,6 +35,7 @@ export default function Page() {
         setUser(await getUser());
         const totalExpensesData = await getTotalsExpenses(filters);
         const financialMetricsData = await getFinancialMetrics();
+        console.log(financialMetricsData)
         setFinancialMetrics(financialMetricsData);
         setTotalExpenses(totalExpensesData);
         setLoading(false);

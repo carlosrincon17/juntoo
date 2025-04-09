@@ -10,6 +10,7 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
     const today = new Date();
     const currentMonth = today.getMonth() + 1;
     const currentYear = today.getFullYear();
+    const currentDay = today.getDate();
 
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
@@ -34,7 +35,8 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
           WHERE 
               family_id = ${user.familyId} AND
               EXTRACT(YEAR FROM "createdAt") = ${currentYear} AND
-              EXTRACT(MONTH FROM "createdAt") = ${currentMonth}
+              EXTRACT(MONTH FROM "createdAt") = ${currentMonth} AND
+              EXTRACT(DAY FROM "createdAt") <= ${currentDay}
       ),
       last_metrics AS (
           SELECT
@@ -46,7 +48,8 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
           WHERE 
               family_id = ${user.familyId} AND
               EXTRACT(YEAR FROM "createdAt") = ${lastMonthYear} AND
-              EXTRACT(MONTH FROM "createdAt") = ${lastMonth}
+              EXTRACT(MONTH FROM "createdAt") = ${lastMonth} AND
+              EXTRACT(DAY FROM "createdAt") <= ${currentDay}
       )
       SELECT 
           cm.current_expenses,
@@ -75,17 +78,17 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
     return {
         expenses: {
             total: Number(current_expenses),
-            average: Number(last_expenses),
+            last: Number(last_expenses),
             variationPercentage: calculateVariation(Number(current_expenses), Number(last_expenses))
         },
         investmentIncome: {
             total: Number(current_investment_income),
-            average: Number(last_investment_income),
+            last: Number(last_investment_income),
             variationPercentage: calculateVariation(Number(current_investment_income), Number(last_investment_income))
         },
         savings: {
             total: Number(current_savings),
-            average: Number(last_savings),
+            last: Number(last_savings),
             variationPercentage: calculateVariation(Number(current_savings), Number(last_savings))
         }
     };
