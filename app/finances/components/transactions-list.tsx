@@ -55,7 +55,7 @@ export default function TransactionsList() {
             <div className="relative z-10">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-xl font-medium text-[#121432]">Últimas Transacciones</h2>
+                        <h3 className="text-xl font-light">Ultimas transacciones</h3>
                     </div>
                 </div>
                 <div className="flex justify-end gap-2 mt-3 w-full">
