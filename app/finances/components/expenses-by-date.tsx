@@ -15,13 +15,31 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function ExpensesByDate({ expensesFilter }: { expensesFilter: ExpensesFilters }) {
     const [expensesByDate, setExpensesByDate] = useState<ExpenseByDate[]>([]);
+    const [expensesByDatePrevious, setExpensesByDatePrevious] = useState<ExpenseByDate[]>([]);
     const [loading, setLoading] = useState(true);
+
+
+    const getPreviousMonthDateRangeFilter = () => {
+        const date = new Date();
+        const startDate = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+        const endDate = new Date(date.getFullYear(), date.getMonth(), 0);
+        return { startDate, endDate };
+    };
 
     async function getExpensesByDateData() {
         setLoading(true);
         const expensesByDateData = await getExpensesByDate(expensesFilter);
         setExpensesByDate(expensesByDateData);
+        const expensesByDatePreviousData = await getExpensesByDatePreviousData();
+        const dates = expensesByDateData.map((item) => item.date);
+        setExpensesByDatePrevious(expensesByDatePreviousData.filter((item) => dates.includes(item.date)));
         setLoading(false);
+    }
+
+    async function getExpensesByDatePreviousData() {
+        setLoading(true);
+        const previousFilter = getPreviousMonthDateRangeFilter();
+        return await getExpensesByDate(previousFilter);
     }
 
     useEffect(() => {
@@ -75,6 +93,13 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
         {
             name: "Gastos",
             data: expensesByDate.map((item) => item.totalExpenses),
+            color: '#2dd4bf'
+        },
+        {
+            name: "Gastos mes anterior",
+            data: expensesByDatePrevious.map((item) => item.totalExpenses),
+            color: '#f97066',
+            hidden: true
         },
     ];
 
