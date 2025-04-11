@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/carlosrincon17/cashly/compare/v1.18.0...v1.19.0) (2025-04-11)
+
+
+### Features
+
+* added support to financial golas and improved ui a lot ([629c84a](https://github.com/carlosrincon17/cashly/commit/629c84a586b63de34f08199a73e11a4f7040a729))
+
 # [1.18.0](https://github.com/carlosrincon17/cashly/compare/v1.17.1...v1.18.0) (2025-04-10)
 
 
