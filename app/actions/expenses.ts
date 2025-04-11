@@ -111,7 +111,7 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters 
     ]: [];
     const topCategoriesWithMostExpenses = await db
         .select({
-            categoryName: CategoryTable.parent,
+            categoryName: transactionType === TransactionType.Outcome ? CategoryTable.parent : CategoryTable.name,
             totalExpenses: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`.mapWith(Number),
         })
         .from(ExpensesTable)
@@ -124,7 +124,7 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters 
                 not(eq(CategoryTable.parent, 'Deudas')) 
             )
         )
-        .groupBy(CategoryTable.parent)
+        .groupBy(transactionType === TransactionType.Outcome ? CategoryTable.parent : CategoryTable.name)
         .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
     return topCategoriesWithMostExpenses as CategoryExpense[];
 }

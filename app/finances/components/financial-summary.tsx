@@ -3,9 +3,9 @@ import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
 import { FaChevronDown, FaChevronUp, FaDollarSign } from "react-icons/fa";
 import { ExpensesBreakdown } from "./expenses-breackdown";
-import { TransactionType } from "@/utils/enums/transaction-type";
 import { ExpensesFilters } from "@/app/types/filters";
 import { Tooltip } from "@heroui/tooltip";
+import FinancialGoals from "./financial-goals";
 
 export default function FinancialSummary({ financialMetrics, expensesFilter }: { financialMetrics: FinancialMetrics, expensesFilter?: ExpensesFilters }) {
 
@@ -87,9 +87,8 @@ export default function FinancialSummary({ financialMetrics, expensesFilter }: {
                     </div>
                 </div>
             </Card>
-
-            <ExpensesBreakdown totalExpenses={financialMetrics.expenses.total || 0} expensesFilter={expensesFilter} transactionType={TransactionType.Outcome} />
-            <ExpensesBreakdown totalExpenses={financialMetrics.investmentIncome.total || 0} expensesFilter={expensesFilter} transactionType={TransactionType.Income} />
+            <ExpensesBreakdown totalExpenses={financialMetrics.expenses.total || 0} expensesFilter={expensesFilter} />
+            <FinancialGoals />
         </div>
     )
 }
