@@ -3,6 +3,13 @@ import type { Config } from "tailwindcss";
 import withPreline from "preline/plugin"
 
 const config: Config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                poppins: ['var(--font-poppins)', 'sans-serif'],
+              },
+        }
+    },
     darkMode: 'class',
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",

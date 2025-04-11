@@ -108,9 +108,11 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
             {!loading ? (
                 <>
                     <div>
-                        <Card className="w-full shadow-md max-w-8xl ">
-                            <CardBody className="p-4">
-                                <h3 className="text-xl font-light mb-4">Gastos por día</h3>
+                        <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
+                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
+                            <h3 className="text-xl font-extralight mb-4">Gastos por día</h3>
+                            <CardBody>
                                 <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
                             </CardBody>
                         </Card>
