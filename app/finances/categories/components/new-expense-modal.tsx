@@ -149,8 +149,6 @@ export default function NewExpensePanel(props: {
 
     if (!isOpen) return null
 
-    if (isLoading) return <CustomLoading message="Preparando todo para crear tu gasto " />
-
     return (
         <>
             <div className="fixed inset-0 bg-black/30 z-40 transition-opacity" onClick={onOpenChange} />
@@ -162,131 +160,137 @@ export default function NewExpensePanel(props: {
                         <div className="flex items-center gap-2">
                             <h2 className="text-2xl font-extralight">Nuevo Registro</h2>
                         </div>
-                        <Button isIconOnly variant="light" onClick={onOpenChange}>
+                        <Button isIconOnly variant="light" onPress={onOpenChange}>
                             <FaTimes size={24} />
                         </Button>
                     </div>
 
                     <ScrollShadow className="flex-1 overflow-y-auto bg-gray-50">
-                        <form
-                            className="p-4 space-y-6"
-                            onSubmit={(e) => {
-                                e.preventDefault()
-                                handleSaveExpense()
-                            }}
-                        >
-                            {" "}
-                            {!selectedParentCategory ? (
-                                <div className="space-y-3">
-                                    <label className="text-sm font-light">
-                    Seleccione el tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"} :
-                                    </label>
+                        {
+                            isLoading ? 
+                                <CustomLoading className="mt-24" message="Estamos prepara todo para que crees tu gasto ..." /> 
+                                :
+                                <form
+                                    className="p-4 space-y-6"
+                                    onSubmit={(e) => {
+                                        e.preventDefault()
+                                        handleSaveExpense()
+                                    }}
+                                >
+                                    {" "}
+                                    {!selectedParentCategory ? (
+                                        <div className="space-y-3">
+                                            <label className="text-sm font-light">
+                                        Seleccione el tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"} :
+                                            </label>
 
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
-                                        {categoryParents.map((parentCategory) => (
-                                            <Card
-                                                key={parentCategory.name}
-                                                isPressable
-                                                onPress={() => onSelectParentCategory(parentCategory)}
-                                                className={`shadow-md ${colors[parentCategory.color]} h-16 bg-background`}
-                                                radius="sm"
-                                            >
-                                                <CardBody className="p-4 flex flex-col items-center justify-center">
-                                                    <h2
-                                                        className="text-sm text-center w-full font-medium"
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+                                                {categoryParents.map((parentCategory) => (
+                                                    <Card
+                                                        key={parentCategory.name}
+                                                        isPressable
+                                                        onPress={() => onSelectParentCategory(parentCategory)}
+                                                        className={`shadow-md ${colors[parentCategory.color]} h-16 bg-background`}
+                                                        radius="sm"
                                                     >
-                                                        {parentCategory.name}
-                                                    </h2>
-                                                </CardBody>
-                                            </Card>
-                                        ))}
-                                    </div>
-                                </div>
-                            ) : null}
-                            {selectedParentCategory && categoryList.length && (
-                                <>
-                                    <div className="space-y-3 ">
-                                        <label className="text-sm font-light w-full">Tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"}: </label>
-                                        <div className="grid gap-2 mb-2 grid-cols-1">
-                                            {selectedParentCategory && (
-                                                <Card
-                                                    key={selectedParentCategory.name}
-                                                    isPressable
-                                                    onPress={() => onSelectParentCategory(null)}
-                                                    className={`shadow-md ${colors[selectedParentCategory.color]} h-16 bg-background`}
-                                                    radius="sm"
-                                                >
-                                                    <CardBody className="p-4 flex flex-col items-center justify-center">
-                                                        <h2 className="text-sm text-center text-ellipsis w-full">{selectedParentCategory.name}</h2>
-                                                    </CardBody>
-                                                </Card>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="space-y-3">  
-                                        <label className="text-sm font-light">Seleccione una categoria:</label>
-                                        <div className="grid grid-cols-3 gap-2 mt-2">
-                                            {categoryList.map((category) => (
-                                                <Card
-                                                    key={category.id}
-                                                    isPressable
-                                                    className={`shadow-md ${colors[category.color]} h-16 ${selectedCategory?.id === category.id ? bgSelectedColors[category.color]: null}`}
-                                                    radius="sm"
-                                                    onPress={() => setSelectedCategory(category)}
-                                                >
-                                                    <CardBody className="p-4 flex flex-col items-center justify-center">
-                                                        <h2
-                                                            className="text-sm text-center text-ellipsis w-full font-medium"
-                                                        >
-                                                            {category.name}
-                                                        </h2>
-                                                    </CardBody>
-                                                </Card>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                            {selectedParentCategory && selectedCategory && (
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="text-sm font-light">
-                                            {transactionType === TransactionType.Outcome ? "Valor del gasto" : "Valor del ingreso"} :
-                                        </label>
-                                        <div className="relative mt-4">
-                                            <div
-                                                className="absolute inset-y-0 left-0 flex items-center pl-3"
-                                            >
-                                                <FaCreditCard size={20} />
+                                                        <CardBody className="p-4 flex flex-col items-center justify-center">
+                                                            <h2
+                                                                className="text-sm text-center w-full font-medium"
+                                                            >
+                                                                {parentCategory.name}
+                                                            </h2>
+                                                        </CardBody>
+                                                    </Card>
+                                                ))}
                                             </div>
-                                            <input
-                                                type="text"
-                                                className={`w-full py-3 pl-10 pr-12 text-lg rounded-lg border-2 focus:outline-none ${selectedCategory?.color && colors[selectedCategory.color]}`}
-                                                placeholder="0"
-                                                inputMode="numeric"
-                                                value={expenseValue}
-                                                onChange={(e) => {
-                                                    const intValue = currencyToInteger(e.target.value)
-                                                    setExpenseValue(formatCurrency(intValue))
-                                                    setExpense({ ...expense, value: intValue })
-                                                }}
-                                                autoFocus
-                                            />
                                         </div>
-                                    </div>
-                                </div>
-                            )}
-                        </form>
+                                    ) : null}
+                                    {selectedParentCategory && categoryList.length && (
+                                        <>
+                                            <div className="space-y-3 ">
+                                                <label className="text-sm font-light w-full">Tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"}: </label>
+                                                <div className="grid gap-2 mb-2 grid-cols-1">
+                                                    {selectedParentCategory && (
+                                                        <Card
+                                                            key={selectedParentCategory.name}
+                                                            isPressable
+                                                            onPress={() => onSelectParentCategory(null)}
+                                                            className={`shadow-md ${colors[selectedParentCategory.color]} h-16 bg-background`}
+                                                            radius="sm"
+                                                        >
+                                                            <CardBody className="p-4 flex flex-col items-center justify-center">
+                                                                <h2 className="text-sm text-center text-ellipsis w-full">{selectedParentCategory.name}</h2>
+                                                            </CardBody>
+                                                        </Card>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="space-y-3">  
+                                                <label className="text-sm font-light">Seleccione una categoria:</label>
+                                                <div className="grid grid-cols-3 gap-2 mt-2">
+                                                    {categoryList.map((category) => (
+                                                        <Card
+                                                            key={category.id}
+                                                            isPressable
+                                                            className={`shadow-md ${colors[category.color]} h-16 ${selectedCategory?.id === category.id ? bgSelectedColors[category.color]: null}`}
+                                                            radius="sm"
+                                                            onPress={() => setSelectedCategory(category)}
+                                                        >
+                                                            <CardBody className="p-4 flex flex-col items-center justify-center">
+                                                                <h2
+                                                                    className="text-sm text-center text-ellipsis w-full font-medium"
+                                                                >
+                                                                    {category.name}
+                                                                </h2>
+                                                            </CardBody>
+                                                        </Card>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                    {selectedParentCategory && selectedCategory && (
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label className="text-sm font-light">
+                                                    {transactionType === TransactionType.Outcome ? "Valor del gasto" : "Valor del ingreso"} :
+                                                </label>
+                                                <div className="relative mt-4">
+                                                    <div
+                                                        className="absolute inset-y-0 left-0 flex items-center pl-3"
+                                                    >
+                                                        <FaCreditCard size={20} />
+                                                    </div>
+                                                    <input
+                                                        type="text"
+                                                        className={`w-full py-3 pl-10 pr-12 text-lg rounded-lg border-2 focus:outline-none ${selectedCategory?.color && colors[selectedCategory.color]}`}
+                                                        placeholder="0"
+                                                        inputMode="numeric"
+                                                        value={expenseValue}
+                                                        onChange={(e) => {
+                                                            const intValue = currencyToInteger(e.target.value)
+                                                            setExpenseValue(formatCurrency(intValue))
+                                                            setExpense({ ...expense, value: intValue })
+                                                        }}
+                                                        autoFocus
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </form>
+                        }
+                        
                     </ScrollShadow>
 
                     <div className="p-4 border-t flex justify-end gap-2">
                         <Button
                             variant="flat"
-                            onClick={handleSaveExpense}
+                            onPress={handleSaveExpense}
                             isDisabled={Boolean(!selectedCategory || !expense.value || isLoadingSaveExpense)}
                             className={`w-full text-white font-semibold ${selectedCategory?.color && bgSelectedColorsButton[selectedCategory?.color]}`}
                         >
-              Agregar {transactionType === TransactionType.Outcome ? "Gasto" : "Ingreso"}
+                            Agregar {transactionType === TransactionType.Outcome ? "Gasto" : "Ingreso"}
                         </Button>
                     </div>
                 </div>

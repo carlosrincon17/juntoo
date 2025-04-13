@@ -28,6 +28,7 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
 
     async function getExpensesByDateData() {
         setLoading(true);
+        console.log(expensesFilter);
         const expensesByDateData = await getExpensesByDate(expensesFilter);
         setExpensesByDate(expensesByDateData);
         const expensesByDatePreviousData = await getExpensesByDatePreviousData();
