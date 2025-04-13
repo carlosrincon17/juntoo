@@ -30,7 +30,7 @@ export default function AccountCard({
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
                 <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
 
-                <div className="flex justify-between items-start mb-4 relative z-10">
+                <div className="flex justify-between items-start mb-4 relative">
                     <div>
                         <h3 className={`font-light text-sm ${textColor}/90`}>{name}</h3>
                         <p className={`text-2xl font-extralight mt-1 ${textColor}`}>{formatCurrency(value)}</p>
@@ -40,7 +40,7 @@ export default function AccountCard({
                     </div>
                 </div>
 
-                <div className="flex justify-end mt-auto gap-2 relative z-10">
+                <div className="flex justify-end mt-auto gap-2 relative">
                     <Button
                         variant="light"
                         isIconOnly

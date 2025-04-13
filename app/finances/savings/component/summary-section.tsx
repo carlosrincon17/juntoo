@@ -20,7 +20,7 @@ export default function SummarySection({ savings, assets, debts, balance }: Summ
                     <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
                     <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
 
-                    <div className="flex items-center justify-between mb-1 relative z-10">
+                    <div className="flex items-center justify-between mb-1 relative0¿">
                         <div className="flex items-center gap-2">
                             <FaDollarSign className="h-5 w-5 text-white/80" />
                             <h3 className="font-light text-sm tracking-wide text-white/90 uppercase">Balance Global</h3>
@@ -32,7 +32,7 @@ export default function SummarySection({ savings, assets, debts, balance }: Summ
                         <p className="text-3xl font-thin text-white">{formatCurrency(balance)}</p>
                     </div>
 
-                    <div className="flex items-center gap-3 relative z-10">
+                    <div className="flex items-center gap-3 relative z">
                         <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
                             <FaChevronUp className="h-3 w-3 text-white" />
                             <span className="text-xs font-light text-white">+2.4%</span>
