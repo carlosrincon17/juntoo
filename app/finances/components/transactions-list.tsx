@@ -111,7 +111,7 @@ export default function TransactionsList() {
                 ))}
             </div>
 
-            <div className="mt-4 flex items-center justify-between relative z-10">
+            <div className="mt-4 flex items-center justify-between relative">
                 <Button 
                     variant="light" 
                     size="lg" 

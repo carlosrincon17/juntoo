@@ -5,12 +5,10 @@ import React from "react";
 export default function Kpi(props: { 
     title: string, 
     value: number, 
-    isPressable?: boolean, 
-    onPress?: () => void,
     color?: string, 
     type?: string,
 }) {
-    const { title, value, isPressable, onPress, color, type = 'currency' } = props;
+    const { title, value, color, type = 'currency' } = props;
 
     const getValues = () => {
         if (type === 'percentage') {
@@ -19,10 +17,10 @@ export default function Kpi(props: {
         return formatCurrency(value);
     }
     return (
-        <Card isPressable={isPressable} onPress={onPress} className="shadow-md">
+        <Card className="shadow-md">
             <CardBody className="px-4">
                 <div className="flex flex-col">
-                    <p className="text-sm font-semibold">{title}</p>
+                    <p className="text-md font-light">{title}</p>
                     <p className={`text-2xl font-light ${color}`}>{getValues()}</p>
                 </div>
             </CardBody>

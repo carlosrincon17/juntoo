@@ -10,7 +10,6 @@ import { convertUsdToCop } from "@/app/actions/trm";
 import { CustomLoading } from "@/app/components/customLoading";
 import { getTotalLoans } from "./actions/loans";
 import FinancialOverview from "./components/financial-overview";
-import FinancialBalanceCard from "./components/financial-balance-card";
 import TransactionsSummaryCard from "./components/transaction-summary";
 
 
@@ -77,16 +76,7 @@ export default function Page() {
                     <div className="w-full max-w-8xl mx-auto space-y-6">
                         <div className="flex items-start justify-start max-h-full flex-wrap">
                             <div className="grid grid-cols-1 gap-4 w-full md:w-1/3">
-                                <h1 className="text-2xl font-light mb-2">Resumen</h1>
-                                <FinancialBalanceCard 
-                                    patrimony={totalPatrimonies}
-                                    savings={totalSavings}
-                                    debt={totalDebts}
-                                />
-                                <TransactionsSummaryCard 
-                                    income={96000000}
-                                    outcome={80000000}
-                                />
+                                <TransactionsSummaryCard />
                                 <Feedback patrimonies={totalPatrimonies} savings={totalSavings + totalLoans} debts={totalDebts} />
                             </div>
                             <div className="grid grid-cols-1 sm:pl-6 sm:px-4  max-h-full overflow-y-auto md:w-2/3 mt-6 sm:mt-0">
