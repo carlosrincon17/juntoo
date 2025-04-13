@@ -4,19 +4,25 @@ import { getFinancialGoals } from "../actions/financial-goals";
 import { Card, CardHeader, Progress } from "@heroui/react";
 import { FaFlagCheckered } from "react-icons/fa";
 import { formatCurrency } from "@/app/lib/currency";
-
+import { getTotalSavings } from "../savings/actions/savings";
+import { CustomLoading } from "@/app/components/customLoading";
 
 export default function FinancialGoals() {
 
     const [financialGoals, setFinancialGoals] = useState<FinancialGoal[]>([]);
+    const [totalSavings, setTotalSavings] = useState<number>(0);
+    const [loading, setLoading] = useState(true);
 
-    const loadFInancialGoals = async () => {
-        const financialGoals = await getFinancialGoals();
-        setFinancialGoals(financialGoals);
+    const loadFinancialGoals = async () => {
+        const financialGoalsData = await getFinancialGoals();
+        setFinancialGoals(financialGoalsData);
+        const totalSavingsData = await getTotalSavings();
+        setTotalSavings(totalSavingsData);
+        setLoading(false);
     }
 
     useEffect(() => {
-        loadFInancialGoals();
+        loadFinancialGoals();
     }, []);
 
     return (
@@ -32,33 +38,37 @@ export default function FinancialGoals() {
                 </div>
             </CardHeader>
             <div className="space-y-2 relative mt-2">
-                {financialGoals.map((financialGoal) => (
-                    <div 
-                        key={financialGoal.id} 
-                        className="space-y-2 justify-between p-3 pb-6 rounded-xl bg-gradient-to-r from-white via-white to-teal-50 border border-[#f0f4ff] hover:shadow-md hover:border-[#e4e9ff] transition-all duration-200"
-                    >
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <FaFlagCheckered className="h-4 w-4 text-emerald-500" />
-                                <div className="font-medium">{financialGoal.name}</div>
+                {
+                    loading ?
+                        <CustomLoading className="mt-24" /> :
+                        financialGoals.map((financialGoal) => (
+                            <div 
+                                key={financialGoal.id} 
+                                className="space-y-2 justify-between p-3 pb-6 rounded-xl bg-gradient-to-r from-white via-white to-teal-50 border border-[#f0f4ff] hover:shadow-md hover:border-[#e4e9ff] transition-all duration-200"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <FaFlagCheckered className="h-4 w-4 text-emerald-500" />
+                                        <div className="font-medium">{financialGoal.name}</div>
+                                    </div>
+                                </div>
+                                <div className="mt-2">
+                                    <Progress 
+                                        maxValue={financialGoal.value} 
+                                        size="sm" 
+                                        label={`${formatCurrency(totalSavings)} / ${formatCurrency(financialGoal.value)}`}
+                                        showValueLabel={true}
+                                        value={totalSavings}
+                                        color="success"
+                                        classNames={{
+                                            label: "font-light",
+                                            value: "font-light",
+                                        }}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="mt-2">
-                            <Progress 
-                                maxValue={financialGoal.value} 
-                                size="sm" 
-                                label={`${formatCurrency(80000000)} / ${formatCurrency(financialGoal.value)}`}
-                                showValueLabel={true}
-                                value={80000000}
-                                color="success"
-                                classNames={{
-                                    label: "font-light",
-                                    value: "font-light",
-                                }}
-                            />
-                        </div>
-                    </div>
-                ))}
+                        ))
+                } 
             </div>
         </Card>
     )

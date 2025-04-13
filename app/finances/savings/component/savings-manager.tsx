@@ -50,7 +50,7 @@ export default function SavingsManagerPanel(props: {
 
                     <div className="flex justify-between items-center p-4 border-b">
                         <h2 className="text-2xl font-extralight">{savings?.name || "Nuevo Ahorro"}</h2>
-                        <Button isIconOnly variant="light" onClick={() => onOpenChange(false)}>
+                        <Button isIconOnly variant="light" onPress={() => onOpenChange(false)}>
                             <FaTimes size={24} />
                         </Button>
                     </div>
@@ -136,7 +136,7 @@ export default function SavingsManagerPanel(props: {
                     </div>
 
                     <div className="p-4 border-t flex justify-end gap-2">
-                        <Button color="primary" size="lg" onClick={onSaveSavings} className="w-full">
+                        <Button color="primary" size="lg" onPress={onSaveSavings} className="w-full">
               Guardar
                         </Button>
                     </div>
