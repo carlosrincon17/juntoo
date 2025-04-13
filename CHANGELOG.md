@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/carlosrincon17/cashly/compare/v1.19.1...v1.19.2) (2025-04-13)
+
+
+### Bug Fixes
+
+* improved reports ([2b25cb7](https://github.com/carlosrincon17/cashly/commit/2b25cb79eecaf2c43787dfdf08f6662476156ac6))
+
 ## [1.19.1](https://github.com/carlosrincon17/cashly/compare/v1.19.0...v1.19.1) (2025-04-13)
 
 
