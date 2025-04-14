@@ -1,14 +1,31 @@
-import { Card } from "@heroui/react";
+import { Card, useDisclosure } from "@heroui/react";
 import AccountCard from "./account-card";
 import { FaPlus } from "react-icons/fa";
 import { Patrimony } from "@/app/types/patrimony";
+import { useState } from "react";
+import ConfirmModal from "@/app/components/confirmModal";
+import { deletePatrimony } from "../../summary/actions/patrimonies";
 
 interface PatrimoniesListProps {
     patrimonies: Patrimony[],
+    afterPatrimoniesChange: () => void,
 }
 
-export default function PatrimoniesList({ patrimonies }: PatrimoniesListProps) {
+export default function PatrimoniesList({ patrimonies, afterPatrimoniesChange }: PatrimoniesListProps) {
 
+    const [selectedPatrimony, setSelectedPatrimony] = useState<Patrimony>({...patrimonies[0]});
+    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
+
+    const onClickDeletePatrimony = (patrimony: Patrimony) => {
+        setSelectedPatrimony(patrimony);
+        onDeleteModalOpen();
+    }
+
+    const onConfirmDeletePatrimony = async (onClose: () => void) => {
+        await deletePatrimony(selectedPatrimony?.id as number);
+        onClose();
+        afterPatrimoniesChange();
+    }
     const gradient = "from-[#2dd4bf] via-[#20c997] to-[#34d399]"
 
     return (
@@ -20,7 +37,7 @@ export default function PatrimoniesList({ patrimonies }: PatrimoniesListProps) {
                         name={patrimony.name} 
                         value={patrimony.value} 
                         onEdit={() => console.log(patrimony)} 
-                        onDelete={() => console.log(patrimony)} 
+                        onDelete={() => onClickDeletePatrimony(patrimony)} 
                         gradient={gradient}
                         textColor="text-white"
                     />
@@ -38,7 +55,13 @@ export default function PatrimoniesList({ patrimonies }: PatrimoniesListProps) {
                     </div>
                 </Card>
             </div>
-                    
+            <ConfirmModal
+                isOpen={isDeleteModalOpen} 
+                onOpenChange={onDeleteModalChange} 
+                title="Eliminar propiedad" 
+                message="¿Estás seguro de que quieres eliminar esta propiedad?" 
+                onConfirm={onConfirmDeletePatrimony}
+            />
         </>
     )
 }

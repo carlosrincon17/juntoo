@@ -137,7 +137,7 @@ export default function SavingsManagerPanel(props: {
 
                     <div className="p-4 border-t flex justify-end gap-2">
                         <Button color="primary" size="lg" onPress={onSaveSavings} className="w-full">
-              Guardar
+                            Guardar
                         </Button>
                     </div>
                 </div>

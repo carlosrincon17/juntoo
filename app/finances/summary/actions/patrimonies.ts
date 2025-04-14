@@ -35,3 +35,9 @@ export async function updatePatrimony(patrimony: Patrimony): Promise<void> {
         .where(eq(PatrimoniesTable.id, patrimony.id))
     return;
 }
+
+export async function deletePatrimony(id: number): Promise<void> {
+    await db.delete(
+        PatrimoniesTable
+    ).where(eq(PatrimoniesTable.id, id));
+}

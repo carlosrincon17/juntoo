@@ -1,26 +1,48 @@
-import { Card } from "@heroui/react";
+import { addToast, Card, useDisclosure } from "@heroui/react";
 import AccountCard from "./account-card";
-import { FaPlus } from "react-icons/fa";
+import { FaCheck, FaPlus } from "react-icons/fa";
 import { Debts } from "@/app/types/debts";
+import { useState } from "react";
+import { deleteDebt } from "../../summary/actions/debts";
+import ConfirmModal from "@/app/components/confirmModal";
 
 interface DebtsListProps {
     debts: Debts[],
+    afterDebtsChange: () => void,
 }
 
-export default function DebtsList({ debts }: DebtsListProps) {
+export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
+    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
+    const [selectedDebt, setSelectedDebt] = useState<Debts | null>(null);
 
     const gradient = "from-[#f97066] via-[#f43f5e] to-[#fb7185]"
 
+    const onClickDeleteDebt = (debt: Debts) => {
+        setSelectedDebt(debt);
+        onDeleteModalOpen();
+    }
+
+    const onConfirmDeleteDebt = async (onClose: () => void) => {
+        await deleteDebt(selectedDebt?.id as number);
+        addToast({
+            title: "¡Todo en orden!",
+            description: "Tu deuda se ha eliminado correctamente",
+            icon: <FaCheck size={24} />,
+        });
+        setSelectedDebt(null);
+        afterDebtsChange();
+        onClose();
+    }
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {debts.map((saving) => (
+                {debts.map((debt) => (
                     <AccountCard 
-                        key={saving.id} 
-                        name={saving.name} 
-                        value={saving.value} 
-                        onEdit={() => console.log(saving)} 
-                        onDelete={() => console.log(saving)} 
+                        key={debt.id} 
+                        name={debt.name} 
+                        value={debt.value} 
+                        onEdit={() => console.log(debt)} 
+                        onDelete={() => onClickDeleteDebt(debt)} 
                         gradient={gradient}
                         textColor="text-white"
                     />
@@ -38,7 +60,13 @@ export default function DebtsList({ debts }: DebtsListProps) {
                     </div>
                 </Card>
             </div>
-                    
+            <ConfirmModal 
+                isOpen={isDeleteModalOpen} 
+                onOpenChange={onDeleteModalChange} 
+                title="Eliminar deuda" 
+                message="¿Estás seguro de que quieres eliminar esta deuda?" 
+                onConfirm={onConfirmDeleteDebt}
+            />
         </>
     )
 }
