@@ -1,14 +1,37 @@
-import { Card } from "@heroui/react";
+import { addToast, Card, useDisclosure } from "@heroui/react";
 import AccountCard from "./account-card";
-import { FaPlus } from "react-icons/fa";
+import { FaCheck, FaPlus } from "react-icons/fa";
 import { Loan } from "@/app/types/loans";
+import ConfirmModal from "@/app/components/confirmModal";
+import { deleteLoan } from "../../summary/actions/loans";
+import { useState } from "react";
 
 interface LoanListProps {
     loans: Loan[],
+    afterLoansChange: () => void,
 }
 
-export default function LoansList({ loans }: LoanListProps) {
+export default function LoansList({ loans, afterLoansChange }: LoanListProps) {
 
+    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
+    const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
+
+    const onClickDeleteLoan = (loan: Loan) => {
+        setSelectedLoan(loan);
+        onDeleteModalOpen();
+    }
+
+    const onConfirmDeleteLoan = async (onClose: () => void) => {
+        await deleteLoan(selectedLoan?.id as number);
+        addToast({
+            title: "¡Todo en orden!",
+            description: "Tu prestamo se ha eliminado correctamente",
+            icon: <FaCheck size={24} />,
+        });
+        setSelectedLoan(null);
+        afterLoansChange();
+        onClose();
+    }
     const gradient = "from-[#f97066] via-[#f43f5e] to-[#fb7185]"
 
     return (
@@ -20,7 +43,7 @@ export default function LoansList({ loans }: LoanListProps) {
                         name={loan.name} 
                         value={loan.value} 
                         onEdit={() => console.log(loan)} 
-                        onDelete={() => console.log(loan)} 
+                        onDelete={() => onClickDeleteLoan(loan)} 
                         gradient={gradient}
                         textColor="text-white"
                     />
@@ -38,6 +61,13 @@ export default function LoansList({ loans }: LoanListProps) {
                     </div>
                 </Card>
             </div>
+            <ConfirmModal 
+                isOpen={isDeleteModalOpen} 
+                onOpenChange={onDeleteModalChange} 
+                title="Eliminar prestamo" 
+                message="¿Estás seguro de que quieres eliminar este prestamo?" 
+                onConfirm={onConfirmDeleteLoan}
+            />
                     
         </>
     )

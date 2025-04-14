@@ -115,13 +115,13 @@ export default function Page() {
                                     <SavingsList savings={savings} afterSaveSavings={getSavingsData} />
                                 </Tab>
                                 <Tab key="debts" title="Deudas">
-                                    <DebtsList debts={debts} />
+                                    <DebtsList debts={debts} afterDebtsChange={getDebtsData} />
                                 </Tab>
                                 <Tab key="patrimonies" title="Patrimonio">
-                                    <PatrimoniesList patrimonies={patrimonies} />
+                                    <PatrimoniesList patrimonies={patrimonies} afterPatrimoniesChange={getPatrimoniesData} />
                                 </Tab>
                                 <Tab key="loans" title="Prestamos">
-                                    <LoansList loans={loans} />
+                                    <LoansList loans={loans} afterLoansChange={getLoansData} />
                                 </Tab>
                             </Tabs>
                         </div>

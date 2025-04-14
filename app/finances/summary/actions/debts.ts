@@ -32,5 +32,9 @@ export async function updateDebt(debt: Debts): Promise<void> {
     await db.update(DebtsTable)
         .set(debt)
         .where(eq(DebtsTable.id, debt.id))
-    return;
+}
+
+export async function deleteDebt(id: number): Promise<void> {
+    await db.delete(DebtsTable)
+        .where(eq(DebtsTable.id, id));
 }
