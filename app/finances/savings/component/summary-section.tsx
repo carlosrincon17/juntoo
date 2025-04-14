@@ -9,9 +9,18 @@ interface SummarySectionProps {
   assets: number
   debts: number
   balance: number
+  financialCounter: {
+    savings: number
+    assets: number
+    debts: number
+  }
 }
 
-export default function SummarySection({ savings, assets, debts, balance }: SummarySectionProps) {
+export default function SummarySection({ savings, assets, debts, balance, financialCounter }: SummarySectionProps) {
+    const getFormattedDate = (): string => {
+        const date = new Date();
+        return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+    }
 
     return (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -25,7 +34,7 @@ export default function SummarySection({ savings, assets, debts, balance }: Summ
                             <FaDollarSign className="h-5 w-5 text-white/80" />
                             <h3 className="font-light text-sm tracking-wide text-white/90 uppercase">Balance Global</h3>
                         </div>
-                        <span className="text-xs font-extralight text-white/80 bg-white/10 px-3 py-1 rounded-full">03/31</span>
+                        <span className="text-xs font-extralight text-white/80 bg-white/10 px-3 py-1 rounded-full">{getFormattedDate()}</span>
                     </div>
 
                     <div className="flex items-end gap-3 mb-4">
@@ -84,7 +93,7 @@ export default function SummarySection({ savings, assets, debts, balance }: Summ
                                 <div className="text-right">
                                     <p className="text-lg font-light text-[#121432]">{formatCurrency(savings)}</p>
                                     <div className="flex items-center justify-end gap-1">
-                                        <p className="text-xs font-normal text-[#5a6bff]">3 cuentas</p>
+                                        <p className="text-xs font-normal text-[#5a6bff]">{financialCounter.savings} cuentas</p>
                                         <FaArrowUp className="h-3 w-3 text-[#5a6bff]" />
                                     </div>
                                 </div>
@@ -103,7 +112,7 @@ export default function SummarySection({ savings, assets, debts, balance }: Summ
                                 <div className="text-right">
                                     <p className="text-lg font-light text-[#121432]">{formatCurrency(assets)}</p>
                                     <div className="flex items-center justify-end gap-1">
-                                        <p className="text-xs font-normal text-[#2dd4bf]">3 activos</p>
+                                        <p className="text-xs font-normal text-[#2dd4bf]">{financialCounter.assets} activos</p>
                                         <FaArrowUp className="h-3 w-3 text-[#2dd4bf]" />
                                     </div>
                                 </div>
@@ -124,7 +133,7 @@ export default function SummarySection({ savings, assets, debts, balance }: Summ
                                 <div className="text-right">
                                     <p className="text-lg font-light text-[#121432]">{formatCurrency(debts)}</p>
                                     <div className="flex items-center justify-end gap-1">
-                                        <p className="text-xs font-normal text-[#f97066]">3 deudas</p>
+                                        <p className="text-xs font-normal text-[#f97066]">{financialCounter.debts} deudas</p>
                                         <FaArrowUp className="h-3 w-3 text-[#f97066]" />
                                     </div>
                                 </div>

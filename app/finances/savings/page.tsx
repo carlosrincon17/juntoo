@@ -100,7 +100,17 @@ export default function Page() {
                 loading  ?
                     <CustomLoading /> :
                     <div>
-                        <SummarySection savings={summaryData.savings} assets={summaryData.assets} debts={summaryData.debts} balance={summaryData.balance} />
+                        <SummarySection 
+                            savings={summaryData.savings} 
+                            assets={summaryData.assets} 
+                            debts={summaryData.debts} 
+                            balance={summaryData.balance} 
+                            financialCounter={{
+                                savings: savings.length,
+                                assets: patrimonies.length,
+                                debts: debts.length
+                            }}
+                        />
                         <div className="mt-6 w-full">
                             <Tabs 
                                 aria-label="Tabs colors" 
