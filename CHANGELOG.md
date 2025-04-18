@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/carlosrincon17/juntoo/compare/v1.19.2...v2.0.0) (2025-04-18)
+
+
+### Features
+
+* added rebranding ([f18dfee](https://github.com/carlosrincon17/juntoo/commit/f18dfee38944cb07cc90310085311d55be8f22da))
+* support delelete consolidated items ([3c99e9b](https://github.com/carlosrincon17/juntoo/commit/3c99e9b407bb25a5f16aa12e254207fc67aff1a5))
+* support delelete consolidated items ([d25d0b0](https://github.com/carlosrincon17/juntoo/commit/d25d0b0515689e95d75b688cc930e51a81f4334f))
+* updated branding ([df97cf0](https://github.com/carlosrincon17/juntoo/commit/df97cf00b44fd35745c1a21404da18708e31c33d))
+
+
+### BREAKING CHANGES
+
+* all branding was updated successfully
+
 ## [1.19.2](https://github.com/carlosrincon17/juntoo/compare/v1.19.1...v1.19.2) (2025-04-13)
 
 
