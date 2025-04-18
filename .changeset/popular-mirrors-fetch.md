@@ -1,5 +1,5 @@
 ---
-"cashly": major
+"juntoo": major
 ---
 
 added changeset
