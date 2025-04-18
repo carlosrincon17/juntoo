@@ -17,6 +17,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" data-theme="light" className={`${poppins.variable}`}>
+            <head>
+                <title>Juntoo - La app para tu familia</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.ico" />
+            </head>
             <body className="font-poppins">
                 <Providers>
                     <main>
