@@ -1,6 +1,5 @@
 'use client'
 
-import { FaPiggyBank } from 'react-icons/fa';
 import { signIn } from "./actions/auth";
 import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import {jwtDecode} from 'jwt-decode';
@@ -10,6 +9,7 @@ import { GoogleUsers } from "./types/google-user";
 import { useSearchParams } from 'next/navigation';
 import { Family } from './types/family';
 import { getFamilyByReferenceCode } from './actions/family';
+import Image from "next/image";
 
 function Home() {
     
@@ -78,11 +78,8 @@ function Home() {
                 <GoogleOAuthProvider clientId={googleClientId}>
                     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white px-4">
                         <div className="mb-8 text-center">
-                            <div className="w-16 h-16 bg-gray-900 rounded-xl mx-auto mb-4 flex items-center justify-center">
-                                <span className="text-2xl text-white font-bold"><FaPiggyBank /></span>
-                            </div>
-                            <h1 className="text-2xl font-semibold text-gray-900">Cashly App</h1>
-                            <p className="text-sm text-gray-500 mt-2">Manage your money wisely</p>
+                            <Image src="/juntoo.webp" alt="juntoo" />
+                            <p className="text-sm text-gray-500 mt-2">Porque todo es mejor con tu familia cuando están juntos</p>
                         </div>
         
                         <div className='mb-10'>
