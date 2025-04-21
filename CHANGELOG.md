@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/carlosrincon17/juntoo/compare/v2.1.0...v2.2.0) (2025-04-21)
+
+
+### Features
+
+* added juntoo logo ([c14471a](https://github.com/carlosrincon17/juntoo/commit/c14471aec02b4044086920ffec31cbc302a8df36))
+
 # [2.1.0](https://github.com/carlosrincon17/juntoo/compare/v2.0.1...v2.1.0) (2025-04-21)
 
 
