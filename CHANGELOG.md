@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/carlosrincon17/juntoo/compare/v2.0.0...v2.0.1) (2025-04-21)
+
+
+### Bug Fixes
+
+* screen size and responsive desing ([12aae95](https://github.com/carlosrincon17/juntoo/commit/12aae958a738f98e9df3e9103acc2c7583261eec))
+
 # [2.0.0](https://github.com/carlosrincon17/juntoo/compare/v1.19.2...v2.0.0) (2025-04-18)
 
 
