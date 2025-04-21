@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/carlosrincon17/juntoo/compare/v2.0.1...v2.1.0) (2025-04-21)
+
+
+### Features
+
+* improved performance and UI ([c31e266](https://github.com/carlosrincon17/juntoo/commit/c31e2662e07e6eacde4f3902fb7c957025736327))
+
 ## [2.0.1](https://github.com/carlosrincon17/juntoo/compare/v2.0.0...v2.0.1) (2025-04-21)
 
 
