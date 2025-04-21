@@ -37,6 +37,5 @@ export type ExpenseByDate = {
     parent?: string
     date: string;
     totalExpenses: number;
-    minDate: string
 }
   

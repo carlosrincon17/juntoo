@@ -8,7 +8,7 @@ import { TransactionType } from "@/utils/enums/transaction-type";
 import { useEffect, useState } from "react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { Button, ButtonGroup, Card, CardHeader } from "@heroui/react";
+import { Button, ButtonGroup, Card, CardBody, CardHeader } from "@heroui/react";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -99,8 +99,14 @@ export const ExpensesBreakdown = (props: { totalExpenses: number, expensesFilter
 
     return (
         <div>
-            {loading ?
-                <CustomLoading /> :
+            {loading?
+                <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff] h-full">
+                    <CardBody className="p-4">
+                        <div className="flex justify-center items-center h-full">
+                            <CustomLoading className="mt-24" />
+                        </div>
+                    </CardBody>
+                </Card> :
                 <>
                     <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff]">
                         <CardHeader className="space-y-2 flex items-center justify-between content-center">

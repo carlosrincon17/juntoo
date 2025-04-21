@@ -9,7 +9,6 @@ import { getExpensesByDate } from "@/app/actions/expenses";
 import { formatCurrency, formatToShortCurrency } from "@/app/lib/currency";
 import { CustomLoading } from "@/app/components/customLoading";
 import { ApexOptions } from "apexcharts";
-import TransactionsList from "./transactions-list";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -26,19 +25,29 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
         return { startDate, endDate };
     };
 
+
     async function getExpensesByDateData() {
         setLoading(true);
-        console.log(expensesFilter);
         const expensesByDateData = await getExpensesByDate(expensesFilter);
-        setExpensesByDate(expensesByDateData);
+        const maxDay = Math.max(...expensesByDateData.map(item => parseInt(item.date, 10)));
+        setExpensesByDate(fillMissingDays(Number(maxDay), expensesByDateData));
         const expensesByDatePreviousData = await getExpensesByDatePreviousData();
-        const dates = expensesByDateData.map((item) => item.date);
-        setExpensesByDatePrevious(expensesByDatePreviousData.filter((item) => dates.includes(item.date)));
+        setExpensesByDatePrevious(fillMissingDays(Number(maxDay), expensesByDatePreviousData));
         setLoading(false);
     }
 
+    const fillMissingDays = (maxDay: number, data: ExpenseByDate[]): ExpenseByDate[] => {
+        const dayMap = new Map(data.map(item => [item.date, item.totalExpenses]));
+        return Array.from({ length: maxDay }, (_, i) => {
+            const dayStr = (i + 1).toString();
+            return {
+                date: dayStr,
+                totalExpenses: dayMap.get(dayStr) ?? 0,
+            };
+        });
+    };
+
     async function getExpensesByDatePreviousData() {
-        setLoading(true);
         const previousFilter = getPreviousMonthDateRangeFilter();
         return await getExpensesByDate(previousFilter);
     }
@@ -105,21 +114,17 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {!loading ? (
-                <>
-                    <div>
-                        <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
-                            <h3 className="text-xl font-extralight mb-4">Gastos por día</h3>
-                            <CardBody>
-                                <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
-                            </CardBody>
-                        </Card>
-                    </div>
-                    <TransactionsList />
-                </>
+        <>
+            {!loading && expensesByDate.length  && expensesByDatePrevious.length ? (
+                <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
+                    <h3 className="text-xl font-extralight mb-4">Gastos por día</h3>
+                    <CardBody>
+                        <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
+                    </CardBody>
+                </Card>
+                    
             ) : (
                 <Card>
                     <CardBody className="p-4">
@@ -129,6 +134,6 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
                     </CardBody>
                 </Card>
             )}
-        </div>
+        </>
     );
 }

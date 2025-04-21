@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from "@heroui/react";
 import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
@@ -6,13 +8,48 @@ import { ExpensesBreakdown } from "./expenses-breackdown";
 import { ExpensesFilters } from "@/app/types/filters";
 import { Tooltip } from "@heroui/tooltip";
 import FinancialGoals from "./financial-goals";
+import { useEffect, useState } from "react";
+import { getFinancialMetrics } from "../actions/financial-metrics";
 
-export default function FinancialSummary({ financialMetrics, expensesFilter }: { financialMetrics: FinancialMetrics, expensesFilter?: ExpensesFilters }) {
+const emptyFinancialMetrics: FinancialMetrics = {
+    expenses: {
+        total: 0,
+        last: 0,
+        variationPercentage: 0,
+        variationTotal: 0,
+    },
+    investmentIncome: {
+        total: 0,
+        last: 0,
+        variationPercentage: 0,
+        variationTotal: 0,
+    },
+    savings: {
+        total: 0,
+        last: 0,
+        variationPercentage: 0,
+        variationTotal: 0,
+    }
+}
+
+export default function FinancialSummary({expensesFilter }: {expensesFilter?: ExpensesFilters }) {
+
+    const [financialMetrics, setFinancialMetrics] = useState<FinancialMetrics>(emptyFinancialMetrics);
+
+    const loadFinancialMetrics = async () => {
+        const financialMetricsData = await getFinancialMetrics();
+        setFinancialMetrics(financialMetricsData);
+    }
 
     const getFormattedDate = (): string => {
         const date = new Date();
         return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
     }
+
+    useEffect(() => {
+        if (!expensesFilter?.startDate || !expensesFilter.endDate) return;
+        loadFinancialMetrics();
+    }, [expensesFilter]);
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
