@@ -11,10 +11,8 @@ export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
     const currentMonth = today.getMonth() + 1;
     const currentYear = today.getFullYear();
     const currentDay = today.getDate();
-
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-
     const user = await getUser();
 
     const result = await db.execute<{

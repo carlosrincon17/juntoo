@@ -1,9 +1,12 @@
+'use client'
+
 import { getExpenses } from "@/app/actions/expenses";
+import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import { formateSimpleDate } from "@/app/lib/dates";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
-import { Button, ButtonGroup, Card } from "@heroui/react";
+import { Button, ButtonGroup, Card, CardBody } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaChevronRight } from "react-icons/fa";
 
@@ -11,14 +14,16 @@ export default function TransactionsList() {
     const [transactions, setTransactions] = useState<Expense[]>([]);
     const [transactionTypeSelected, setTransactionTypeSelected] = useState<TransactionType>(TransactionType.Outcome);
     const [currentTransactionsPage, setCurrentTransactionsPage] = useState<number>(1);
+    const [loading, setLoading] = useState(true);
 
     const getTransactionsData = async () => {
         const transactionsData = await getExpenses(currentTransactionsPage, 7, transactionTypeSelected);
         if(currentTransactionsPage == 1) {
             setTransactions(transactionsData);
-            return;
+        } else {
+            setTransactions([...transactions, ...transactionsData]);
         }
-        setTransactions([...transactions, ...transactionsData]);
+        setLoading(false);
     }
 
     const getColorByTransactionType = (transactionType: TransactionType) => {
@@ -46,6 +51,17 @@ export default function TransactionsList() {
         setCurrentTransactionsPage(1);
     }, [transactionTypeSelected]);
 
+    if (loading) {
+        return (
+            <Card>
+                <CardBody className="p-4">
+                    <div className="flex justify-center items-center">
+                        <CustomLoading className="mt-24" />
+                    </div>
+                </CardBody>
+            </Card>
+        )
+    }
     return (
         
         <Card className="border-none rounded-3xl shadow-md overflow-hidden bg-gradient-to-br from-white to-[#f9faff] p-6 relative">
