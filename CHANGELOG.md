@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/carlosrincon17/juntoo/compare/v2.2.0...v2.3.0) (2025-04-24)
+
+
+### Features
+
+* improved readme ([75401cc](https://github.com/carlosrincon17/juntoo/commit/75401cc1eefc8f82ea12f51f1318799d940d9c28))
+
 # [2.2.0](https://github.com/carlosrincon17/juntoo/compare/v2.1.0...v2.2.0) (2025-04-21)
 
 
