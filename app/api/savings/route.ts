@@ -44,22 +44,22 @@ export async function GET(request: Request) {
     const groupedByUser: Record<string, Savings[]> = {
     }
     validSavingsToProcess.forEach((saving) => {
-        if (!saving.userId) {
+        if (!saving.familyId) {
             return;
         }
-        if (!groupedByUser[saving.userId]) {
-            groupedByUser[saving.userId] = [];
+        if (!groupedByUser[saving.familyId]) {
+            groupedByUser[saving.familyId] = [];
         }
-        groupedByUser[saving.userId].push(saving);
+        groupedByUser[saving.familyId].push(saving);
     });
-    await Promise.all(Object.keys(groupedByUser).map(async(userId: string) => {
-        if (!userId){
+    await Promise.all(Object.keys(groupedByUser).map(async(familyId: string) => {
+        if (!familyId){
             return;
         }
-        if (!groupedByUser[userId]) {
+        if (!groupedByUser[familyId]) {
             return;
         }
-        const savings = groupedByUser[userId];
+        const savings = groupedByUser[familyId];
         const dailyInterest = savings.reduce((acc, saving) => {
             const annualInterestRate = saving.annualInterestRate || 0;
             const dailyInterestSaving = parseFloat((saving.value * ((annualInterestRate / 365) / 100)).toFixed(0));
