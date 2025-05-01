@@ -1,3 +1,11 @@
+# [2.5.0](https://github.com/carlosrincon17/juntoo/compare/v2.4.0...v2.5.0) (2025-05-01)
+
+
+### Features
+
+* improved dashboard and saving income jobs ([1d7416c](https://github.com/carlosrincon17/juntoo/commit/1d7416c5e7a6268124eb200de39bd01c2ddb4817))
+* improved job for investments calculations ([02d4c15](https://github.com/carlosrincon17/juntoo/commit/02d4c15f9ad03ecd7b903a237f3aba826598db4b))
+
 # [2.4.0](https://github.com/carlosrincon17/juntoo/compare/v2.3.0...v2.4.0) (2025-05-01)
 
 
