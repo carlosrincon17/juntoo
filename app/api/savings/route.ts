@@ -1,4 +1,3 @@
-import { groupBy } from "@/app/lib/objects";
 import { Category } from "@/app/types/category";
 import { Savings } from "@/app/types/saving";
 import { CategoryTable, SavingsTable, ExpensesTable } from "@/drizzle/schema";
@@ -42,7 +41,17 @@ export async function GET(request: Request) {
         return new Response(`Category Inversion not found`, { status: 404 });
     }
     const validSavingsToProcess = savingsAccount.filter((saving) => saving.isInvestment && saving.annualInterestRate);
-    const groupedByUser = groupBy(validSavingsToProcess, (saving) => String(saving.userId) || "");
+    const groupedByUser: Record<string, Savings[]> = {
+    }
+    validSavingsToProcess.forEach((saving) => {
+        if (!saving.userId) {
+            return;
+        }
+        if (!groupedByUser[saving.userId]) {
+            groupedByUser[saving.userId] = [];
+        }
+        groupedByUser[saving.userId].push(saving);
+    });
     await Promise.all(Object.keys(groupedByUser).map(async(userId: string) => {
         if (!userId){
             return;
