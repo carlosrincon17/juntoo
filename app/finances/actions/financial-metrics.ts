@@ -6,11 +6,10 @@ import { ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";;
 import { sql } from "drizzle-orm";
 
-export const getFinancialMetrics = async (): Promise<FinancialMetrics> => {
-    const today = new Date();
-    const currentMonth = today.getMonth() + 1;
-    const currentYear = today.getFullYear();
-    const currentDay = today.getDate();
+export const getFinancialMetrics = async (currentDate: Date): Promise<FinancialMetrics> => {
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+    const currentDay = currentDate.getDate();
     const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
     const user = await getUser();

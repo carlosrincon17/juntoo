@@ -1,3 +1,4 @@
+import { groupBy } from "@/app/lib/objects";
 import { Category } from "@/app/types/category";
 import { Savings } from "@/app/types/saving";
 import { CategoryTable, SavingsTable, ExpensesTable } from "@/drizzle/schema";
@@ -21,7 +22,7 @@ const saveInvestmentIncomes = async (saving: Savings, dailyInterest: number, inv
     };
     console.log("newExpense", newExpense);
     if (process.env.CRON_ENABLE !== 'yes') {
-        console.log("CRON is not enabled");
+        console.log("CRON is NOT enabled");
         return;
     }
     await db.insert(ExpensesTable).values(newExpense);
@@ -34,7 +35,6 @@ export async function GET(request: Request) {
             eq(SavingsTable.isInvestment, true),
         )
     });
-    console.log("savings account to process", savingsAccount);
     const investmentCategory = await db.query.CategoryTable.findFirst({
         where: eq(CategoryTable.name, 'Inversion'),
     });
@@ -42,10 +42,21 @@ export async function GET(request: Request) {
         return new Response(`Category Inversion not found`, { status: 404 });
     }
     const validSavingsToProcess = savingsAccount.filter((saving) => saving.isInvestment && saving.annualInterestRate);
-    await Promise.all(validSavingsToProcess.map(async(saving) => {
-        const annualInterestRate = saving.annualInterestRate || 0;
-        const dailyInterest = (saving.value * ((annualInterestRate / 365) / 100)).toFixed(0);
-        return await saveInvestmentIncomes(saving, parseInt(dailyInterest), investmentCategory);
+    const groupedByUser = groupBy(validSavingsToProcess, (saving) => String(saving.userId) || "");
+    await Promise.all(Object.keys(groupedByUser).map(async(userId: string) => {
+        if (!userId){
+            return;
+        }
+        if (!groupedByUser[userId]) {
+            return;
+        }
+        const savings = groupedByUser[userId];
+        const dailyInterest = savings.reduce((acc, saving) => {
+            const annualInterestRate = saving.annualInterestRate || 0;
+            const dailyInterestSaving = parseFloat((saving.value * ((annualInterestRate / 365) / 100)).toFixed(0));
+            return acc + dailyInterestSaving;
+        }, 0);
+        return await saveInvestmentIncomes(savings[0], dailyInterest, investmentCategory);
     }));
     return new Response(`Hello from ${process.env.CRON_ENABLE}, ${request.url}`);
 }
