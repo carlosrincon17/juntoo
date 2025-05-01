@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/carlosrincon17/juntoo/compare/v2.3.0...v2.4.0) (2025-05-01)
+
+
+### Features
+
+* improved dashboard and saving income jobs ([cbab300](https://github.com/carlosrincon17/juntoo/commit/cbab30066eafb5f401504c8b36aa5bc42dca0d34))
+
 # [2.3.0](https://github.com/carlosrincon17/juntoo/compare/v2.2.0...v2.3.0) (2025-04-24)
 
 
