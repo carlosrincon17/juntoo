@@ -10,7 +10,7 @@ import { FaCheck, FaCreditCard, FaTimes } from "react-icons/fa"
 import { CustomLoading } from "@/app/components/customLoading"
 import { addExpense } from "@/app/actions/expenses"
 
-// Currency utility functions
+
 const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat("es-ES", {
         style: "decimal",
@@ -137,7 +137,7 @@ export default function NewExpensePanel(props: {
 
     const handleSaveExpense = async () => {
         setIsLoadingSaveExpense(true)
-        await addExpense({...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType})
+        await addExpense({...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType, createdAt: new Date()})
         addToast({
             title: "¡Todo en orden!",
             description: `Tu gasto de ${formatCurrency(expense.value as number)} por ${selectedCategory?.name} se ha agregado correctamente`, 

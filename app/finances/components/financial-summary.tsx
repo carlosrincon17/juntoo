@@ -3,7 +3,7 @@
 import { Card } from "@heroui/react";
 import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
-import { FaChevronDown, FaChevronUp, FaDollarSign } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { ExpensesBreakdown } from "./expenses-breackdown";
 import { ExpensesFilters } from "@/app/types/filters";
 import { Tooltip } from "@heroui/tooltip";
@@ -37,7 +37,8 @@ export default function FinancialSummary({expensesFilter }: {expensesFilter?: Ex
     const [financialMetrics, setFinancialMetrics] = useState<FinancialMetrics>(emptyFinancialMetrics);
 
     const loadFinancialMetrics = async () => {
-        const financialMetricsData = await getFinancialMetrics();
+        const financialMetricsData = await getFinancialMetrics(new Date());
+        console.log(financialMetrics)
         setFinancialMetrics(financialMetricsData);
     }
 
@@ -60,8 +61,7 @@ export default function FinancialSummary({expensesFilter }: {expensesFilter?: Ex
 
                     <div className="flex items-center justify-between mb-1 relative">
                         <div className="flex items-center gap-2">
-                            <FaDollarSign className="h-5 w-5 text-white/80" />
-                            <h3 className="font-light text-sm tracking-wide text-white/90 uppercase">Balance Global</h3>
+                            <p className="text-md font-light text-white/70">Ahorro</p>
                         </div>
                         <span className="text-xs font-extralight text-white/80 bg-white/10 px-3 py-1 rounded-full">{getFormattedDate()}</span>
                     </div>
@@ -87,7 +87,7 @@ export default function FinancialSummary({expensesFilter }: {expensesFilter?: Ex
                     <div className="mt-8 pt-6 border-t border-white/10 block">
                         <div className="block md:flex justify-between items-center">
                             <div>
-                                <p className="text-md font-light text-white/70">Gastos Totales</p>
+                                <p className="text-md font-light text-white/70">Gastos</p>
                                 <p className="text-2xl font-extralight text-white">{formatCurrency(financialMetrics.expenses.total || 0)}</p>
                                 <div className="flex items-center gap-3 relative">
                                     <Tooltip content={`${formatCurrency(financialMetrics.expenses.variationTotal || 0)}`} color="primary">
@@ -104,7 +104,7 @@ export default function FinancialSummary({expensesFilter }: {expensesFilter?: Ex
                                 </div>
                             </div>
                             <div className="mt-4 md:mt-0">
-                                <p className="text-md font-light text-white/70">Ingresos Totales</p>
+                                <p className="text-md font-light text-white/70">Ingresos</p>
                                 <p className="text-2xl font-extralight text-white">{formatCurrency(financialMetrics.investmentIncome.total || 0)}</p>
                                 <div className="flex items-center gap-3 relative">
                                     <Tooltip content={`${formatCurrency(financialMetrics.investmentIncome.variationTotal || 0)}`} color="primary">

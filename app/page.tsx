@@ -9,7 +9,6 @@ import { GoogleUsers } from "./types/google-user";
 import { useSearchParams } from 'next/navigation';
 import { Family } from './types/family';
 import { getFamilyByReferenceCode } from './actions/family';
-import Image from "next/image";
 
 function Home() {
     
@@ -78,7 +77,7 @@ function Home() {
                 <GoogleOAuthProvider clientId={googleClientId}>
                     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white px-4">
                         <div className="mb-8 text-center">
-                            <Image src="/juntoo.webp" alt="juntoo" />
+                            <img src="/juntoo.webp" alt="juntoo" />
                             <p className="text-sm text-gray-500 mt-2">Porque todo es mejor con tu familia cuando están juntos</p>
                         </div>
         
