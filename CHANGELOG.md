@@ -1,3 +1,12 @@
+# [2.6.0](https://github.com/carlosrincon17/juntoo/compare/v2.5.0...v2.6.0) (2025-05-09)
+
+
+### Features
+
+* added sentry ([cd5a27f](https://github.com/carlosrincon17/juntoo/commit/cd5a27f03018f41c922a5cbbdac48cea8016bb93))
+* added sentry ([cb606e4](https://github.com/carlosrincon17/juntoo/commit/cb606e4547b0e9b148f5d4f82280ea404455faa6))
+* added sentry ([b741e4c](https://github.com/carlosrincon17/juntoo/commit/b741e4c17f4dc4a27b32bda1e07c1642c644ea58))
+
 # [2.5.0](https://github.com/carlosrincon17/juntoo/compare/v2.4.0...v2.5.0) (2025-05-01)
 
 
