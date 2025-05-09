@@ -232,7 +232,7 @@ export async function getExpensesByMonth(): Promise<ExpenseByDate[]> {
             )
         )
         .groupBy(sql<string>`TO_CHAR("createdAt", 'Mon, YYYY')`)
-        .orderBy(sql<string>`MIN("createdAt") ASC`) 
+        .orderBy(asc(sql<string>`MIN("createdAt")`)) 
         .limit(6)
     return expensesByDate as ExpenseByDate[];
 }
@@ -271,7 +271,7 @@ export async function getFinancialOverviewByMonth(): Promise<FinancialData[]> {
             )
         )
         .groupBy(sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`)
-        .orderBy(sql<string>`MIN(${ExpensesTable.createdAt}) ASC`)
-        .limit(6);
-    return expensesByDate as FinancialData[];
+        .orderBy(desc(sql<string>`MIN(${ExpensesTable.createdAt})`))
+        .limit(12);
+    return (expensesByDate as FinancialData[]).reverse();
 }
