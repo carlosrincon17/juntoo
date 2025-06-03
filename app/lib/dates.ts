@@ -1,3 +1,5 @@
+import { ExpensesFilters } from "../types/filters";
+
 export type DateRange = {
     startDate: Date;
     endDate: Date;
@@ -45,3 +47,12 @@ export const formateSimpleDate = (date: Date, locale = 'es-CO'): string => {
         .replace(/ de /g, '/') // optional: replace ' de ' with '/'
         .trim();
 };
+
+export const getExpensesFilter = (): ExpensesFilters => {
+    const currentDate = new Date();
+    return {
+        startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+        endDate: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0),
+    };
+   
+}
