@@ -5,11 +5,11 @@ import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { ExpensesBreakdown } from "./expenses-breackdown";
-import { ExpensesFilters } from "@/app/types/filters";
 import { Tooltip } from "@heroui/tooltip";
 import FinancialGoals from "./financial-goals";
 import { useEffect, useState } from "react";
 import { getFinancialMetrics } from "../actions/financial-metrics";
+import { getExpensesFilter } from "@/app/lib/dates";
 
 const emptyFinancialMetrics: FinancialMetrics = {
     expenses: {
@@ -32,13 +32,13 @@ const emptyFinancialMetrics: FinancialMetrics = {
     }
 }
 
-export default function FinancialSummary({expensesFilter }: {expensesFilter?: ExpensesFilters }) {
+export default function FinancialSummary() {
 
     const [financialMetrics, setFinancialMetrics] = useState<FinancialMetrics>(emptyFinancialMetrics);
+    const expensesFilter = getExpensesFilter()
 
     const loadFinancialMetrics = async () => {
         const financialMetricsData = await getFinancialMetrics(new Date());
-        console.log(financialMetrics)
         setFinancialMetrics(financialMetricsData);
     }
 
@@ -48,9 +48,8 @@ export default function FinancialSummary({expensesFilter }: {expensesFilter?: Ex
     }
 
     useEffect(() => {
-        if (!expensesFilter?.startDate || !expensesFilter.endDate) return;
         loadFinancialMetrics();
-    }, [expensesFilter]);
+    }, []);
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
