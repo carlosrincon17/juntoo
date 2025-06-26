@@ -60,6 +60,11 @@
     "@semantic-release/npm",
     "@semantic-release/git"
   ],
+  "pnpm": {
+    "overrides": {
+      "brace-expansion": "2.0.1"
+    }
+  },
   "release": {
     "prepare": [
       "@semantic-release/changelog",
