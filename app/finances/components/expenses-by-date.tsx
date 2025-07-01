@@ -25,10 +25,17 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
         return { startDate, endDate };
     };
 
+    const getCurrentMonthDateRangeFilter = () => {
+        const date = new Date();
+        const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+        const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        return { startDate, endDate };
+    };
+
 
     async function getExpensesByDateData() {
         setLoading(true);
-        const expensesByDateData = await getExpensesByDate(expensesFilter);
+        const expensesByDateData = await getExpensesByDate(getCurrentMonthDateRangeFilter());
         const maxDay = Math.max(...expensesByDateData.map(item => parseInt(item.date, 10)));
         setExpensesByDate(fillMissingDays(Number(maxDay), expensesByDateData));
         const expensesByDatePreviousData = await getExpensesByDatePreviousData();
