@@ -41,3 +41,8 @@ export interface FinancialMetrics {
   investmentIncome: FinancialMetric;
   savings: FinancialMetric;
 }
+
+export interface FinancialCategoryData { 
+  categoryParent: string; 
+  totalsByMonth: { month: string; total: number }[]
+}
