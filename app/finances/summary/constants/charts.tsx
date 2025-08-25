@@ -110,7 +110,7 @@ export const getAreaChartOptionsMonthlyCategory = (months: string[]): ApexOption
                 show: false,
             },
         },
-         stroke: {
+        stroke: {
             curve: "straight",
             width: 2,
         },
