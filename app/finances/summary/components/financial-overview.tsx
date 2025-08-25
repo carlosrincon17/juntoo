@@ -8,13 +8,14 @@ import type {
     FinancialStats,
     ChartData,
     FinancialDataWithPercentage,
+    FinancialCategoryData,
 } from "@/app/types/financial"
-import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
+import { getExpensesByParentCategory, getFinancialOverviewByMonth } from "@/app/actions/expenses"
 import { useEffect, useState } from "react"
 import { formatCurrency } from "@/app/lib/currency"
-import { getAreaChartOptionsMonthly, getBarChartOptionsSavings } from "../constants/charts"
-import Kpi from "../../components/kpi"
+import { getAreaChartOptionsMonthly, getBarChartOptionsSavings, getAreaChartOptionsMonthlyCategory } from "../constants/charts"
 import { CustomLoading } from "@/app/components/customLoading"
+import { FaBuilding, FaChartPie, FaCreditCard, FaWallet } from "react-icons/fa"
 
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
@@ -74,15 +75,32 @@ const formatChartData = (data: FinancialData[]): ChartData => {
     return { months, series, savingsPercentageSeries }
 }
 
+const formatChatCategoriesData = (data: FinancialCategoryData[]): ChartData => {
+    const months = data?.[0]?.totalsByMonth.map((item) => item.month)
+    const series = data.map((item) => {
+        return {
+            name: item.categoryParent,
+            data: item.totalsByMonth.map((totalByMonth) => totalByMonth.total),
+        }
+    })
+    return { months, series, savingsPercentageSeries: [] }
+}
+
+
+
 const FinancialOverview: React.FC = () => {
     const [financialData, setFinancialData] = useState<FinancialData[]>([]);
+    const [financialCategoryData, setFinancialCategoryData] = useState<FinancialCategoryData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const stats = calculateStats(financialData)
     const { months, series, savingsPercentageSeries } = formatChartData(financialData)
+    const { months: monthsByCategory, series: seriesByCategory } = formatChatCategoriesData(financialCategoryData)
 
 
     const getFinancialData = async ()  => {
         const financialData = await getFinancialOverviewByMonth()
+        const expensesByCategoryParent = await getExpensesByParentCategory()
+        setFinancialCategoryData(expensesByCategoryParent)
         setFinancialData(financialData)
         setIsLoading(false)
     }
@@ -96,16 +114,98 @@ const FinancialOverview: React.FC = () => {
             { isLoading ? 
                 <CustomLoading message="Preparando estadísticas" /> :
                 <div className="w-full mx-auto space-y-6">
-                    <h1 className="text-2xl font-light mb-6">Estadisticas mensuales</h1>
-
-                    {/* Summary Cards */}
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                        <Kpi title="Prom. Ingresos" value={stats.avgIncome} color="text-green-500" />
-                        <Kpi title="Prom. Gastos" value={stats.avgExpenses} color="text-red-500" />
-                        <Kpi title="Prom. Ahorro" value={stats.avgSavings} color="text-blue-500" />
-                        <Kpi title="Porcentaje de ahorro" value={stats.avgSavingsPercentage} color="text-purple-500" type="percentage" />
-                    </div>
-
+                    <Card className="border-none rounded-3xl shadow-[0_10px_40px_-15px_rgba(90,107,255,0.15)] overflow-hidden xl:col-span-2">
+                        <div className="bg-gradient-to-br from-white to-[#f9faff]">
+                            <div className="p-6 border-b border-[#f0f4ff]">
+                                <div className="flex items-center justify-between mb-2">
+                                    <h3 className="font-semibold text-lg text-[#121432] tracking-tight">Resumen Financiero</h3>
+                                    <div className="p-2 rounded-full bg-gradient-to-r from-[#5a6bff]/10 to-[#a78bfa]/10">
+                                        <FaChartPie className="h-4 w-4 text-[#5a6bff]" />
+                                    </div>
+                                </div>
+                                <p className="text-sm font-light text-[#121432]/60">Promedio anual de gastos, ingresos y ahorros</p>
+                            </div>
+        
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+        
+                                <div className="space-y-4">
+        
+                                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#5a6bff]/5 to-[#818cf8]/5 rounded-xl">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#5a6bff] to-[#818cf8] flex items-center justify-center">
+                                                <FaWallet className="h-5 w-5 text-white" />
+                                            </div>
+                                            <div>
+                                                <h5 className="text-sm font-medium text-[#121432]">Ingresos</h5>
+                                                <p className="text-xs font-light text-[#121432]/60">Promedio de ingresos mensuales</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-lg font-light text-[#121432]">{formatCurrency(stats.avgIncome)}</p>
+                                            <div className="flex items-center justify-end gap-1">
+                                                <p className="text-xs font-normal text-[#5a6bff]"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#2dd4bf]/5 to-[#34d399]/5 rounded-xl">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2dd4bf] to-[#34d399] flex items-center justify-center">
+                                                <FaBuilding className="h-5 w-5 text-white" />
+                                            </div>
+                                            <div>
+                                                <h5 className="text-sm font-medium text-[#121432]">Gastos</h5>
+                                                <p className="text-xs font-light text-[#121432]/60">Promedio de gastos por mes</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-lg font-light text-[#121432]">{formatCurrency(stats.avgExpenses)}</p>
+                                            <div className="flex items-center justify-end gap-1">
+                                                <p className="text-xs font-normal text-[#2dd4bf]"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#f97066]/5 to-[#fb7185]/5 rounded-xl">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f97066] to-[#fb7185] flex items-center justify-center">
+                                                <FaCreditCard className="h-5 w-5 text-white" />
+                                            </div>
+                                            <div>
+                                                <h5 className="text-sm font-medium text-[#121432]">Ahorro</h5>
+                                                <p className="text-xs font-light text-[#121432]/60">Promedio de ahorros por mes</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-lg font-light text-[#121432]">{formatCurrency(stats.avgSavings)}</p>
+                                            <div className="flex items-center justify-end gap-1">
+                                                <p className="text-xs font-normal text-[#f97066]"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#f97066]/5 to-[#fb7185]/5 rounded-xl">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f97066] to-[#fb7185] flex items-center justify-center">
+                                                <FaCreditCard className="h-5 w-5 text-white" />
+                                            </div>
+                                            <div>
+                                                <h5 className="text-sm font-medium text-[#121432]">Pocentaje ahorrado</h5>
+                                                <p className="text-xs font-light text-[#121432]/60">Promedio de porcentaje de ahorros por mes</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-lg font-light text-[#121432]">{stats.avgSavingsPercentage} %</p>
+                                            <div className="flex items-center justify-end gap-1">
+                                                <p className="text-xs font-normal text-[#f97066]"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
                     {/* Charts */}
                     <div className="grid grid-cols-1 gap-6 mt-8">
                         <Card className="shadow-md">
@@ -117,6 +217,20 @@ const FinancialOverview: React.FC = () => {
                                 <div className="w-full h-[300px]">
                                     {typeof window !== "undefined" && (
                                         <Chart options={getAreaChartOptionsMonthly(months)} series={series} type="area" height={300} />
+                                    )}
+                                </div>
+                            </CardBody>
+                        </Card>
+
+                        <Card className="shadow-md">
+                            <CardHeader className="pb-0 pt-4 flex-col items-start">
+                                <h4 className="text-lg font-medium">Vista de mes a mes</h4>
+                                <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
+                            </CardHeader>
+                            <CardBody className="overflow-hidden">
+                                <div className="w-full h-[300px]">
+                                    {typeof window !== "undefined" && (
+                                        <Chart options={getAreaChartOptionsMonthlyCategory(monthsByCategory)} series={seriesByCategory} type="line" height={300} />
                                     )}
                                 </div>
                             </CardBody>

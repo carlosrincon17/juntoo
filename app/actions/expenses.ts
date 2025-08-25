@@ -7,7 +7,7 @@ import { and, asc, count, desc, eq, gte, inArray, lte, not, sql } from "drizzle-
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { getUser } from "./auth";
-import { FinancialData } from "../types/financial";
+import { FinancialCategoryData, FinancialData } from "../types/financial";
 
 const totalsFilters = {
     totalExpenses: sql<number>`cast(sum(case when ${ExpensesTable.transactionType} = ${TransactionType.Outcome} then ${ExpensesTable.value} else 0 end) as bigint)`.mapWith(Number),
@@ -274,4 +274,52 @@ export async function getFinancialOverviewByMonth(): Promise<FinancialData[]> {
         .orderBy(desc(sql<string>`MIN(${ExpensesTable.createdAt})`))
         .limit(12);
     return (expensesByDate as FinancialData[]).reverse();
+}
+
+export async function getExpensesByParentCategory(): Promise<FinancialCategoryData[]> {
+  const user = await getUser();
+
+  const rawData = await db
+    .select({
+      categoryParent: CategoryTable.parent,
+      month: sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`,
+      total: sql<number>`
+        COALESCE(SUM(${ExpensesTable.value}), 0)
+      `.mapWith(Number),
+    })
+    .from(ExpensesTable)
+    .leftJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+    .where(
+      and(
+        eq(ExpensesTable.familyId, user.familyId),
+        eq(CategoryTable.transactionType, TransactionType.Outcome)
+      )
+    )
+    .groupBy(
+      CategoryTable.parent,
+      sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`
+    )
+    .orderBy(
+      CategoryTable.parent,
+      desc(sql<string>`MIN(${ExpensesTable.createdAt})`)
+    );
+
+  const grouped: Record<string, { month: string; total: number }[]> = {};
+  for (const row of rawData) {
+    if (!row.categoryParent) {
+        continue;
+    }
+    if (!grouped[row.categoryParent]) {
+      grouped[row.categoryParent] = [];
+    }
+    grouped[row.categoryParent].push({
+      month: row.month,
+      total: row.total,
+    });
+  }
+
+  return Object.entries(grouped).map(([categoryParent, totalsByMonth]) => ({
+    categoryParent,
+    totalsByMonth: totalsByMonth.reverse(),
+  }));
 }

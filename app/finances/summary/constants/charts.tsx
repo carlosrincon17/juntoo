@@ -32,7 +32,7 @@ export const getAreaChartOptionsMonthly = (months: string[]): ApexOptions => {
         },
         tooltip: {
             y: {
-                formatter: (value: number) => `$${value}`,
+                formatter: (value: number) => `$${formatCurrency(value)}`,
             },
         },
         colors: ["#22c55e", "#ef4444", "#3b82f6"],
@@ -96,6 +96,39 @@ export const getBarChartOptionsSavings = (months: string[]): ApexOptions => {
         },
         theme: {
             mode: "light",
+        },
+    }
+}
+
+export const getAreaChartOptionsMonthlyCategory = (months: string[]): ApexOptions => {
+
+    return {
+        chart: {
+            type: "bar",
+            height: 350,
+            toolbar: {
+                show: false,
+            },
+        },
+         stroke: {
+            curve: "straight",
+            width: 2,
+        },
+        xaxis: {
+            categories: months,
+        },
+        yaxis: {
+            title: {
+                text: "Valor en pesos",
+            },
+            labels: {
+                formatter: (value: number) => formatCurrency(value).split('.')[0] + " M",
+            },
+        },
+        tooltip: {
+            y: {
+                formatter: (value: number) => `${formatCurrency(value)}`,
+            },
         },
     }
 }
