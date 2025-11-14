@@ -1,24 +1,18 @@
 "use client"
 
 import type React from "react"
-import { Card, CardBody, CardHeader } from "@heroui/react"
-import dynamic from "next/dynamic"
+import { Card, } from "@heroui/react"
 import type {
     FinancialData,
     FinancialStats,
-    ChartData,
     FinancialDataWithPercentage,
-    FinancialCategoryData,
 } from "@/app/types/financial"
-import { getExpensesByParentCategory, getFinancialOverviewByMonth } from "@/app/actions/expenses"
+import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
 import { useEffect, useState } from "react"
 import { formatCurrency } from "@/app/lib/currency"
-import { getAreaChartOptionsMonthly, getBarChartOptionsSavings, getAreaChartOptionsMonthlyCategory } from "../constants/charts"
 import { CustomLoading } from "@/app/components/customLoading"
 import { FaBuilding, FaChartPie, FaCreditCard, FaWallet } from "react-icons/fa"
 
-
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 const calculateStats = (data: FinancialData[]): FinancialStats => {
     const totalMonths = data.length
@@ -47,60 +41,14 @@ const calculateStats = (data: FinancialData[]): FinancialStats => {
     }
 }
 
-const formatChartData = (data: FinancialData[]): ChartData => {
-    const months = data.map((item) => item.month)
-
-    const series = [
-        {
-            name: "Ingresos",
-            data: data.map((item) => item.income),
-        },
-        {
-            name: "Gastos",
-            data: data.map((item) => item.expenses),
-        },
-        {
-            name: "Ahorros",
-            data: data.map((item) => item.savings),
-        },
-    ]
-
-    const savingsPercentageSeries = [
-        {
-            name: "% Ahorro",
-            data: data.map((item) => Math.round((item.savings / item.income) * 100)),
-        },
-    ]
-
-    return { months, series, savingsPercentageSeries }
-}
-
-const formatChatCategoriesData = (data: FinancialCategoryData[]): ChartData => {
-    const months = data?.[0]?.totalsByMonth.map((item) => item.month)
-    const series = data.map((item) => {
-        return {
-            name: item.categoryParent,
-            data: item.totalsByMonth.map((totalByMonth) => totalByMonth.total),
-        }
-    })
-    return { months, series, savingsPercentageSeries: [] }
-}
-
-
-
 const FinancialOverview: React.FC = () => {
     const [financialData, setFinancialData] = useState<FinancialData[]>([]);
-    const [financialCategoryData, setFinancialCategoryData] = useState<FinancialCategoryData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const stats = calculateStats(financialData)
-    const { months, series, savingsPercentageSeries } = formatChartData(financialData)
-    const { months: monthsByCategory, series: seriesByCategory } = formatChatCategoriesData(financialCategoryData)
 
 
     const getFinancialData = async ()  => {
         const financialData = await getFinancialOverviewByMonth()
-        const expensesByCategoryParent = await getExpensesByParentCategory()
-        setFinancialCategoryData(expensesByCategoryParent)
         setFinancialData(financialData)
         setIsLoading(false)
     }
@@ -205,83 +153,6 @@ const FinancialOverview: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                    </Card>
-                    {/* Charts */}
-                    <div className="grid grid-cols-1 gap-6 mt-8">
-                        <Card className="shadow-md">
-                            <CardHeader className="pb-0 pt-4 flex-col items-start">
-                                <h4 className="text-lg font-medium">Vista de mes a mes</h4>
-                                <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
-                            </CardHeader>
-                            <CardBody className="overflow-hidden">
-                                <div className="w-full h-[300px]">
-                                    {typeof window !== "undefined" && (
-                                        <Chart options={getAreaChartOptionsMonthly(months)} series={series} type="area" height={300} />
-                                    )}
-                                </div>
-                            </CardBody>
-                        </Card>
-
-                        <Card className="shadow-md">
-                            <CardHeader className="pb-0 pt-4 flex-col items-start">
-                                <h4 className="text-lg font-medium">Vista de mes a mes</h4>
-                                <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
-                            </CardHeader>
-                            <CardBody className="overflow-hidden">
-                                <div className="w-full h-[300px]">
-                                    {typeof window !== "undefined" && (
-                                        <Chart options={getAreaChartOptionsMonthlyCategory(monthsByCategory)} series={seriesByCategory} type="line" height={300} />
-                                    )}
-                                </div>
-                            </CardBody>
-                        </Card>
-
-                        <Card className="shadow-md">
-                            <CardHeader className="pb-0 pt-4 flex-col items-start">
-                                <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
-                                <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
-                            </CardHeader>
-                            <CardBody className="overflow-hidden">
-                                <div className="w-full h-[300px]">
-                                    {typeof window !== "undefined" && (
-                                        <Chart options={getBarChartOptionsSavings(months)} series={savingsPercentageSeries} type="bar" height={300} />
-                                    )}
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>
-
-                    {/* Monthly Data Table */}
-                    <Card className="shadow-md mt-6">
-                        <CardHeader className="pb-0 pt-4 px-4">
-                            <h4 className="text-lg font-medium">Breakdown mensual</h4>
-                        </CardHeader>
-                        <CardBody>
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b">
-                                            <th className="text-left py-3 px-4">Mes</th>
-                                            <th className="text-right py-3 px-4">Ingresos</th>
-                                            <th className="text-right py-3 px-4">Gastos</th>
-                                            <th className="text-right py-3 px-4">Ahorros</th>
-                                            <th className="text-right py-3 px-4">% Ahorrado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {stats.dataWithPercentage.map((month, index) => (
-                                            <tr key={index} className="border-b last:border-0 hover:bg-gray-50">
-                                                <td className="py-3 px-4">{month.month}</td>
-                                                <td className="text-right py-3 px-4 text-green-600">{formatCurrency(month.income)}</td>
-                                                <td className="text-right py-3 px-4 text-red-600">{formatCurrency(month.expenses)}</td>
-                                                <td className="text-right py-3 px-4 text-blue-600">{formatCurrency(month.savings)}</td>
-                                                <td className="text-right py-3 px-4 text-purple-600">{month.savingsPercentage}%</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </CardBody>
                     </Card>
                 </div>
             }

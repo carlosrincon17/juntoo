@@ -11,6 +11,7 @@ import { CustomLoading } from "@/app/components/customLoading";
 import { getTotalLoans } from "./actions/loans";
 import FinancialOverview from "./components/financial-overview";
 import TransactionsSummaryCard from "./components/transaction-summary";
+import YearlyReports from "./components/anual_reports";
 
 
 export default function Page() {
@@ -79,9 +80,12 @@ export default function Page() {
                                 <TransactionsSummaryCard />
                                 <Feedback patrimonies={totalPatrimonies} savings={totalSavings + totalLoans} debts={totalDebts} />
                             </div>
-                            <div className="grid grid-cols-1 sm:pl-6 sm:px-4  max-h-full overflow-y-auto md:w-2/3 mt-6 sm:mt-0">
+                            <div className="grid grid-cols-1 sm:pl-6 sm:px-4 max-h-full overflow-y-auto md:w-2/3 mt-6 sm:mt-0">
                                 <FinancialOverview />
                             </div>
+                        </div>
+                        <div className="flex mx-auto w-full">
+                            <YearlyReports />
                         </div>
                     </div>
             }
