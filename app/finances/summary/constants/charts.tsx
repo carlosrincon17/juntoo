@@ -32,7 +32,6 @@ export const getAreaChartOptionsMonthly = (months: string[]): ApexOptions => {
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: "55%",
             },
         },
         dataLabels: {

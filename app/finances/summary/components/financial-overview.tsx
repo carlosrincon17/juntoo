@@ -10,8 +10,8 @@ import type {
 import { getFinancialOverviewByMonth } from "@/app/actions/expenses"
 import { useEffect, useState } from "react"
 import { formatCurrency } from "@/app/lib/currency"
-import { CustomLoading } from "@/app/components/customLoading"
 import { FaBuilding, FaChartPie, FaCreditCard, FaWallet } from "react-icons/fa"
+import { GraphEskeleton } from "@/app/components/graph-skeleton"
 
 
 const calculateStats = (data: FinancialData[]): FinancialStats => {
@@ -60,7 +60,7 @@ const FinancialOverview: React.FC = () => {
     return (
         <>
             { isLoading ? 
-                <CustomLoading message="Preparando estadísticas" /> :
+                <GraphEskeleton /> :
                 <div className="grid grid-cols-1">
                     <Card className="shadow-md">
                         <CardHeader className="pb-0 pt-4 grid grid-cols-1">
