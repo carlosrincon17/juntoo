@@ -5,19 +5,12 @@ export const getAreaChartOptionsMonthly = (months: string[]): ApexOptions => {
 
     return {
         chart: {
-            type: "area",
-            height: 350,
+            type: "bar",
+            height: 400,
             toolbar: {
-                show: false,
+                show: true,
             },
             fontFamily: "inherit",
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            curve: "smooth",
-            width: 2,
         },
         xaxis: {
             categories: months,
@@ -27,25 +20,30 @@ export const getAreaChartOptionsMonthly = (months: string[]): ApexOptions => {
                 text: "Valor en pesos",
             },
             labels: {
-                formatter: (value: number) => formatCurrency(value).split('.')[0] + " M",
+                formatter: (value: number) => formatCurrency(value),
             },
         },
         tooltip: {
             y: {
-                formatter: (value: number) => `$${formatCurrency(value)}`,
+                formatter: (value: number) => `${formatCurrency(value)}`,
             },
         },
         colors: ["#22c55e", "#ef4444", "#3b82f6"],
-        fill: {
-            type: "gradient",
-            gradient: {
-                opacityFrom: 0.6,
-                opacityTo: 0.1,
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: "55%",
             },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        fill: {
+            opacity: 1,
         },
         legend: {
             position: "top",
-            horizontalAlign: "right",
+            horizontalAlign: "center",
         },
         grid: {
             borderColor: "#f1f1f1",
@@ -104,14 +102,14 @@ export const getAreaChartOptionsMonthlyCategory = (months: string[]): ApexOption
 
     return {
         chart: {
-            type: "bar",
-            height: 350,
+            type: "line",
+            height: 500,
             toolbar: {
-                show: false,
+                show: true,
             },
         },
         stroke: {
-            curve: "straight",
+            curve: 'smooth',
             width: 2,
         },
         xaxis: {
@@ -122,13 +120,17 @@ export const getAreaChartOptionsMonthlyCategory = (months: string[]): ApexOption
                 text: "Valor en pesos",
             },
             labels: {
-                formatter: (value: number) => formatCurrency(value).split('.')[0] + " M",
+                formatter: (value: number) => formatCurrency(value),
             },
         },
         tooltip: {
             y: {
                 formatter: (value: number) => `${formatCurrency(value)}`,
             },
+        },
+        grid: {
+            borderColor: "#f1f1f1",
+            strokeDashArray: 4,
         },
     }
 }

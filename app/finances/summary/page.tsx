@@ -74,13 +74,13 @@ export default function Page() {
             {
                 loading ?
                     <CustomLoading /> :
-                    <div className="w-full max-w-8xl mx-auto space-y-6">
+                    <div className="w-full max-w-8xl mx-auto">
                         <div className="flex items-start justify-start max-h-full flex-wrap">
                             <div className="grid grid-cols-1 gap-4 w-full md:w-1/3">
                                 <TransactionsSummaryCard />
                                 <Feedback patrimonies={totalPatrimonies} savings={totalSavings + totalLoans} debts={totalDebts} />
                             </div>
-                            <div className="grid grid-cols-1 sm:pl-6 sm:px-4 max-h-full overflow-y-auto md:w-2/3 mt-6 sm:mt-0">
+                            <div className="grid grid-cols-1 sm:pl-6 sm:px-4 max-h-full md:w-2/3 mt-6 sm:mt-0">
                                 <FinancialOverview />
                             </div>
                         </div>
