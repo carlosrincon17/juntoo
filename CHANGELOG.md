@@ -1,3 +1,21 @@
+# [2.7.0](https://github.com/carlosrincon17/juntoo/compare/v2.6.0...v2.7.0) (2025-11-15)
+
+
+### Bug Fixes
+
+* fixed expeses by date graph ([b60536b](https://github.com/carlosrincon17/juntoo/commit/b60536b0fdfb87bcc4f6aad10da8b29e7b88340c))
+* fixed filters defatul dates ([cd56fe6](https://github.com/carlosrincon17/juntoo/commit/cd56fe6f0a7095c372e9e5e41795e9a03d506fea))
+
+
+### Features
+
+* added expenses by category chart ([560db1c](https://github.com/carlosrincon17/juntoo/commit/560db1cae78ac8e063758c3dde0894ca1be5c707))
+* added skeleton loader ([cfd1a01](https://github.com/carlosrincon17/juntoo/commit/cfd1a013cf3f5d07c31bc26f6ebc5d4fa74dd97b))
+* added support to delete transaction ([fc9753e](https://github.com/carlosrincon17/juntoo/commit/fc9753e2ca0b282844abdcdabc14c54838d08c36))
+* improved reports page ([73128af](https://github.com/carlosrincon17/juntoo/commit/73128af0b4541efff04969839b603c739e84ec5d))
+* improved reports page ([d421e7e](https://github.com/carlosrincon17/juntoo/commit/d421e7e4df74413a3bce6c1eb112e2396b6aec5c))
+* removed sentry ([1354c76](https://github.com/carlosrincon17/juntoo/commit/1354c76a15399ef14b98620cb1ecaeaae4d11279))
+
 # [2.6.0](https://github.com/carlosrincon17/juntoo/compare/v2.5.0...v2.6.0) (2025-05-09)
 
 
