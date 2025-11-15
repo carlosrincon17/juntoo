@@ -34,7 +34,7 @@ export default function Feedback(props: {
     }, [patrimonies, savings, debts]);
 
     return (
-        <Card className="flex justify-center items-center  bg-gradient-to-br from-white to-purple-100 p-4 mb-6">
+        <Card className="flex justify-center items-center p-4 mb-6 shadow-md">
             <CardBody>
                 {loading ? 
                     <CustomLoading /> :

@@ -14,7 +14,7 @@ import { getExpensesByParentCategory, getFinancialOverviewByMonth } from "@/app/
 import { useEffect, useState } from "react"
 import { formatCurrency } from "@/app/lib/currency"
 import { getAreaChartOptionsMonthly, getBarChartOptionsSavings, getAreaChartOptionsMonthlyCategory } from "../constants/charts"
-import { CustomLoading } from "@/app/components/customLoading"
+import { GraphEskeleton } from "@/app/components/graph-skeleton"
 
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false })
@@ -115,6 +115,13 @@ const YearlyReports: React.FC = () => {
         setSelectedCategory(key)
     }
 
+    const renderSkeletonGraphCard = () => {
+        const totalSkeletons = 3;
+        return Array.from({ length: totalSkeletons }).map((_, index) => (
+            <GraphEskeleton key={index} />
+        ))
+    }
+
     useEffect(() => {
         getFinancialData()
     }, []);
@@ -126,7 +133,9 @@ const YearlyReports: React.FC = () => {
     return (
         <>
             { isLoading ? 
-                <CustomLoading message="Preparando estadísticas" /> :
+                <div className="w-full mx-auto space-y-6">
+                    {renderSkeletonGraphCard()}
+                </div> :
                 <div className="w-full mx-auto space-y-6">
                     <div className="grid grid-cols-1 gap-6">
                         <Card className="shadow-md">
