@@ -106,25 +106,29 @@ const YearlyReports: React.FC = () => {
         const expensesByCategoryParent = await getExpensesByParentCategory()
         setFinancialCategoryData(expensesByCategoryParent)
         setFinancialData(financialData)
+        setSelectedCategory(expensesByCategoryParent[0].categoryParent)
         setIsLoading(false)
     }
 
     const handleCategoryChange = (selection: SharedSelection) => {
         const key = selection.currentKey as string
         setSelectedCategory(key)
-        setCategoryChartData(formatChatCategoryData(financialCategoryData, key))
     }
 
     useEffect(() => {
         getFinancialData()
     }, []);
 
+    useEffect(() => {
+        setCategoryChartData(formatChatCategoryData(financialCategoryData, selectedCategory))
+    }, [selectedCategory, financialCategoryData]);
+
     return (
         <>
             { isLoading ? 
                 <CustomLoading message="Preparando estadísticas" /> :
                 <div className="w-full mx-auto space-y-6">
-                    <div className="grid grid-cols-1 gap-6 mt-8">
+                    <div className="grid grid-cols-1 gap-6">
                         <Card className="shadow-md">
                             <CardHeader className="pb-0 pt-4 flex-col items-start">
                                 <h4 className="text-lg font-medium">Vista de mes a mes</h4>
@@ -133,55 +137,56 @@ const YearlyReports: React.FC = () => {
                             <CardBody className="overflow-hidden">
                                 <div className="w-full h-[300px]">
                                     {typeof window !== "undefined" && (
-                                        <Chart options={getAreaChartOptionsMonthly(months)} series={series} type="area" height={300} />
+                                        <Chart options={getAreaChartOptionsMonthly(months)} series={series} type="bar" height={300} />
                                     )}
                                 </div>
                             </CardBody>
                         </Card>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">            
+                            <Card className="shadow-md">
+                                <CardHeader className="pb-0 pt-4 flex-row justify-between items-start">
+                                    <div>
+                                        <h4 className="text-lg font-medium">Gastos por Categoria</h4>
+                                        <small className="text-default-500">Gastos por categoria de los ultimos 12 meses</small>
+                                    </div>
+                                    <div className="flex max-w-s">
+                                        <Select
+                                            size="md"
+                                            label="Categoría"
+                                            className="w-36"
+                                            placeholder="Seleccione una categoria"
+                                            selectedKeys={[selectedCategory]}
+                                            onSelectionChange={handleCategoryChange}
+                                        >
+                                            {financialCategoryData.map((category: FinancialCategoryData) => (
+                                                <SelectItem key={category.categoryParent}>{category.categoryParent}</SelectItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </CardHeader>
+                                <CardBody className="overflow-hidden">
+                                    <div className="w-full h-[300px]">
+                                        {typeof window !== "undefined" && (
+                                            <Chart options={getAreaChartOptionsMonthlyCategory(categoryChartData.months)} series={categoryChartData.series} type="line" height={300} />
+                                        )}
+                                    </div>
+                                </CardBody>
+                            </Card>
 
-                        <Card className="shadow-md">
-                            <CardHeader className="pb-0 pt-4 flex-row justify-between items-start">
-                                <div>
-                                    <h4 className="text-lg font-medium">Gastos por Categoria</h4>
-                                    <small className="text-default-500">Gastos por categoria de los ultimos 12 meses</small>
-                                </div>
-                                <div className="flex max-w-s">
-                                    <Select
-                                        size="md"
-                                        label="Categoría"
-                                        className="w-36"
-                                        placeholder="Seleccione una categoria"
-                                        selectedKeys={[selectedCategory]}
-                                        onSelectionChange={handleCategoryChange}
-                                    >
-                                        {financialCategoryData.map((category: FinancialCategoryData) => (
-                                            <SelectItem key={category.categoryParent}>{category.categoryParent}</SelectItem>
-                                        ))}
-                                    </Select>
-                                </div>
-                            </CardHeader>
-                            <CardBody className="overflow-hidden">
-                                <div className="w-full h-[300px]">
-                                    {typeof window !== "undefined" && (
-                                        <Chart options={getAreaChartOptionsMonthlyCategory(categoryChartData.months)} series={categoryChartData.series} type="line" height={300} />
-                                    )}
-                                </div>
-                            </CardBody>
-                        </Card>
-
-                        <Card className="shadow-md">
-                            <CardHeader className="pb-0 pt-4 flex-col items-start">
-                                <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
-                                <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
-                            </CardHeader>
-                            <CardBody className="overflow-hidden">
-                                <div className="w-full h-[300px]">
-                                    {typeof window !== "undefined" && (
-                                        <Chart options={getBarChartOptionsSavings(months)} series={savingsPercentageSeries} type="bar" height={300} />
-                                    )}
-                                </div>
-                            </CardBody>
-                        </Card>
+                            <Card className="shadow-md">
+                                <CardHeader className="pb-0 pt-4 flex-col items-start">
+                                    <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
+                                    <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
+                                </CardHeader>
+                                <CardBody className="overflow-hidden">
+                                    <div className="w-full h-[300px]">
+                                        {typeof window !== "undefined" && (
+                                            <Chart options={getBarChartOptionsSavings(months)} series={savingsPercentageSeries} type="bar" height={300} />
+                                        )}
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        </div>
                     </div>
 
                     {/* Monthly Data Table */}
