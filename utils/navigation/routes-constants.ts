@@ -19,12 +19,22 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
     },
     CONSOLIDATED: {
         label: "Consolidado",
-        path: "/finances/savings", 
+        path: "/finances/savings",
         parent: "/finances",
     },
     CATEGORIES: {
         label: "Categorias",
         path: "/finances/categories",
+    },
+    GOALS: {
+        label: "Metas",
+        path: "/finances/goals",
+        parent: "/finances",
+    },
+    TRANSACTIONS: {
+        label: "Transacciones",
+        path: "/finances/transactions",
+        parent: "/finances",
     },
 }
 
@@ -59,6 +69,8 @@ export const ROUTES_LIST: Routes[] = [
             FINANCE_ROUTES.CONSOLIDATED,
             FINANCE_ROUTES.SUMMARY,
             FINANCE_ROUTES.CATEGORIES,
+            FINANCE_ROUTES.GOALS,
+            FINANCE_ROUTES.TRANSACTIONS,
         ]
     },
     {
@@ -77,6 +89,6 @@ export const ROUTES_LIST: Routes[] = [
             PLANNER_ROUTES.TASKS,
         ]
     },
-    
+
 ];
 

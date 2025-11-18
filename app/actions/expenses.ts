@@ -26,7 +26,7 @@ export async function addExpense(expense: Expense) {
         familyId: user.familyId,
         userId: user.id,
     });
-}   
+}
 
 export async function getExpenses(page: number, perPage: number, transactionType?: TransactionType): Promise<Expense[]> {
     const user = await getUser();
@@ -37,7 +37,7 @@ export async function getExpenses(page: number, perPage: number, transactionType
     return await db.query.ExpensesTable.findMany({
         where: and(...filter),
         limit: perPage,
-        offset: (page -1) * perPage,
+        offset: (page - 1) * perPage,
         with: {
             category: true,
             user: true
@@ -69,14 +69,47 @@ export async function getCountExpenses(): Promise<number> {
 
 export async function getExpensesByFilter(page: number, perPage: number, filters?: ExpensesFilters): Promise<Expense[]> {
     const user = await getUser();
-    const condition = filters ? and(
-        gte(ExpensesTable.createdAt, filters.startDate),
-        lte(ExpensesTable.createdAt, filters.endDate),
-    ) : and();
+
+    const whereConditions = [
+        eq(ExpensesTable.familyId, user.familyId)
+    ];
+
+    if (filters) {
+        whereConditions.push(gte(ExpensesTable.createdAt, filters.startDate));
+        whereConditions.push(lte(ExpensesTable.createdAt, filters.endDate));
+        if (filters.transactionType) {
+            whereConditions.push(eq(ExpensesTable.transactionType, filters.transactionType));
+        }
+    }
+
+    if (filters?.parentCategory) {
+        const expenses = await db.select({
+            expense: ExpensesTable,
+            category: CategoryTable,
+            user: UserTable
+        })
+            .from(ExpensesTable)
+            .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+            .leftJoin(UserTable, eq(ExpensesTable.userId, UserTable.id))
+            .where(and(
+                ...whereConditions,
+                eq(CategoryTable.parent, filters.parentCategory)
+            ))
+            .limit(perPage)
+            .offset((page - 1) * perPage)
+            .orderBy(desc(ExpensesTable.id));
+
+        return expenses.map(e => ({
+            ...e.expense,
+            category: e.category,
+            user: e.user
+        }));
+    }
+
     return await db.query.ExpensesTable.findMany({
-        where: condition?.append(eq(ExpensesTable.familyId, user.familyId)),
+        where: and(...whereConditions),
         limit: perPage,
-        offset: (page -1) * perPage,
+        offset: (page - 1) * perPage,
         with: {
             category: true,
             user: true
@@ -87,16 +120,41 @@ export async function getExpensesByFilter(page: number, perPage: number, filters
 
 export async function getCountExpensesByFilter(filters?: ExpensesFilters): Promise<number> {
     const user = await getUser();
-    const condition = filters ? and(
-        gte(ExpensesTable.createdAt, filters.startDate),
-        lte(ExpensesTable.createdAt, filters.endDate),
-    ) : and();
+
+    const whereConditions = [
+        eq(ExpensesTable.familyId, user.familyId)
+    ];
+
+    if (filters) {
+        whereConditions.push(gte(ExpensesTable.createdAt, filters.startDate));
+        whereConditions.push(lte(ExpensesTable.createdAt, filters.endDate));
+        if (filters.transactionType) {
+            whereConditions.push(eq(ExpensesTable.transactionType, filters.transactionType));
+        }
+    }
+
+    if (filters?.parentCategory) {
+        const counterResult = await db.select({
+            count: count(ExpensesTable.id).mapWith(Number)
+        }).from(
+            ExpensesTable
+        )
+            .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+            .where(
+                and(
+                    ...whereConditions,
+                    eq(CategoryTable.parent, filters.parentCategory)
+                )
+            )
+        return counterResult[0].count as number;
+    }
+
     const counterResult = await db.select({
         count: count(ExpensesTable.id).mapWith(Number)
     }).from(
         ExpensesTable
     ).where(
-        condition?.append(eq(ExpensesTable.familyId, user.familyId))
+        and(...whereConditions)
     )
     return counterResult[0].count as number;
 }
@@ -104,10 +162,10 @@ export async function getCountExpensesByFilter(filters?: ExpensesFilters): Promi
 
 export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters | undefined, transactionType: TransactionType): Promise<CategoryExpense[]> {
     const user = await getUser();
-    const condition =  filters ? [
+    const condition = filters ? [
         gte(ExpensesTable.createdAt, filters.startDate),
         lte(ExpensesTable.createdAt, filters.endDate),
-    ]: [];
+    ] : [];
     const topCategoriesWithMostExpenses = await db
         .select({
             categoryName: transactionType === TransactionType.Outcome ? CategoryTable.parent : CategoryTable.name,
@@ -120,7 +178,7 @@ export async function getTopCategoriesWithMostExpenses(filters: ExpensesFilters 
                 ...condition,
                 eq(ExpensesTable.familyId, user.familyId),
                 eq(ExpensesTable.transactionType, transactionType),
-                not(eq(CategoryTable.parent, 'Deudas')) 
+                not(eq(CategoryTable.parent, 'Deudas'))
             )
         )
         .groupBy(transactionType === TransactionType.Outcome ? CategoryTable.parent : CategoryTable.name)
@@ -232,7 +290,7 @@ export async function getExpensesByMonth(): Promise<ExpenseByDate[]> {
             )
         )
         .groupBy(sql<string>`TO_CHAR("createdAt", 'Mon, YYYY')`)
-        .orderBy(asc(sql<string>`MIN("createdAt")`)) 
+        .orderBy(asc(sql<string>`MIN("createdAt")`))
         .limit(6)
     return expensesByDate as ExpenseByDate[];
 }
