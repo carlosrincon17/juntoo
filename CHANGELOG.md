@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/carlosrincon17/juntoo/compare/v2.7.0...v2.8.0) (2025-11-18)
+
+
+### Features
+
+* improved dashboard ([1949490](https://github.com/carlosrincon17/juntoo/commit/19494904069fed21b1957e4b46abba5bccf1ff7c))
+
 # [2.7.0](https://github.com/carlosrincon17/juntoo/compare/v2.6.0...v2.7.0) (2025-11-15)
 
 
