@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/carlosrincon17/juntoo/compare/v2.9.0...v2.10.0) (2025-11-18)
+
+
+### Features
+
+* added transactiopn list page and new loading ([949e55b](https://github.com/carlosrincon17/juntoo/commit/949e55b354748aa4e69eb7a13adafd68f22ef2cb))
+
 # [2.9.0](https://github.com/carlosrincon17/juntoo/compare/v2.8.0...v2.9.0) (2025-11-18)
 
 
