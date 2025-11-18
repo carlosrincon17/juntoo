@@ -41,11 +41,6 @@ export default function FinancialSummary() {
         setFinancialMetrics(financialMetricsData);
     }
 
-    const getFormattedDate = (): string => {
-        const date = new Date();
-        return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-    }
-
     useEffect(() => {
         loadFinancialMetrics();
     }, []);
@@ -61,7 +56,6 @@ export default function FinancialSummary() {
                         <div className="flex items-center gap-1">
                             <p className="text-md font-light text-white/70">Ahorro</p>
                         </div>
-                        <span className="text-xs font-extralight text-white/80 bg-white/10 px-3 py-1 rounded-full">{getFormattedDate()}</span>
                     </div>
 
                     <div className="flex items-end">

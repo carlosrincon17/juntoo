@@ -7,7 +7,7 @@ export default function Page() {
 
     return (
         <div className="w-full max-w-8xl mx-auto space-y-6">
-            <div className="grid col-span-3 grid-cols-1 md:grid-cols-3 gap-4 w-full">
+            <div className="grid col-span-3 grid-cols-1 md:grid-cols-3 space-y-6 w-full">
                 <div className="gap-4 w-full col-span-1 max-h-full">
                     <TransactionsSummaryCard />
                 </div>

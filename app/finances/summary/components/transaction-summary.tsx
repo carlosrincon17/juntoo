@@ -36,8 +36,8 @@ export default function TransactionsSummaryCard() {
     }, []);
 
     return (
-        <Card className="h-full shadow-md bg-gradient-to-r from-[#8b5cf6] via-[#9333ea] to-[#a78bfa] rounded-3xl xl:col-span-1">
-            <div className="p-7 relative overflow-hidden h-full">
+        <Card className="h-full shadow-md bg-gradient-to-r from-[#8b5cf6] via-[#9333ea] to-[#a78bfa] xl:col-span-1">
+            <div className="p-4 relative overflow-hidden h-full">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
 
