@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/carlosrincon17/juntoo/compare/v2.8.0...v2.9.0) (2025-11-18)
+
+
+### Features
+
+* improved UI in summary ([5021c7d](https://github.com/carlosrincon17/juntoo/commit/5021c7d415de4a2412429be187ca55bb3c6cb2fa))
+
 # [2.8.0](https://github.com/carlosrincon17/juntoo/compare/v2.7.0...v2.8.0) (2025-11-18)
 
 
