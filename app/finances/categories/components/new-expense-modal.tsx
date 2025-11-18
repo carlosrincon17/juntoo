@@ -77,9 +77,9 @@ const bgSelectedColorsButton: Record<string, string> = {
 }
 
 export default function NewExpensePanel(props: {
-  isOpen: boolean
-  onOpenChange: () => void
-  transactionType: TransactionType
+    isOpen: boolean
+    onOpenChange: () => void
+    transactionType: TransactionType
 }) {
     const { isOpen, onOpenChange, transactionType } = props
 
@@ -137,10 +137,10 @@ export default function NewExpensePanel(props: {
 
     const handleSaveExpense = async () => {
         setIsLoadingSaveExpense(true)
-        await addExpense({...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType, createdAt: new Date()})
+        await addExpense({ ...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType, createdAt: new Date() })
         addToast({
             title: "¡Todo en orden!",
-            description: `Tu gasto de ${formatCurrency(expense.value as number)} por ${selectedCategory?.name} se ha agregado correctamente`, 
+            description: `Tu gasto de ${formatCurrency(expense.value as number)} por ${selectedCategory?.name} se ha agregado correctamente`,
             icon: <FaCheck size={24} />,
         });
         setIsLoadingSaveExpense(false)
@@ -167,8 +167,8 @@ export default function NewExpensePanel(props: {
 
                     <ScrollShadow className="flex-1 overflow-y-auto bg-gray-50">
                         {
-                            isLoading ? 
-                                <CustomLoading className="mt-24" message="Estamos prepara todo para que crees tu gasto ..." /> 
+                            isLoading ?
+                                <CustomLoading className="mt-24" text="Estamos prepara todo para que crees tu gasto ..." />
                                 :
                                 <form
                                     className="p-4 space-y-6"
@@ -181,7 +181,7 @@ export default function NewExpensePanel(props: {
                                     {!selectedParentCategory ? (
                                         <div className="space-y-3">
                                             <label className="text-sm font-light">
-                                        Seleccione el tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"} :
+                                                Seleccione el tipo de {transactionType === TransactionType.Outcome ? "gasto" : "ingreso"} :
                                             </label>
 
                                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
@@ -225,14 +225,14 @@ export default function NewExpensePanel(props: {
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="space-y-3">  
+                                            <div className="space-y-3">
                                                 <label className="text-sm font-light">Seleccione una categoria:</label>
                                                 <div className="grid grid-cols-3 gap-2 mt-2">
                                                     {categoryList.map((category) => (
                                                         <Card
                                                             key={category.id}
                                                             isPressable
-                                                            className={`shadow-md ${colors[category.color]} h-16 ${selectedCategory?.id === category.id ? bgSelectedColors[category.color]: null}`}
+                                                            className={`shadow-md ${colors[category.color]} h-16 ${selectedCategory?.id === category.id ? bgSelectedColors[category.color] : null}`}
                                                             radius="sm"
                                                             onPress={() => setSelectedCategory(category)}
                                                         >
@@ -280,7 +280,7 @@ export default function NewExpensePanel(props: {
                                     )}
                                 </form>
                         }
-                        
+
                     </ScrollShadow>
 
                     <div className="p-4 border-t flex justify-end gap-2">
