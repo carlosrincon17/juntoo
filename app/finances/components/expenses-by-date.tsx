@@ -7,8 +7,8 @@ import { ExpensesFilters } from "@/app/types/filters";
 import { ExpenseByDate } from "@/app/types/expense";
 import { getExpensesByDate } from "@/app/actions/expenses";
 import { formatCurrency, formatToShortCurrency } from "@/app/lib/currency";
-import { CustomLoading } from "@/app/components/customLoading";
 import { ApexOptions } from "apexcharts";
+import { GraphEskeleton } from "@/app/components/graph-skeleton";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -65,7 +65,7 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
         }
     }, [expensesFilter.startDate, expensesFilter.endDate]);
 
-    const chartOptions: ApexOptions  = {
+    const chartOptions: ApexOptions = {
         chart: {
             type: "line",
             height: 350,
@@ -122,8 +122,8 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
 
     return (
         <>
-            {!loading && expensesByDate.length  && expensesByDatePrevious.length ? (
-                <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4">
+            {!loading && expensesByDate.length && expensesByDatePrevious.length ? (
+                <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4 col-span-1 md:col-span-2">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
                     <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
                     <h3 className="text-xl font-extralight mb-4">Gastos por día</h3>
@@ -131,15 +131,9 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
                         <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
                     </CardBody>
                 </Card>
-                    
+
             ) : (
-                <Card>
-                    <CardBody className="p-4">
-                        <div className="flex justify-center items-center">
-                            <CustomLoading className="mt-24" />
-                        </div>
-                    </CardBody>
-                </Card>
+                <GraphEskeleton />
             )}
         </>
     );

@@ -3,7 +3,6 @@ import FloatingManageButton from "./components/floating-manage-buttons";
 import TransactionsSummary from "./components/transactions-summary";
 
 
-
 export default function Page() {
 
     return (
@@ -12,7 +11,7 @@ export default function Page() {
             <div className="w-full max-w-8xl mx-auto space-y-6">
                 <FinancialSummary />
                 <TransactionsSummary />
-            </div>   
+            </div>
         </div>
     )
 }

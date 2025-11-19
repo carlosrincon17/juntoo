@@ -1,14 +1,14 @@
 'use client'
 
 import { getTopCategoriesWithMostExpenses } from "@/app/actions/expenses";
-import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
 import { ExpensesFilters } from "@/app/types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { useEffect, useState } from "react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { Button, ButtonGroup, Card, CardBody, CardHeader } from "@heroui/react";
+import { Button, ButtonGroup, Card, CardHeader } from "@heroui/react";
+import { GraphEskeleton } from "@/app/components/graph-skeleton";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -32,7 +32,7 @@ const chartOptions: ApexOptions = {
                     show: true,
                     name: {
                         show: true,
-                         
+
                     },
                     value: {
                         show: true,
@@ -69,22 +69,22 @@ const chartOptions: ApexOptions = {
             filter: {
                 type: "none",
             },
-        },  
+        },
     },
 };
 
-export const ExpensesBreakdown = (props: { totalExpenses: number, expensesFilter?: ExpensesFilters}) => {
-    const {  expensesFilter } = props;
+export const ExpensesBreakdown = (props: { expensesFilter?: ExpensesFilters }) => {
+    const { expensesFilter } = props;
 
     const [loading, setLoading] = useState(true);
     const [series, setSeries] = useState<number[]>([]);
-    const [options, setOptions] = useState<ApexOptions>({...chartOptions})
+    const [options, setOptions] = useState<ApexOptions>({ ...chartOptions })
     const [transactionTypeSelected, setTransactionTypeSelected] = useState<TransactionType>(TransactionType.Outcome);
 
     const getTransactionListData = async () => {
         const transactionsData = await getTopCategoriesWithMostExpenses(expensesFilter, transactionTypeSelected);
         setSeries(transactionsData.map(item => item.totalExpenses));
-        setOptions({...chartOptions, labels: transactionsData.map(item => item.categoryName)})
+        setOptions({ ...chartOptions, labels: transactionsData.map(item => item.categoryName) })
         setLoading(false);
     }
 
@@ -99,40 +99,32 @@ export const ExpensesBreakdown = (props: { totalExpenses: number, expensesFilter
 
     return (
         <div>
-            {loading?
-                <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff] h-full">
-                    <CardBody className="p-4">
-                        <div className="flex justify-center items-center h-full">
-                            <CustomLoading className="mt-24" />
-                        </div>
-                    </CardBody>
-                </Card> :
-                <>
-                    <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff]">
-                        <CardHeader className="space-y-2 flex items-center justify-between content-center">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
-                            <h2 className="text-xl font-extralight">Movimientos por categoría </h2>
-                            <ButtonGroup variant="flat" size="sm">
-                                <Button 
-                                    color={getColorByTransactionType(TransactionType.Outcome)} 
-                                    onPress={() => setTransactionTypeSelected(TransactionType.Outcome)}
-                                >
-                                    Gastos
-                                </Button>
-                                <Button 
-                                    color={getColorByTransactionType(TransactionType.Income)}
-                                    onPress={() => setTransactionTypeSelected(TransactionType.Income)}
-                                >
-                                    Ingresos
-                                </Button>
-                            </ButtonGroup>
-                        </CardHeader>
-                        <div id="chart">
-                            <Chart options={options} series={series} type="donut" />
-                        </div>
-                    </Card>
-                </>
+            {loading ?
+                <GraphEskeleton /> :
+                <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff ] col-span-1 h-full">
+                    <CardHeader className="space-y-2 flex items-center justify-between content-center">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
+                        <h2 className="text-xl font-extralight">Movimientos por categoría </h2>
+                        <ButtonGroup variant="flat" size="sm">
+                            <Button
+                                color={getColorByTransactionType(TransactionType.Outcome)}
+                                onPress={() => setTransactionTypeSelected(TransactionType.Outcome)}
+                            >
+                                Gastos
+                            </Button>
+                            <Button
+                                color={getColorByTransactionType(TransactionType.Income)}
+                                onPress={() => setTransactionTypeSelected(TransactionType.Income)}
+                            >
+                                Ingresos
+                            </Button>
+                        </ButtonGroup>
+                    </CardHeader>
+                    <div id="chart">
+                        <Chart options={options} series={series} type="donut" />
+                    </div>
+                </Card>
             }
         </div>
     )
