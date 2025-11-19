@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/carlosrincon17/juntoo/compare/v2.10.3...v2.11.0) (2025-11-19)
+
+
+### Features
+
+* Improved dashboard UX and loading data ([1ecc5d7](https://github.com/carlosrincon17/juntoo/commit/1ecc5d7460f89b1646268bb16bd5b9bd43700f2b))
+
 ## [2.10.3](https://github.com/carlosrincon17/juntoo/compare/v2.10.2...v2.10.3) (2025-11-19)
 
 
