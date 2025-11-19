@@ -18,6 +18,8 @@
     "@next/env": "^15.3.4",
     "@react-aria/i18n": "^3.12.10",
     "@react-oauth/google": "^0.12.2",
+    "@react-types/datepicker": "^3.13.2",
+    "@react-types/shared": "^3.32.1",
     "@vercel/postgres": "^0.10.0",
     "apexcharts": "^4.7.0",
     "clsx": "^2.1.1",
