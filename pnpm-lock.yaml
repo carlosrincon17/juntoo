@@ -6,6 +6,7 @@ settings:
 
 overrides:
   brace-expansion: 2.0.1
+  '@internationalized/date': 3.10.0
 
 importers:
 
@@ -18,7 +19,7 @@ importers:
         specifier: 2.7.11
         version: 2.7.11(@types/react@19.2.6)(framer-motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.18)
       '@internationalized/date':
-        specifier: ^3.8.2
+        specifier: 3.10.0
         version: 3.10.0
       '@next/env':
         specifier: ^15.3.4
@@ -1277,9 +1278,6 @@ packages:
 
   '@internationalized/date@3.10.0':
     resolution: {integrity: sha512-oxDR/NTEJ1k+UFVQElaNIk65E/Z83HK1z1WI3lQyhTtnNg4R5oVXaPzK3jcpKG8UHKDVuDQHzn+wsxSz8RP3aw==}
-
-  '@internationalized/date@3.8.2':
-    resolution: {integrity: sha512-/wENk7CbvLbkUvX1tu0mwq49CVkkWpkXubGel6birjRPyo6uQ4nQpnq5xZu823zRCwwn82zgHrvgF1vZyvmVgA==}
 
   '@internationalized/message@3.1.8':
     resolution: {integrity: sha512-Rwk3j/TlYZhn3HQ6PyXUV0XP9Uv42jqZGNegt0BXlxjE6G3+LwHjbQZAGHhCnCPdaA6Tvd3ma/7QzLlLkJxAWA==}
@@ -5561,7 +5559,7 @@ snapshots:
       '@heroui/system': 2.4.18(@heroui/theme@2.4.17(tailwindcss@3.4.18))(framer-motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@heroui/theme': 2.4.17(tailwindcss@3.4.18)
       '@heroui/use-aria-button': 2.2.16(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@internationalized/date': 3.8.2
+      '@internationalized/date': 3.10.0
       '@react-aria/calendar': 3.8.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@react-aria/focus': 3.20.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@react-aria/i18n': 3.12.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5643,7 +5641,7 @@ snapshots:
       '@heroui/shared-utils': 2.1.9
       '@heroui/system': 2.4.18(@heroui/theme@2.4.17(tailwindcss@3.4.18))(framer-motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@heroui/theme': 2.4.17(tailwindcss@3.4.18)
-      '@internationalized/date': 3.8.2
+      '@internationalized/date': 3.10.0
       '@react-aria/datepicker': 3.14.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@react-aria/i18n': 3.12.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@react-aria/utils': 3.29.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5666,7 +5664,7 @@ snapshots:
       '@heroui/shared-utils': 2.1.9
       '@heroui/system': 2.4.18(@heroui/theme@2.4.17(tailwindcss@3.4.18))(framer-motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@heroui/theme': 2.4.17(tailwindcss@3.4.18)
-      '@internationalized/date': 3.8.2
+      '@internationalized/date': 3.10.0
       '@react-aria/datepicker': 3.14.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@react-aria/i18n': 3.12.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@react-aria/utils': 3.29.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -6560,10 +6558,6 @@ snapshots:
       '@types/node': 24.10.1
 
   '@internationalized/date@3.10.0':
-    dependencies:
-      '@swc/helpers': 0.5.17
-
-  '@internationalized/date@3.8.2':
     dependencies:
       '@swc/helpers': 0.5.17
 

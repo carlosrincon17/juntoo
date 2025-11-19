@@ -1,7 +1,7 @@
 'use client'
 
 import { CustomLoading } from "@/app/components/customLoading";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { Expense } from "@/app/types/expense";
 import { getCountExpensesByFilter, getExpensesByFilter } from "@/app/actions/expenses";
 import { getParentCategories } from "@/app/actions/categories";
@@ -21,9 +21,9 @@ import {
     Card,
     CardBody
 } from "@heroui/react";
-import { getLocalTimeZone, today, CalendarDate } from "@internationalized/date";
-import { RangeValue } from "@react-types/shared";
-import { DateValue } from "@react-types/datepicker";
+import { getLocalTimeZone, today, CalendarDate, DateValue } from "@internationalized/date";
+import type { RangeValue } from "@react-types/shared";
+
 
 const ITEMS_PER_PAGE = 20;
 
@@ -143,7 +143,7 @@ export default function TransactionsPage() {
                             placeholder="Todas"
                             className="max-w-xs"
                             selectedKeys={parentCategory ? [parentCategory] : []}
-                            onChange={(e) => {
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 setParentCategory(e.target.value);
                                 setPage(1);
                             }}
@@ -160,7 +160,7 @@ export default function TransactionsPage() {
                             value={dateRange}
                             onChange={(value) => {
                                 if (value) {
-                                    setDateRange(value);
+                                    setDateRange(value as RangeValue<DateValue>);
                                     setPage(1);
                                 }
                             }}
