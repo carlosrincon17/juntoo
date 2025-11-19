@@ -23,6 +23,8 @@ import {
 } from "@heroui/react";
 import { getLocalTimeZone, today, CalendarDate, DateValue } from "@internationalized/date";
 import type { RangeValue } from "@react-types/shared";
+import { formatCurrency } from "@/app/lib/currency";
+import { formateSimpleDate } from "@/app/lib/dates";
 
 
 const ITEMS_PER_PAGE = 20;
@@ -88,39 +90,18 @@ export default function TransactionsPage() {
         fetchData();
     }, [page, transactionType, parentCategory, dateRange]);
 
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('es-CO', {
-            style: 'currency',
-            currency: 'COP',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        }).format(value);
-    };
-
-    const formatDate = (dateStr?: Date | string) => {
-        if (!dateStr) return "";
-        const date = new Date(dateStr);
-        return new Intl.DateTimeFormat('es-CO', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            timeZone: 'UTC'
-        }).format(date);
-    };
 
     const totalPages = Math.ceil(totalExpenses / ITEMS_PER_PAGE);
 
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-4">
-                <h1 className="text-2xl font-bold text-gray-800">Transacciones</h1>
-
                 <Card className="w-full shadow-md">
                     <CardBody className="flex flex-col md:flex-row gap-4">
                         <Select
                             label="Tipo de Transacción"
                             placeholder="Todos"
-                            className="max-w-xs"
+                            className="md:max-w-xs"
                             selectedKeys={transactionType ? [transactionType] : []}
                             onChange={(e) => {
                                 setTransactionType(e.target.value);
@@ -141,7 +122,7 @@ export default function TransactionsPage() {
                         <Select
                             label="Categoría Principal"
                             placeholder="Todas"
-                            className="max-w-xs"
+                            className="md:max-w-xs"
                             selectedKeys={parentCategory ? [parentCategory] : []}
                             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 setParentCategory(e.target.value);
@@ -164,7 +145,7 @@ export default function TransactionsPage() {
                                     setPage(1);
                                 }
                             }}
-                            className="max-w-xs"
+                            className="md:max-w-xs"
                         />
                     </CardBody>
                 </Card>
@@ -178,27 +159,27 @@ export default function TransactionsPage() {
                 <div className="flex flex-col gap-4">
                     <Table aria-label="Tabla de transacciones" className="w-full p-l-2">
                         <TableHeader>
-                            <TableColumn className="min-w-[150px]">Fecha</TableColumn>
-                            <TableColumn className="min-w-[150px]">Tipo</TableColumn>
+                            <TableColumn className="min-w-[130px]">Fecha</TableColumn>
+                            <TableColumn className="min-w-[100px]">Tipo</TableColumn>
+                            <TableColumn className="min-w-[130px]">Categoria Padre</TableColumn>
                             <TableColumn className="min-w-[150px]">Categoria</TableColumn>
-                            <TableColumn className="min-w-[150px]">Categoria Padre</TableColumn>
-                            <TableColumn className="min-w-[150px]">Valor</TableColumn>
+                            <TableColumn className="min-w-[130px]">Valor</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No se encontraron transacciones."}>
                             {expenses.map((expense) => (
                                 <TableRow key={expense.id}>
-                                    <TableCell>{formatDate(expense.createdAt)}</TableCell>
-                                    <TableCell>
+                                    <TableCell>{expense.createdAt ? formateSimpleDate(expense.createdAt) : "--"}</TableCell>
+                                    <TableCell className="center">
                                         <span className={expense.transactionType === TransactionType.Income ? "text-green-600 bg-green-100 px-2 py-1 rounded-full text-xs" : "text-red-600 bg-red-100 px-2 py-1 rounded-full text-xs"}>
                                             {expense.transactionType === TransactionType.Income ? "Ingreso" : "Gasto"}
                                         </span>
                                     </TableCell>
+                                    <TableCell>{expense.category?.parent}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-2">
                                             <span>{expense.category?.name}</span>
                                         </div>
                                     </TableCell>
-                                    <TableCell>{expense.category?.parent}</TableCell>
                                     <TableCell>
                                         <span className={expense.transactionType === TransactionType.Income ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
                                             {expense.transactionType === TransactionType.Income ? "+" : "-"} {formatCurrency(expense.value || 0)}
