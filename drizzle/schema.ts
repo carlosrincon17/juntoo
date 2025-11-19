@@ -35,10 +35,10 @@ export const ExpensesTable = pgTable(
     {
         id: serial('id').primaryKey(),
         category_id: integer("category_id").references(() => CategoryTable.id).notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
         createdBy: text('createdBy').notNull(),
         userId: integer("user_id").references(() => UserTable.id),
-        createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
+        createdAt: date('createdAt', { mode: 'date' }).defaultNow().notNull(),
         transactionType: text('transaction_type').notNull(),
         budgetId: integer("budget_id").references(() => BudgetsTable.id),
         familyId: integer("family_id").references(() => FamilyTable.id),
@@ -50,7 +50,7 @@ export const SavingsTable = pgTable(
     {
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
         owner: text('owner').notNull(),
         userId: integer("user_id").references(() => UserTable.id),
         currency: text('currency').notNull().default('COP'),
@@ -66,9 +66,9 @@ export const BudgetsTable = pgTable(
     {
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
         isActive: boolean('is_active').notNull(),
-        createdAt: date('createdAt', {mode: 'date'}).defaultNow().notNull(),
+        createdAt: date('createdAt', { mode: 'date' }).defaultNow().notNull(),
         familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
@@ -79,7 +79,8 @@ export const DebtsTable = pgTable(
     {
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
+        initialAmount: bigint('initial_amount', { mode: 'number' }).notNull().default(0),
         familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
@@ -89,7 +90,7 @@ export const PatrimoniesTable = pgTable(
     {
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
         familyId: integer("family_id").references(() => FamilyTable.id),
     }
 );
@@ -126,7 +127,7 @@ export const LoansTable = pgTable(
     {
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
         familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
     }
 );
@@ -136,7 +137,7 @@ export const FinancialGoalsTable = pgTable(
     {
         id: serial('id').primaryKey(),
         name: text('name').notNull(),
-        value: bigint({mode: 'number'}).notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
         familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
     }
 );

@@ -148,6 +148,13 @@
       "when": 1744409086628,
       "tag": "0020_added-financial-goals",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1763526101119,
+      "tag": "0021_added_innitial_amount",
+      "breakpoints": true
     }
   ]
 }

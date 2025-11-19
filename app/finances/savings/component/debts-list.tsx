@@ -1,5 +1,5 @@
 import { addToast, Card, useDisclosure } from "@heroui/react";
-import AccountCard from "./account-card";
+import DebtCard from "./debt-card";
 import { FaCheck, FaPlus } from "react-icons/fa";
 import { Debts } from "@/app/types/debts";
 import { useState } from "react";
@@ -12,7 +12,7 @@ interface DebtsListProps {
 }
 
 export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
-    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange} = useDisclosure();
+    const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange } = useDisclosure();
     const [selectedDebt, setSelectedDebt] = useState<Debts | null>(null);
 
     const gradient = "from-[#f97066] via-[#f43f5e] to-[#fb7185]"
@@ -37,12 +37,13 @@ export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
         <>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {debts.map((debt) => (
-                    <AccountCard 
-                        key={debt.id} 
-                        name={debt.name} 
-                        value={debt.value} 
-                        onEdit={() => console.log(debt)} 
-                        onDelete={() => onClickDeleteDebt(debt)} 
+                    <DebtCard
+                        key={debt.id}
+                        name={debt.name}
+                        value={debt.value}
+                        initialAmount={debt.initialAmount}
+                        onEdit={() => console.log(debt)}
+                        onDelete={() => onClickDeleteDebt(debt)}
                         gradient={gradient}
                         textColor="text-white"
                     />
@@ -60,11 +61,11 @@ export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
                     </div>
                 </Card>
             </div>
-            <ConfirmModal 
-                isOpen={isDeleteModalOpen} 
-                onOpenChange={onDeleteModalChange} 
-                title="Eliminar deuda" 
-                message="¿Estás seguro de que quieres eliminar esta deuda?" 
+            <ConfirmModal
+                isOpen={isDeleteModalOpen}
+                onOpenChange={onDeleteModalChange}
+                title="Eliminar deuda"
+                message="¿Estás seguro de que quieres eliminar esta deuda?"
                 onConfirm={onConfirmDeleteDebt}
             />
         </>
