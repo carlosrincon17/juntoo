@@ -1,3 +1,10 @@
+## [2.10.2](https://github.com/carlosrincon17/juntoo/compare/v2.10.1...v2.10.2) (2025-11-19)
+
+
+### Bug Fixes
+
+* fixed deployment issue ([93fe545](https://github.com/carlosrincon17/juntoo/commit/93fe5455aa0e357e97d160d4727f79c17be9508d))
+
 ## [2.10.1](https://github.com/carlosrincon17/juntoo/compare/v2.10.0...v2.10.1) (2025-11-18)
 
 
