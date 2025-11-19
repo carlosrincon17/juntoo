@@ -1,3 +1,10 @@
+# [2.12.0](https://github.com/carlosrincon17/juntoo/compare/v2.11.0...v2.12.0) (2025-11-19)
+
+
+### Features
+
+* added initial amount to debts ([3bcff9d](https://github.com/carlosrincon17/juntoo/commit/3bcff9d442b68a8c7c61b1e403384189cf7ba538))
+
 # [2.11.0](https://github.com/carlosrincon17/juntoo/compare/v2.10.3...v2.11.0) (2025-11-19)
 
 
