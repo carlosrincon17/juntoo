@@ -1,3 +1,11 @@
+# [2.13.0](https://github.com/carlosrincon17/juntoo/compare/v2.12.0...v2.13.0) (2025-11-24)
+
+
+### Features
+
+* added transactions to dashboard list ([5311b88](https://github.com/carlosrincon17/juntoo/commit/5311b885f65c80647f3291707582fdb6cf8cddc5))
+* added transactions to dashboard list ([07fc878](https://github.com/carlosrincon17/juntoo/commit/07fc878cf3db2fc9645f4992a19e16b0b881045c))
+
 # [2.12.0](https://github.com/carlosrincon17/juntoo/compare/v2.11.0...v2.12.0) (2025-11-19)
 
 
