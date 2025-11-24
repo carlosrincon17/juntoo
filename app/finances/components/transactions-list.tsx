@@ -138,9 +138,9 @@ export default function TransactionsList() {
                                 <div className="flex flex-col items-end">
                                     <span
                                         className={`text-base font-medium ${transaction.transactionType === TransactionType.Income
-                                                ? 'bg-gradient-to-r from-[#2dd4bf] to-[#34d399] bg-clip-text text-transparent'
-                                                : 'bg-gradient-to-r from-[#f97066] to-[#fb7185] bg-clip-text text-transparent'
-                                            }`}
+                                            ? 'bg-gradient-to-r from-[#2dd4bf] to-[#34d399] bg-clip-text text-transparent'
+                                            : 'bg-gradient-to-r from-[#f97066] to-[#fb7185] bg-clip-text text-transparent'
+                                        }`}
                                     >
                                         {transaction.transactionType === TransactionType.Income ? '+' : '-'} {formatCurrency(transaction.value || 0)}
                                     </span>
