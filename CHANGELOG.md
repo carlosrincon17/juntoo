@@ -1,3 +1,10 @@
+## [2.16.1](https://github.com/carlosrincon17/juntoo/compare/v2.16.0...v2.16.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* fixed linter issues ([c99acda](https://github.com/carlosrincon17/juntoo/commit/c99acda2b3a58c2ffd5664890adc1162edb008df))
+
 # [2.16.0](https://github.com/carlosrincon17/juntoo/compare/v2.15.0...v2.16.0) (2025-11-25)
 
 
