@@ -1,3 +1,10 @@
+# [2.15.0](https://github.com/carlosrincon17/juntoo/compare/v2.14.0...v2.15.0) (2025-11-25)
+
+
+### Features
+
+* updated font and goals section ([ff09725](https://github.com/carlosrincon17/juntoo/commit/ff097257f8119f65656d3a44b7efe96788516036))
+
 # [2.14.0](https://github.com/carlosrincon17/juntoo/compare/v2.13.0...v2.14.0) (2025-11-25)
 
 
