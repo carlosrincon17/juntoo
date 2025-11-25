@@ -1,17 +1,18 @@
-"use client"
-
 import { formatCurrency } from "@/app/lib/currency"
 import { Button, Card } from "@heroui/react"
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa"
+import { FaPencilAlt, FaTrashAlt, FaChartLine, FaBullseye } from "react-icons/fa"
 
 interface AccountCardProps {
-  name: string
-  value: number
-  onEdit: () => void
-  onDelete: () => void
-  gradient: string
-  textColor: string
-  owner?: string
+    name: string
+    value: number
+    onEdit: () => void
+    onDelete: () => void
+    gradient: string
+    textColor: string
+    owner?: string
+    goalName?: string
+    isInvestment?: boolean
+    annualInterestRate?: number | null
 }
 
 export default function AccountCard({
@@ -21,7 +22,10 @@ export default function AccountCard({
     onDelete,
     gradient,
     textColor,
-    owner
+    owner,
+    goalName,
+    isInvestment,
+    annualInterestRate
 }: AccountCardProps) {
 
     return (
@@ -30,7 +34,7 @@ export default function AccountCard({
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
                 <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
 
-                <div className="flex justify-between items-start mb-4 relative">
+                <div className="flex justify-between items-start mb-4 relative z-10">
                     <div>
                         <h3 className={`font-light text-sm ${textColor}/90`}>{name}</h3>
                         <p className={`text-2xl font-extralight mt-1 ${textColor}`}>{formatCurrency(value)}</p>
@@ -40,7 +44,25 @@ export default function AccountCard({
                     </div>
                 </div>
 
-                <div className="flex justify-end mt-auto gap-2 relative">
+                <div className="space-y-2 mb-4 relative z-10">
+                    {goalName && (
+                        <div className={`flex items-center gap-2 ${textColor}/80`}>
+                            <FaBullseye className="w-3 h-3" />
+                            <span className="text-xs font-light">Meta: {goalName}</span>
+                        </div>
+                    )}
+
+                    {isInvestment && (
+                        <div className={`flex items-center gap-2 ${textColor}/80`}>
+                            <FaChartLine className="w-3 h-3" />
+                            <span className="text-xs font-light">
+                                Inversión {annualInterestRate ? `(${annualInterestRate}% EA)` : ''}
+                            </span>
+                        </div>
+                    )}
+                </div>
+
+                <div className="flex justify-end mt-auto gap-2 relative z-10">
                     <Button
                         variant="light"
                         isIconOnly

@@ -1,7 +1,8 @@
 import { User } from "./user";
+import { FinancialGoal } from "./financial-goal";
 
 export type Savings = {
-    id: number; 
+    id: number;
     name: string;
     value: number;
     owner: string;
@@ -11,4 +12,6 @@ export type Savings = {
     familyId: number | null;
     isInvestment: boolean;
     annualInterestRate?: number | null;
+    goalId?: number | null;
+    goal?: FinancialGoal | null;
 }

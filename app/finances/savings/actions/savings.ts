@@ -12,11 +12,12 @@ export async function getSavings(): Promise<Savings[]> {
     return await db.query.SavingsTable.findMany({
         where: eq(SavingsTable.familyId, user.familyId),
         with: {
-            user: true
+            user: true,
+            goal: true
         },
         orderBy: desc(SavingsTable.id)
     });
-}   
+}
 
 export async function getTotalSavings(currency: Currency = Currency.COP): Promise<number> {
     const user = await getUser();
@@ -45,7 +46,7 @@ export async function createSavings(savings: Savings): Promise<void> {
     const user = await getUser()
     savings.familyId = user.familyId
     savings.userId = user.id as number
-    await db.insert(SavingsTable).values({...savings, id: undefined});
+    await db.insert(SavingsTable).values({ ...savings, id: undefined });
 }
 
 export async function deleteSaving(savingId: number): Promise<void> {

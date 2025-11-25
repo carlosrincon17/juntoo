@@ -3,21 +3,17 @@ import { useEffect, useState } from "react";
 import { getFinancialGoals } from "../actions/financial-goals";
 import { Card, CardBody, CardHeader, Progress } from "@heroui/react";
 import { FaTrophy } from "react-icons/fa";
-import { getTotalSavings } from "../savings/actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import AnimatedNumber from "@/app/components/animated-number";
 
 export default function FinancialGoals() {
 
     const [financialGoals, setFinancialGoals] = useState<FinancialGoal[]>([]);
-    const [totalSavings, setTotalSavings] = useState<number>(0);
     const [loading, setLoading] = useState(true);
 
     const loadFinancialGoals = async () => {
         const financialGoalsData = await getFinancialGoals();
         setFinancialGoals(financialGoalsData);
-        const totalSavingsData = await getTotalSavings();
-        setTotalSavings(totalSavingsData);
         setLoading(false);
     }
 
@@ -56,8 +52,9 @@ export default function FinancialGoals() {
                                 </div>
                             ) :
                                 financialGoals.map((financialGoal) => {
-                                    const percentage = Math.min((totalSavings / financialGoal.value) * 100, 100);
-                                    const isCompleted = totalSavings >= financialGoal.value;
+                                    const currentAmount = financialGoal.currentAmount || 0;
+                                    const percentage = Math.min((currentAmount / financialGoal.value) * 100, 100);
+                                    const isCompleted = currentAmount >= financialGoal.value;
 
                                     return (
                                         <div
@@ -71,7 +68,7 @@ export default function FinancialGoals() {
                                                     </h3>
                                                     <div className="flex items-baseline gap-1.5 mt-1">
                                                         <span className="text-2xl font-light text-gray-900 tracking-tight">
-                                                            <AnimatedNumber value={totalSavings} />
+                                                            <AnimatedNumber value={currentAmount} />
                                                         </span>
                                                         <span className="text-xs text-gray-500 font-medium">
                                                             / <AnimatedNumber value={financialGoal.value} />
@@ -88,7 +85,7 @@ export default function FinancialGoals() {
                                             <Progress
                                                 aria-label={`Progreso de ${financialGoal.name}`}
                                                 size="sm"
-                                                value={totalSavings}
+                                                value={currentAmount}
                                                 maxValue={financialGoal.value}
                                                 classNames={{
                                                     base: "max-w-full",
@@ -100,7 +97,7 @@ export default function FinancialGoals() {
                                             {!isCompleted && (
                                                 <div className="mt-2 text-right">
                                                     <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">
-                                                        Faltan <AnimatedNumber value={financialGoal.value - totalSavings} />
+                                                        Faltan <AnimatedNumber value={financialGoal.value - currentAmount} />
                                                     </span>
                                                 </div>
                                             )}

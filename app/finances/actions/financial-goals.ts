@@ -9,14 +9,18 @@ import { desc, eq } from "drizzle-orm";
 
 export async function getFinancialGoals(): Promise<FinancialGoal[]> {
     const user = await getUser();
-    const financialGoals = await db
-        .select()
-        .from(FinancialGoalsTable)
-        .where(
-            eq(FinancialGoalsTable.familyId, user.familyId)
-        )
-        .orderBy(desc(FinancialGoalsTable.id))
-    return financialGoals;
+    const financialGoals = await db.query.FinancialGoalsTable.findMany({
+        where: eq(FinancialGoalsTable.familyId, user.familyId),
+        with: {
+            savings: true
+        },
+        orderBy: desc(FinancialGoalsTable.id)
+    });
+
+    return financialGoals.map(goal => ({
+        ...goal,
+        currentAmount: goal.savings.reduce((sum, saving) => sum + saving.value, 0)
+    }));
 }
 
 export async function addFinancialGoal(financialGoal: FinancialGoal) {

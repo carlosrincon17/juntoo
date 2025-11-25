@@ -7,15 +7,19 @@ import { useEffect, useState } from "react"
 import { currencyToInteger, formatCurrency } from "@/app/lib/currency"
 import { FaCheck, FaTimes } from "react-icons/fa"
 
+import { getFinancialGoals } from "../../actions/financial-goals"
+import { FinancialGoal } from "@/app/types/financial-goal"
+
 export default function SavingsManagerPanel(props: {
-  isOpen: boolean
-  savings: Savings
-  onOpenChange: (isOpen: boolean) => void
-  afterSaveSavings: () => void
+    isOpen: boolean
+    savings: Savings
+    onOpenChange: (isOpen: boolean) => void
+    afterSaveSavings: () => void
 }) {
     const { isOpen, savings, onOpenChange, afterSaveSavings } = props
     const [savingsValue, setSavingsValue] = useState("")
     const [selectedSavings, setSelectedSavings] = useState<Savings>()
+    const [goals, setGoals] = useState<FinancialGoal[]>([])
 
     const onSaveSavings = async () => {
         const savingMethod = selectedSavings?.id ? updateSavings : createSavings
@@ -24,13 +28,21 @@ export default function SavingsManagerPanel(props: {
             ? "Tus ahorros se actualizaron correctamente"
             : "Tus ahorros se agregaron correctamente"
         addToast({
-            description: message, 
+            description: message,
             title: "¡Todo en orden!",
             icon: <FaCheck size={24} />,
         });
         onOpenChange(false)
         afterSaveSavings()
     }
+
+    useEffect(() => {
+        const fetchGoals = async () => {
+            const goalsData = await getFinancialGoals()
+            setGoals(goalsData)
+        }
+        fetchGoals()
+    }, [])
 
     useEffect(() => {
         setSelectedSavings({ ...savings })
@@ -104,6 +116,20 @@ export default function SavingsManagerPanel(props: {
                         >
                             {(currency) => <SelectItem key={currency.key}>{currency.label}</SelectItem>}
                         </Select>
+
+                        <Select
+                            items={goals}
+                            label="Meta Financiera"
+                            selectedKeys={selectedSavings?.goalId ? [selectedSavings.goalId.toString()] : []}
+                            onSelectionChange={(e: SharedSelection) => {
+                                setSelectedSavings({ ...(selectedSavings as Savings), goalId: Number(e.currentKey) })
+                            }}
+                            placeholder="Seleccione una meta (opcional)"
+                            size="lg"
+                        >
+                            {(goal) => <SelectItem key={goal.id}>{goal.name}</SelectItem>}
+                        </Select>
+
                         <Checkbox
                             size="lg"
                             isSelected={selectedSavings?.isInvestment}
@@ -111,7 +137,7 @@ export default function SavingsManagerPanel(props: {
                                 setSelectedSavings({ ...(selectedSavings as Savings), isInvestment: status })
                             }
                         >
-              Es una inversión con interes anual
+                            Es una inversión con interes anual
                         </Checkbox>
                         {selectedSavings?.isInvestment && (
                             <Input

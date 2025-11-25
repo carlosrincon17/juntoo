@@ -3,4 +3,5 @@ export interface FinancialGoal {
     name: string;
     value: number;
     familyId: number;
+    currentAmount?: number;
 }

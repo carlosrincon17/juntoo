@@ -57,6 +57,7 @@ export const SavingsTable = pgTable(
         familyId: integer("family_id").references(() => FamilyTable.id),
         isInvestment: boolean('is_investment').notNull().default(false),
         annualInterestRate: real('annual_interest_rate'),
+        goalId: integer("goal_id").references(() => FinancialGoalsTable.id),
     }
 );
 
@@ -203,5 +204,16 @@ export const periodicPaymentUserRelationship = relations(PeriodicPaymentsTable, 
     user: one(UserTable, {
         fields: [PeriodicPaymentsTable.userId],
         references: [UserTable.id],
+    }),
+}));
+
+export const financialGoalSavingsRelationship = relations(FinancialGoalsTable, ({ many }) => ({
+    savings: many(SavingsTable),
+}));
+
+export const savingsGoalRelationship = relations(SavingsTable, ({ one }) => ({
+    goal: one(FinancialGoalsTable, {
+        fields: [SavingsTable.goalId],
+        references: [FinancialGoalsTable.id],
     }),
 }));
