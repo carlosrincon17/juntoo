@@ -1,3 +1,10 @@
+# [2.14.0](https://github.com/carlosrincon17/juntoo/compare/v2.13.0...v2.14.0) (2025-11-25)
+
+
+### Features
+
+* Improved transactions filter ([b95ff73](https://github.com/carlosrincon17/juntoo/commit/b95ff7387af610e4739dbe0d8496eabd5460aa07))
+
 # [2.13.0](https://github.com/carlosrincon17/juntoo/compare/v2.12.0...v2.13.0) (2025-11-24)
 
 
