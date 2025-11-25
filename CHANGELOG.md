@@ -1,3 +1,10 @@
+# [2.16.0](https://github.com/carlosrincon17/juntoo/compare/v2.15.0...v2.16.0) (2025-11-25)
+
+
+### Features
+
+* added first iteration of periodic payments ([28fd3e4](https://github.com/carlosrincon17/juntoo/commit/28fd3e4dcc11af409e75884a4fe31d73cb34835d))
+
 # [2.15.0](https://github.com/carlosrincon17/juntoo/compare/v2.14.0...v2.15.0) (2025-11-25)
 
 
