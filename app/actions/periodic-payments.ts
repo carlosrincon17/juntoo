@@ -8,6 +8,9 @@ import { getUser } from "./auth";
 
 export async function addPeriodicPayment(payment: PeriodicPayment) {
     const user = await getUser()
+    if (!user.id) {
+        throw new Error("User ID is missing");
+    }
     await db.insert(PeriodicPaymentsTable).values({
         name: payment.name,
         value: payment.value || 0,
