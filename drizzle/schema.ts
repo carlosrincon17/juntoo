@@ -142,6 +142,21 @@ export const FinancialGoalsTable = pgTable(
     }
 );
 
+export const PeriodicPaymentsTable = pgTable(
+    'periodic_payments',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        value: bigint({ mode: 'number' }).notNull(),
+        category_id: integer("category_id").references(() => CategoryTable.id).notNull(),
+        frequency: text('frequency').notNull(),
+        startDate: date('start_date', { mode: 'date' }).notNull(),
+        userId: integer("user_id").references(() => UserTable.id).notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
+        transactionType: text('transaction_type').notNull(),
+    }
+);
+
 export const expenseCategoryRelationship = relations(ExpensesTable, ({ one }) => ({
     category: one(CategoryTable, {
         fields: [ExpensesTable.category_id],
@@ -173,6 +188,20 @@ export const userExpensesRelationship = relations(ExpensesTable, ({ one }) => ({
 export const userSavingsRelationship = relations(SavingsTable, ({ one }) => ({
     user: one(UserTable, {
         fields: [SavingsTable.userId],
+        references: [UserTable.id],
+    }),
+}));
+
+export const periodicPaymentCategoryRelationship = relations(PeriodicPaymentsTable, ({ one }) => ({
+    category: one(CategoryTable, {
+        fields: [PeriodicPaymentsTable.category_id],
+        references: [CategoryTable.id],
+    }),
+}));
+
+export const periodicPaymentUserRelationship = relations(PeriodicPaymentsTable, ({ one }) => ({
+    user: one(UserTable, {
+        fields: [PeriodicPaymentsTable.userId],
         references: [UserTable.id],
     }),
 }));

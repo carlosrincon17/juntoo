@@ -36,6 +36,11 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
         path: "/finances/transactions",
         parent: "/finances",
     },
+    PERIODIC_PAYMENTS: {
+        label: "Pagos Periódicos",
+        path: "/finances/periodic-payments",
+        parent: "/finances",
+    },
 }
 
 const GOAL_ROUTES = {
@@ -71,6 +76,7 @@ export const ROUTES_LIST: Routes[] = [
             FINANCE_ROUTES.CATEGORIES,
             FINANCE_ROUTES.GOALS,
             FINANCE_ROUTES.TRANSACTIONS,
+            FINANCE_ROUTES.PERIODIC_PAYMENTS,
         ]
     },
     {
