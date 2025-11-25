@@ -1,3 +1,10 @@
+# [2.17.0](https://github.com/carlosrincon17/juntoo/compare/v2.16.1...v2.17.0) (2025-11-25)
+
+
+### Features
+
+* linked financial goals with savings ([1590534](https://github.com/carlosrincon17/juntoo/commit/1590534ef954017433b19290470b1fa398eca88f))
+
 ## [2.16.1](https://github.com/carlosrincon17/juntoo/compare/v2.16.0...v2.16.1) (2025-11-25)
 
 
