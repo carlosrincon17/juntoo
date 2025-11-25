@@ -2,7 +2,7 @@
 
 import { CategoryTable, ExpensesTable, UserTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
-import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense } from "../types/expense";
+import { CategoryExpense, Expense, ExpenseByDate, TotalExpenses, UserExpense, TransactionsSummaryMetrics, GroupedCategoryExpense } from "../types/expense";
 import { and, asc, count, desc, eq, gte, inArray, lte, not, sql } from "drizzle-orm";
 import { ExpensesFilters } from "../types/filters";
 import { TransactionType } from "@/utils/enums/transaction-type";
@@ -379,5 +379,135 @@ export async function getExpensesByParentCategory(): Promise<FinancialCategoryDa
     return Object.entries(grouped).map(([categoryParent, totalsByMonth]) => ({
         categoryParent,
         totalsByMonth: totalsByMonth.reverse(),
+    }));
+}
+
+export async function getTransactionsSummary(filters?: ExpensesFilters): Promise<TransactionsSummaryMetrics> {
+    const user = await getUser();
+
+    const whereConditions = [
+        eq(ExpensesTable.familyId, user.familyId)
+    ];
+
+    if (filters) {
+        whereConditions.push(gte(ExpensesTable.createdAt, filters.startDate));
+        whereConditions.push(lte(ExpensesTable.createdAt, filters.endDate));
+        if (filters.transactionType) {
+            whereConditions.push(eq(ExpensesTable.transactionType, filters.transactionType));
+        }
+    }
+
+    const baseQuery = db.select({
+        count: count(ExpensesTable.id).mapWith(Number),
+        total: sql<number>`coalesce(sum(${ExpensesTable.value}), 0)`.mapWith(Number)
+    }).from(ExpensesTable).where(and(...whereConditions));
+
+    if (filters?.parentCategory) {
+        // If parent category is selected, we need to join to filter, but the base metrics are simple
+        // However, to be consistent with the list, we should apply the same filtering.
+        // The previous implementation joined for parent category.
+        // Let's do it properly.
+        const queryWithCategory = db.select({
+            count: count(ExpensesTable.id).mapWith(Number),
+            total: sql<number>`coalesce(sum(${ExpensesTable.value}), 0)`.mapWith(Number)
+        })
+            .from(ExpensesTable)
+            .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+            .where(and(
+                ...whereConditions,
+                eq(CategoryTable.parent, filters.parentCategory)
+            ));
+
+        const result = await queryWithCategory;
+
+        // For top category, we query within the filtered set
+        const topCategoryQuery = db.select({
+            name: CategoryTable.name,
+            total: sql<number>`sum(${ExpensesTable.value})`,
+            count: count(ExpensesTable.id).mapWith(Number)
+        })
+            .from(ExpensesTable)
+            .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+            .where(and(
+                ...whereConditions,
+                eq(CategoryTable.parent, filters.parentCategory)
+            ))
+            .groupBy(CategoryTable.name)
+            .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
+            .limit(1);
+
+        const topCategoryResult = await topCategoryQuery;
+
+        return {
+            count: result[0]?.count || 0,
+            total: result[0]?.total || 0,
+            topCategory: topCategoryResult[0]?.name || "N/A",
+            topCategoryCount: topCategoryResult[0]?.count || 0,
+            topCategoryTotal: topCategoryResult[0]?.total || 0
+        };
+    }
+
+    const result = await baseQuery;
+
+    // Top category for general filter
+    const topCategoryQuery = db.select({
+        name: CategoryTable.name,
+        total: sql<number>`sum(${ExpensesTable.value})`,
+        count: count(ExpensesTable.id).mapWith(Number)
+    })
+        .from(ExpensesTable)
+        .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(and(...whereConditions))
+        .groupBy(CategoryTable.name)
+        .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
+        .limit(1);
+
+    const topCategoryResult = await topCategoryQuery;
+
+    return {
+        count: result[0]?.count || 0,
+        total: result[0]?.total || 0,
+        topCategory: topCategoryResult[0]?.name || "N/A",
+        topCategoryCount: topCategoryResult[0]?.count || 0,
+        topCategoryTotal: topCategoryResult[0]?.total || 0
+    };
+}
+
+export async function getExpensesGroupedByCategory(filters?: ExpensesFilters): Promise<GroupedCategoryExpense[]> {
+    const user = await getUser();
+
+    const whereConditions = [
+        eq(ExpensesTable.familyId, user.familyId)
+    ];
+
+    if (filters) {
+        whereConditions.push(gte(ExpensesTable.createdAt, filters.startDate));
+        whereConditions.push(lte(ExpensesTable.createdAt, filters.endDate));
+        if (filters.transactionType) {
+            whereConditions.push(eq(ExpensesTable.transactionType, filters.transactionType));
+        }
+    }
+
+    if (filters?.parentCategory) {
+        whereConditions.push(eq(CategoryTable.parent, filters.parentCategory));
+    }
+
+    const groupedExpenses = await db.select({
+        categoryName: CategoryTable.name,
+        parentCategory: CategoryTable.parent,
+        total: sql<number>`cast(sum(${ExpensesTable.value}) as bigint)`.mapWith(Number),
+        count: count(ExpensesTable.id).mapWith(Number)
+    })
+        .from(ExpensesTable)
+        .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(and(...whereConditions))
+        .groupBy(CategoryTable.name, CategoryTable.parent)
+        .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`));
+
+    return groupedExpenses.map(e => ({
+        categoryName: e.categoryName,
+        parentCategory: e.parentCategory || "Sin categoría",
+        total: e.total,
+        count: e.count
     }));
 }

@@ -38,4 +38,18 @@ export type ExpenseByDate = {
     date: string;
     totalExpenses: number;
 }
-  
+
+export type TransactionsSummaryMetrics = {
+    count: number;
+    total: number;
+    topCategory: string;
+    topCategoryCount: number;
+    topCategoryTotal: number;
+}
+
+export type GroupedCategoryExpense = {
+    categoryName: string;
+    parentCategory: string;
+    total: number;
+    count: number;
+}
