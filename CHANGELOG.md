@@ -1,3 +1,10 @@
+# [2.18.0](https://github.com/carlosrincon17/juntoo/compare/v2.17.0...v2.18.0) (2025-11-25)
+
+
+### Features
+
+* added financial goals page ([4218265](https://github.com/carlosrincon17/juntoo/commit/421826520f90b5c8995c75e5c78b8717b8455ff9))
+
 # [2.17.0](https://github.com/carlosrincon17/juntoo/compare/v2.16.1...v2.17.0) (2025-11-25)
 
 
