@@ -6,8 +6,8 @@ const config: Config = {
     theme: {
         extend: {
             fontFamily: {
-                inter: ['var(--font-inter)', 'sans-serif'],
-              },
+                outfit: ['var(--font-outfit)', 'sans-serif'],
+            },
         }
     },
     darkMode: 'class',
@@ -19,7 +19,7 @@ const config: Config = {
         "./node_modules/preline/dist/*.js"
     ],
     plugins: [
-        heroui(), 
+        heroui(),
         withPreline
     ]
 };
