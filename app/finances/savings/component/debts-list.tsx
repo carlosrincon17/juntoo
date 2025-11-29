@@ -5,6 +5,7 @@ import { Debts } from "@/app/types/debts";
 import { useState } from "react";
 import { deleteDebt } from "../../summary/actions/debts";
 import ConfirmModal from "@/app/components/confirmModal";
+import DebtManagerModal from "../../summary/components/debts-manager";
 
 interface DebtsListProps {
     debts: Debts[],
@@ -13,13 +14,24 @@ interface DebtsListProps {
 
 export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
     const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange } = useDisclosure();
-    const [selectedDebt, setSelectedDebt] = useState<Debts | null>(null);
+    const { isOpen: isManagerModalOpen, onOpen: onManagerModalOpen, onOpenChange: onManagerModalChange } = useDisclosure();
+    const [selectedDebt, setSelectedDebt] = useState<Partial<Debts>>({});
 
     const gradient = "from-[#f97066] via-[#f43f5e] to-[#fb7185]"
 
     const onClickDeleteDebt = (debt: Debts) => {
         setSelectedDebt(debt);
         onDeleteModalOpen();
+    }
+
+    const onClickEditDebt = (debt: Debts) => {
+        setSelectedDebt(debt);
+        onManagerModalOpen();
+    }
+
+    const onClickAddDebt = () => {
+        setSelectedDebt({});
+        onManagerModalOpen();
     }
 
     const onConfirmDeleteDebt = async (onClose: () => void) => {
@@ -29,7 +41,7 @@ export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
             description: "Tu deuda se ha eliminado correctamente",
             icon: <FaCheck size={24} />,
         });
-        setSelectedDebt(null);
+        setSelectedDebt({});
         afterDebtsChange();
         onClose();
     }
@@ -42,16 +54,18 @@ export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
                         name={debt.name}
                         value={debt.value}
                         initialAmount={debt.initialAmount}
-                        onEdit={() => console.log(debt)}
+                        onEdit={() => onClickEditDebt(debt)}
                         onDelete={() => onClickDeleteDebt(debt)}
                         gradient={gradient}
                         textColor="text-white"
                     />
                 ))}
                 <Card
+                    isPressable
+                    onPress={onClickAddDebt}
                     className={`overflow-hidden border-none shadow-sm rounded-2xl cursor-pointer bg-gradient-to-br from-[#f97066]/5 via-[#f43f5e]/5 to-[#fb7185]/5 hover:shadow-md transition-shadow duration-300`}
                 >
-                    <div className="p-6 h-full flex flex-col items-center justify-center min-h-[140px]">
+                    <div className="p-6 h-full flex flex-col items-center justify-center min-h-[140px] w-full">
                         <div
                             className={`rounded-full bg-gradient-to-r ${gradient} flex items-center justify-center p-3 mb-3 shadow-sm`}
                         >
@@ -67,6 +81,12 @@ export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
                 title="Eliminar deuda"
                 message="¿Estás seguro de que quieres eliminar esta deuda?"
                 onConfirm={onConfirmDeleteDebt}
+            />
+            <DebtManagerModal
+                isOpen={isManagerModalOpen}
+                onOpenChange={onManagerModalChange}
+                debt={selectedDebt}
+                onSave={afterDebtsChange}
             />
         </>
     )

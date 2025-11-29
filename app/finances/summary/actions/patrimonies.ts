@@ -41,3 +41,12 @@ export async function deletePatrimony(id: number): Promise<void> {
         PatrimoniesTable
     ).where(eq(PatrimoniesTable.id, id));
 }
+
+export async function createPatrimony(patrimony: Patrimony): Promise<void> {
+    const user = await getUser();
+    await db.insert(PatrimoniesTable).values({
+        name: patrimony.name,
+        value: patrimony.value,
+        familyId: user.familyId,
+    });
+}

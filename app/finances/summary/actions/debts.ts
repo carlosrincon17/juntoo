@@ -38,3 +38,13 @@ export async function deleteDebt(id: number): Promise<void> {
     await db.delete(DebtsTable)
         .where(eq(DebtsTable.id, id));
 }
+
+export async function createDebt(debt: Debts): Promise<void> {
+    const user = await getUser();
+    await db.insert(DebtsTable).values({
+        name: debt.name,
+        value: debt.value,
+        initialAmount: debt.initialAmount || 0,
+        familyId: user.familyId,
+    });
+}
