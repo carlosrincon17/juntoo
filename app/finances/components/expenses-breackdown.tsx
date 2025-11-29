@@ -97,35 +97,40 @@ export const ExpensesBreakdown = (props: { expensesFilter?: ExpensesFilters }) =
         getTransactionListData();
     }, [expensesFilter, transactionTypeSelected]);
 
+    if (loading) {
+        return <GraphEskeleton />;
+    }
+
+    if (series.length === 0 || series.every(val => val === 0)) {
+        return null;
+    }
+
     return (
         <div>
-            {loading ?
-                <GraphEskeleton /> :
-                <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff ] col-span-1 h-full">
-                    <CardHeader className="space-y-2 flex items-center justify-between content-center">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
-                        <h2 className="text-xl font-extralight">Movimientos por categoría </h2>
-                        <ButtonGroup variant="flat" size="sm">
-                            <Button
-                                color={getColorByTransactionType(TransactionType.Outcome)}
-                                onPress={() => setTransactionTypeSelected(TransactionType.Outcome)}
-                            >
-                                Gastos
-                            </Button>
-                            <Button
-                                color={getColorByTransactionType(TransactionType.Income)}
-                                onPress={() => setTransactionTypeSelected(TransactionType.Income)}
-                            >
-                                Ingresos
-                            </Button>
-                        </ButtonGroup>
-                    </CardHeader>
-                    <div id="chart">
-                        <Chart options={options} series={series} type="donut" />
-                    </div>
-                </Card>
-            }
+            <Card className="shadow-md p-2 bg-gradient-to-br from-white to-[#f9faff ] col-span-1 h-full">
+                <CardHeader className="space-y-2 flex items-center justify-between content-center">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
+                    <h2 className="text-xl font-extralight">Movimientos por categoría </h2>
+                    <ButtonGroup variant="flat" size="sm">
+                        <Button
+                            color={getColorByTransactionType(TransactionType.Outcome)}
+                            onPress={() => setTransactionTypeSelected(TransactionType.Outcome)}
+                        >
+                            Gastos
+                        </Button>
+                        <Button
+                            color={getColorByTransactionType(TransactionType.Income)}
+                            onPress={() => setTransactionTypeSelected(TransactionType.Income)}
+                        >
+                            Ingresos
+                        </Button>
+                    </ButtonGroup>
+                </CardHeader>
+                <div id="chart">
+                    <Chart options={options} series={series} type="donut" />
+                </div>
+            </Card>
         </div>
     )
 }

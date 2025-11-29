@@ -51,8 +51,21 @@ export const formateSimpleDate = (date: Date, locale = 'es-CO'): string => {
 export const getExpensesFilter = (): ExpensesFilters => {
     const currentDate = new Date();
     return {
-        startDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-        endDate: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0),
+        startDate: new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), 1)),
+        endDate: new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth() + 1, 0, 23, 59, 59, 999)),
     };
-   
+
 }
+
+export const getExpensesFilterByDate = (date: Date): ExpensesFilters => {
+    return {
+        startDate: new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1)),
+        endDate: new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999)),
+    };
+}
+
+export const getPreviousMonthDateRangeFilter = (date: Date): ExpensesFilters => {
+    const startDate = new Date(Date.UTC(date.getFullYear(), date.getMonth() - 1, 1));
+    const endDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), 0, 23, 59, 59, 999));
+    return { startDate, endDate };
+};

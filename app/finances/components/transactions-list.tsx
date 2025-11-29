@@ -11,7 +11,9 @@ import { addToast, Button, ButtonGroup, Card, CardBody, Dropdown, DropdownItem, 
 import { Key, useEffect, useState } from "react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaCheck, FaChevronRight, FaTimesCircle } from "react-icons/fa";
 
-export default function TransactionsList() {
+import { ExpensesFilters } from "@/app/types/filters";
+
+export default function TransactionsList({ filter }: { filter?: ExpensesFilters }) {
     const [transactions, setTransactions] = useState<Expense[]>([]);
     const [transactionTypeSelected, setTransactionTypeSelected] = useState<TransactionType>(TransactionType.Outcome);
     const [currentTransactionsPage, setCurrentTransactionsPage] = useState<number>(1);
@@ -20,7 +22,7 @@ export default function TransactionsList() {
     const [selectedTransaction, setSelectedTransaction] = useState<Expense | null>(null);
 
     const getTransactionsData = async () => {
-        const transactionsData = await getExpenses(currentTransactionsPage, 7, transactionTypeSelected);
+        const transactionsData = await getExpenses(currentTransactionsPage, 7, transactionTypeSelected, filter);
         if (currentTransactionsPage == 1) {
             setTransactions(transactionsData);
         } else {
@@ -64,7 +66,7 @@ export default function TransactionsList() {
 
     useEffect(() => {
         getTransactionsData();
-    }, []);
+    }, [filter]);
 
     useEffect(() => {
         setCurrentTransactionsPage(1);
@@ -85,6 +87,10 @@ export default function TransactionsList() {
                 </CardBody>
             </Card>
         )
+    }
+
+    if (transactions.length === 0) {
+        return null;
     }
     return (
 

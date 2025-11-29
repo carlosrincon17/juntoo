@@ -28,11 +28,15 @@ export async function addExpense(expense: Expense) {
     });
 }
 
-export async function getExpenses(page: number, perPage: number, transactionType?: TransactionType): Promise<Expense[]> {
+export async function getExpenses(page: number, perPage: number, transactionType?: TransactionType, filters?: ExpensesFilters): Promise<Expense[]> {
     const user = await getUser();
     const filter = [eq(ExpensesTable.familyId, user.familyId)];
     if (transactionType) {
         filter.push(eq(ExpensesTable.transactionType, transactionType));
+    }
+    if (filters) {
+        filter.push(gte(ExpensesTable.createdAt, filters.startDate));
+        filter.push(lte(ExpensesTable.createdAt, filters.endDate));
     }
     return await db.query.ExpensesTable.findMany({
         where: and(...filter),

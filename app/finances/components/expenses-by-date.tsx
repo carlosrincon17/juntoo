@@ -14,32 +14,16 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function ExpensesByDate({ expensesFilter }: { expensesFilter: ExpensesFilters }) {
     const [expensesByDate, setExpensesByDate] = useState<ExpenseByDate[]>([]);
-    const [expensesByDatePrevious, setExpensesByDatePrevious] = useState<ExpenseByDate[]>([]);
     const [loading, setLoading] = useState(true);
-
-
-    const getPreviousMonthDateRangeFilter = () => {
-        const date = new Date();
-        const startDate = new Date(date.getFullYear(), date.getMonth() - 1, 1);
-        const endDate = new Date(date.getFullYear(), date.getMonth(), 0);
-        return { startDate, endDate };
-    };
-
-    const getCurrentMonthDateRangeFilter = () => {
-        const date = new Date();
-        const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-        const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        return { startDate, endDate };
-    };
-
 
     async function getExpensesByDateData() {
         setLoading(true);
-        const expensesByDateData = await getExpensesByDate(getCurrentMonthDateRangeFilter());
-        const maxDay = Math.max(...expensesByDateData.map(item => parseInt(item.date, 10)));
-        setExpensesByDate(fillMissingDays(Number(maxDay), expensesByDateData));
-        const expensesByDatePreviousData = await getExpensesByDatePreviousData();
-        setExpensesByDatePrevious(fillMissingDays(Number(maxDay), expensesByDatePreviousData));
+        const expensesByDateData = await getExpensesByDate(expensesFilter);
+
+        // Calculate max days in the selected month
+        const maxDay = new Date(expensesFilter.endDate).getDate();
+
+        setExpensesByDate(fillMissingDays(maxDay, expensesByDateData));
         setLoading(false);
     }
 
@@ -53,11 +37,6 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
             };
         });
     };
-
-    async function getExpensesByDatePreviousData() {
-        const previousFilter = getPreviousMonthDateRangeFilter();
-        return await getExpensesByDate(previousFilter);
-    }
 
     useEffect(() => {
         if (expensesFilter.startDate && expensesFilter.endDate) {
@@ -111,30 +90,27 @@ export default function ExpensesByDate({ expensesFilter }: { expensesFilter: Exp
             name: "Gastos",
             data: expensesByDate.map((item) => item.totalExpenses),
             color: '#2dd4bf'
-        },
-        {
-            name: "Gastos mes anterior",
-            data: expensesByDatePrevious.map((item) => item.totalExpenses),
-            color: '#f97066',
-            hidden: true
-        },
+        }
     ];
 
-    return (
-        <>
-            {!loading && expensesByDate.length && expensesByDatePrevious.length ? (
-                <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4 col-span-1 md:col-span-2">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
-                    <h3 className="text-xl font-extralight mb-4">Gastos por día</h3>
-                    <CardBody>
-                        <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
-                    </CardBody>
-                </Card>
+    if (loading) {
+        return <GraphEskeleton />;
+    }
 
-            ) : (
-                <GraphEskeleton />
-            )}
-        </>
+    const hasData = expensesByDate.some(item => item.totalExpenses > 0);
+
+    if (!hasData) {
+        return null;
+    }
+
+    return (
+        <Card className="w-full shadow-md bg-gradient-to-br from-white to-[#f9faff] p-4 col-span-1 md:col-span-2">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
+            <h3 className="text-xl font-extralight mb-4">Gastos por día</h3>
+            <CardBody>
+                <Chart options={chartOptions} series={chartSeries} type="area" height={350} />
+            </CardBody>
+        </Card>
     );
 }

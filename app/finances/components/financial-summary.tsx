@@ -9,6 +9,7 @@ import { getFinancialMetrics } from "../actions/financial-metrics";
 import FinancialVariation from "./financial-variaton";
 import { CustomLoading } from "@/app/components/customLoading";
 import TransactionsList from "./transactions-list";
+import { getExpensesFilterByDate } from "@/app/lib/dates";
 
 const emptyFinancialMetrics: FinancialMetrics = {
     expenses: {
@@ -31,21 +32,21 @@ const emptyFinancialMetrics: FinancialMetrics = {
     }
 }
 
-export default function FinancialSummary() {
+export default function FinancialSummary({ date }: { date: Date }) {
 
     const [financialMetrics, setFinancialMetrics] = useState<FinancialMetrics>(emptyFinancialMetrics);
     const [isLoading, setIsLoading] = useState(true);
 
     const loadFinancialMetrics = async () => {
         setIsLoading(true);
-        const financialMetricsData = await getFinancialMetrics(new Date());
+        const financialMetricsData = await getFinancialMetrics(date);
         setFinancialMetrics(financialMetricsData);
         setIsLoading(false);
     }
 
     useEffect(() => {
         loadFinancialMetrics();
-    }, []);
+    }, [date]);
 
     return (
         isLoading ? (
@@ -97,10 +98,10 @@ export default function FinancialSummary() {
                             </div>
                         </div>
                     </Card>
-                    <FinancialGoals />
+                    <FinancialGoals date={date} />
                 </div>
                 <div className="col-span-1 md:col-span-2">
-                    <TransactionsList />
+                    <TransactionsList filter={getExpensesFilterByDate(date)} />
                 </div>
             </div>
         )

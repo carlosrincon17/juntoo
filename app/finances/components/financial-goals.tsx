@@ -6,7 +6,7 @@ import { FaTrophy } from "react-icons/fa";
 import { CustomLoading } from "@/app/components/customLoading";
 import AnimatedNumber from "@/app/components/animated-number";
 
-export default function FinancialGoals() {
+export default function FinancialGoals({ date }: { date?: Date }) {
 
     const [financialGoals, setFinancialGoals] = useState<FinancialGoal[]>([]);
     const [loading, setLoading] = useState(true);
@@ -19,7 +19,17 @@ export default function FinancialGoals() {
 
     useEffect(() => {
         loadFinancialGoals();
-    }, []);
+    }, [date]);
+
+    const isCurrentMonth = () => {
+        if (!date) return true;
+        const now = new Date();
+        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+    }
+
+    if (!isCurrentMonth()) {
+        return null;
+    }
 
     return (
         <Card className="shadow-md p-4 bg-gradient-to-br from-white to-[#f9faff] overflow-hidden relative">

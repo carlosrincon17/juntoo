@@ -76,6 +76,9 @@ const bgSelectedColorsButton: Record<string, string> = {
     teal: "bg-teal-700",
 }
 
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const categoriesCache: Record<string, { data: Category[], timestamp: number }> = {};
+
 export default function NewExpensePanel(props: {
     isOpen: boolean
     onOpenChange: () => void
@@ -83,6 +86,7 @@ export default function NewExpensePanel(props: {
 }) {
     const { isOpen, onOpenChange, transactionType } = props
 
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0])
     const [categories, setCategories] = useState<Category[]>([])
     const [categoryList, setCategoryList] = useState<Category[]>([])
     const [categoryParents, setCategoryParents] = useState<ParentCategory[]>([])
@@ -107,7 +111,24 @@ export default function NewExpensePanel(props: {
 
     const loadCategories = async () => {
         setIsLoading(true)
+
+        const now = Date.now();
+        const cached = categoriesCache[transactionType];
+
+        if (cached && (now - cached.timestamp < CACHE_DURATION)) {
+            setCategories(cached.data);
+            loadParentsCategories(cached.data);
+            setIsLoading(false);
+            return;
+        }
+
         const categories = await getCategories(transactionType)
+
+        categoriesCache[transactionType] = {
+            data: categories,
+            timestamp: now
+        };
+
         setCategories(categories)
         loadParentsCategories(categories)
         setIsLoading(false)
@@ -131,13 +152,19 @@ export default function NewExpensePanel(props: {
             setCategoryList([])
             setSelectedParentCategory(null)
             setCategoryParents([])
+            setDate(new Date().toISOString().split('T')[0])
             loadCategories()
         }
     }, [isOpen])
 
     const handleSaveExpense = async () => {
         setIsLoadingSaveExpense(true)
-        await addExpense({ ...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType, createdAt: new Date() })
+
+        // Create date at noon local time to avoid timezone issues
+        const [year, month, day] = date.split('-').map(Number)
+        const expenseDate = new Date(year, month - 1, day, 12, 0, 0)
+
+        await addExpense({ ...expense, category_id: Number(selectedCategory?.id), transactionType: transactionType, createdAt: expenseDate })
         addToast({
             title: "¡Todo en orden!",
             description: `Tu gasto de ${formatCurrency(expense.value as number)} por ${selectedCategory?.name} se ha agregado correctamente`,
@@ -168,7 +195,7 @@ export default function NewExpensePanel(props: {
                     <ScrollShadow className="flex-1 overflow-y-auto bg-gray-50">
                         {
                             isLoading ?
-                                <CustomLoading className="mt-24" text="Estamos prepara todo para que crees tu gasto ..." />
+                                <CustomLoading className="mt-24" text="Sincronizando categorías..." />
                                 :
                                 <form
                                     className="p-4 space-y-6"
@@ -178,6 +205,16 @@ export default function NewExpensePanel(props: {
                                     }}
                                 >
                                     {" "}
+                                    <div className="space-y-3">
+                                        <label className="text-sm font-light">Fecha:</label>
+                                        <input
+                                            type="date"
+                                            className="w-full p-3 rounded-lg border-2 focus:outline-none border-gray-200"
+                                            value={date}
+                                            onChange={(e) => setDate(e.target.value)}
+                                        />
+                                    </div>
+
                                     {!selectedParentCategory ? (
                                         <div className="space-y-3">
                                             <label className="text-sm font-light">
