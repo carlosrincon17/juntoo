@@ -1,3 +1,10 @@
+# [2.21.0](https://github.com/carlosrincon17/juntoo/compare/v2.20.0...v2.21.0) (2025-11-29)
+
+
+### Features
+
+* added crud for savings an patrimony ([a089e5f](https://github.com/carlosrincon17/juntoo/commit/a089e5f5631767bdfb961e6cb3436a04c098c695))
+
 # [2.20.0](https://github.com/carlosrincon17/juntoo/compare/v2.19.0...v2.20.0) (2025-11-29)
 
 
