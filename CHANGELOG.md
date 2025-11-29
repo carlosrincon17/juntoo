@@ -1,3 +1,10 @@
+# [2.22.0](https://github.com/carlosrincon17/juntoo/compare/v2.21.0...v2.22.0) (2025-11-29)
+
+
+### Features
+
+* added family goals module ([d6957a0](https://github.com/carlosrincon17/juntoo/commit/d6957a0e6c00dac23c522a59b26024c0ad933105))
+
 # [2.21.0](https://github.com/carlosrincon17/juntoo/compare/v2.20.0...v2.21.0) (2025-11-29)
 
 
