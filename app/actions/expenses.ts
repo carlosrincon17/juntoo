@@ -299,8 +299,18 @@ export async function getExpensesByMonth(): Promise<ExpenseByDate[]> {
     return expensesByDate as ExpenseByDate[];
 }
 
-export async function getFinancialOverviewByMonth(): Promise<FinancialData[]> {
+export async function getFinancialOverviewByMonth(year?: number): Promise<FinancialData[]> {
     const user = await getUser();
+    const currentYear = new Date().getFullYear();
+    const targetYear = year || currentYear;
+
+    const startDate = new Date(Date.UTC(targetYear, 0, 1));
+    let endDate = new Date(Date.UTC(targetYear, 11, 31, 23, 59, 59, 999));
+
+    if (targetYear === currentYear) {
+        endDate = new Date();
+    }
+
     const expensesByDate = await db
         .select({
             month: sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`,
@@ -329,17 +339,28 @@ export async function getFinancialOverviewByMonth(): Promise<FinancialData[]> {
         .where(
             and(
                 eq(ExpensesTable.familyId, user.familyId),
-                inArray(ExpensesTable.transactionType, [TransactionType.Outcome, TransactionType.Income])
+                inArray(ExpensesTable.transactionType, [TransactionType.Outcome, TransactionType.Income]),
+                gte(ExpensesTable.createdAt, startDate),
+                lte(ExpensesTable.createdAt, endDate)
             )
         )
         .groupBy(sql<string>`TO_CHAR(${ExpensesTable.createdAt}, 'Mon, YYYY')`)
-        .orderBy(desc(sql<string>`MIN(${ExpensesTable.createdAt})`))
-        .limit(12);
-    return (expensesByDate as FinancialData[]).reverse();
+        .orderBy(asc(sql<string>`MIN(${ExpensesTable.createdAt})`));
+
+    return expensesByDate as FinancialData[];
 }
 
-export async function getExpensesByParentCategory(): Promise<FinancialCategoryData[]> {
+export async function getExpensesByParentCategory(year?: number): Promise<FinancialCategoryData[]> {
     const user = await getUser();
+    const currentYear = new Date().getFullYear();
+    const targetYear = year || currentYear;
+
+    const startDate = new Date(Date.UTC(targetYear, 0, 1));
+    let endDate = new Date(Date.UTC(targetYear, 11, 31, 23, 59, 59, 999));
+
+    if (targetYear === currentYear) {
+        endDate = new Date();
+    }
 
     const rawData = await db
         .select({
@@ -354,7 +375,9 @@ export async function getExpensesByParentCategory(): Promise<FinancialCategoryDa
         .where(
             and(
                 eq(ExpensesTable.familyId, user.familyId),
-                eq(CategoryTable.transactionType, TransactionType.Outcome)
+                eq(CategoryTable.transactionType, TransactionType.Outcome),
+                gte(ExpensesTable.createdAt, startDate),
+                lte(ExpensesTable.createdAt, endDate)
             )
         )
         .groupBy(
@@ -363,7 +386,7 @@ export async function getExpensesByParentCategory(): Promise<FinancialCategoryDa
         )
         .orderBy(
             CategoryTable.parent,
-            desc(sql<string>`MIN(${ExpensesTable.createdAt})`)
+            asc(sql<string>`MIN(${ExpensesTable.createdAt})`)
         );
 
     const grouped: Record<string, { month: string; total: number }[]> = {};
@@ -382,7 +405,7 @@ export async function getExpensesByParentCategory(): Promise<FinancialCategoryDa
 
     return Object.entries(grouped).map(([categoryParent, totalsByMonth]) => ({
         categoryParent,
-        totalsByMonth: totalsByMonth.reverse(),
+        totalsByMonth: totalsByMonth,
     }));
 }
 

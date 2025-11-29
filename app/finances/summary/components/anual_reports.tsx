@@ -91,22 +91,25 @@ const formatChatCategoryData = (data: FinancialCategoryData[], categoryParent: s
 
 
 
-const YearlyReports: React.FC = () => {
+const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
     const [financialData, setFinancialData] = useState<FinancialData[]>([]);
     const [financialCategoryData, setFinancialCategoryData] = useState<FinancialCategoryData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const stats = calculateStats(financialData)
     const { months, series, savingsPercentageSeries } = formatChartData(financialData)
-    const [categoryChartData, setCategoryChartData] = useState<ChartData>({months: [], series: [], savingsPercentageSeries: []});
+    const [categoryChartData, setCategoryChartData] = useState<ChartData>({ months: [], series: [], savingsPercentageSeries: [] });
 
 
-    const getFinancialData = async ()  => {
-        const financialData = await getFinancialOverviewByMonth()
-        const expensesByCategoryParent = await getExpensesByParentCategory()
+    const getFinancialData = async () => {
+        setIsLoading(true)
+        const financialData = await getFinancialOverviewByMonth(year)
+        const expensesByCategoryParent = await getExpensesByParentCategory(year)
         setFinancialCategoryData(expensesByCategoryParent)
         setFinancialData(financialData)
-        setSelectedCategory(expensesByCategoryParent[0].categoryParent)
+        if (expensesByCategoryParent.length > 0) {
+            setSelectedCategory(expensesByCategoryParent[0].categoryParent)
+        }
         setIsLoading(false)
     }
 
@@ -124,7 +127,7 @@ const YearlyReports: React.FC = () => {
 
     useEffect(() => {
         getFinancialData()
-    }, []);
+    }, [year]);
 
     useEffect(() => {
         setCategoryChartData(formatChatCategoryData(financialCategoryData, selectedCategory))
@@ -132,7 +135,7 @@ const YearlyReports: React.FC = () => {
 
     return (
         <>
-            { isLoading ? 
+            {isLoading ?
                 <div className="w-full mx-auto space-y-6">
                     {renderSkeletonGraphCard()}
                 </div> :
@@ -151,7 +154,7 @@ const YearlyReports: React.FC = () => {
                                 </div>
                             </CardBody>
                         </Card>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">            
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <Card className="shadow-md">
                                 <CardHeader className="pb-0 pt-4 flex-row justify-between items-start">
                                     <div>

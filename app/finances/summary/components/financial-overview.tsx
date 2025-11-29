@@ -41,25 +41,26 @@ const calculateStats = (data: FinancialData[]): FinancialStats => {
     }
 }
 
-const FinancialOverview: React.FC = () => {
+const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
     const [financialData, setFinancialData] = useState<FinancialData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const stats = calculateStats(financialData)
 
 
-    const getFinancialData = async ()  => {
-        const financialData = await getFinancialOverviewByMonth()
+    const getFinancialData = async () => {
+        setIsLoading(true)
+        const financialData = await getFinancialOverviewByMonth(year)
         setFinancialData(financialData)
         setIsLoading(false)
     }
 
     useEffect(() => {
         getFinancialData()
-    }, []);
+    }, [year]);
 
     return (
         <>
-            { isLoading ? 
+            {isLoading ?
                 <GraphEskeleton /> :
                 <div className="grid grid-cols-1">
                     <Card className="shadow-md">
@@ -72,10 +73,10 @@ const FinancialOverview: React.FC = () => {
                             </div>
                             <p className="text-sm font-light text-[#121432]/60">Promedio anual de gastos, ingresos y ahorros</p>
                         </CardHeader>
-    
+
                         <CardBody className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden">
                             <div className="space-y-4">
-    
+
                                 <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#5a6bff]/5 to-[#818cf8]/5 rounded-xl">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#5a6bff] to-[#818cf8] flex items-center justify-center">
@@ -93,7 +94,7 @@ const FinancialOverview: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#2dd4bf]/5 to-[#34d399]/5 rounded-xl">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2dd4bf] to-[#34d399] flex items-center justify-center">
@@ -112,7 +113,7 @@ const FinancialOverview: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#f97066]/5 to-[#fb7185]/5 rounded-xl">
                                     <div className="flex items-center gap-3">
