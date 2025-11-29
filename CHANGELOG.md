@@ -1,3 +1,10 @@
+# [2.19.0](https://github.com/carlosrincon17/juntoo/compare/v2.18.0...v2.19.0) (2025-11-29)
+
+
+### Features
+
+* Added monthly filter to dashboard, improved UX and added date when a expenses/income is created ([d1e77d7](https://github.com/carlosrincon17/juntoo/commit/d1e77d74ede19dca216eb4cd4ed573b2ecf2b2b3))
+
 # [2.18.0](https://github.com/carlosrincon17/juntoo/compare/v2.17.0...v2.18.0) (2025-11-25)
 
 
