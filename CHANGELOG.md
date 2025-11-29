@@ -1,3 +1,10 @@
+# [2.20.0](https://github.com/carlosrincon17/juntoo/compare/v2.19.0...v2.20.0) (2025-11-29)
+
+
+### Features
+
+* added filter by year in reports page ([1a5f700](https://github.com/carlosrincon17/juntoo/commit/1a5f7004474368acfd65e95d699085ef92223344))
+
 # [2.19.0](https://github.com/carlosrincon17/juntoo/compare/v2.18.0...v2.19.0) (2025-11-29)
 
 
