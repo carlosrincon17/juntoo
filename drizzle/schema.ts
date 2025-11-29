@@ -217,3 +217,27 @@ export const savingsGoalRelationship = relations(SavingsTable, ({ one }) => ({
         references: [FinancialGoalsTable.id],
     }),
 }));
+
+export const FamilyGoalsTable = pgTable(
+    'family_goals',
+    {
+        id: serial('id').primaryKey(),
+        title: text('title').notNull(),
+        description: text('description'),
+        year: integer('year').notNull(),
+        progress: integer('progress').default(0).notNull(),
+        isCompleted: boolean('is_completed').default(false).notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
+        createdAt: timestamp('createdAt').defaultNow().notNull(),
+        type: text('type').default('BOOLEAN').notNull(),
+        targetAmount: integer('target_amount'),
+        currentAmount: integer('current_amount').default(0),
+    }
+);
+
+export const familyGoalRelationship = relations(FamilyGoalsTable, ({ one }) => ({
+    family: one(FamilyTable, {
+        fields: [FamilyGoalsTable.familyId],
+        references: [FamilyTable.id],
+    }),
+}));

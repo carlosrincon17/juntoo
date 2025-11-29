@@ -157,13 +157,14 @@ export default function NewPeriodicPaymentPanel(props: {
         router.refresh()
     }
 
-    if (!isOpen) return null
-
     return (
         <>
-            <div className="fixed inset-0 bg-black/30 z-40 transition-opacity" onClick={onOpenChange} />
             <div
-                className={`fixed inset-y-0 right-0 z-50 w-full sm:w-1/3 bg-background shadow-xl transform transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+                className={`fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                onClick={onOpenChange}
+            />
+            <div
+                className={`fixed inset-y-0 right-0 z-50 w-full sm:w-1/3 bg-background shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
             >
                 <div className="flex flex-col h-full">
                     <div className="flex justify-between items-center p-4 border-b">

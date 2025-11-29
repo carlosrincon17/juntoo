@@ -49,11 +49,12 @@ export default function SavingsManagerPanel(props: {
         setSavingsValue(formatCurrency(savings.value))
     }, [isOpen, savings])
 
-    if (!isOpen) return null
-
     return (
         <>
-            <div className="fixed inset-0 bg-black/30 z-40 transition-opacity" onClick={() => onOpenChange(false)} />
+            <div
+                className={`fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                onClick={() => onOpenChange(false)}
+            />
 
             <div
                 className={`fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-background shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
