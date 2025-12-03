@@ -1,7 +1,7 @@
 {
   "name": "juntoo",
   "description": "A family management application built with Next.js and deployed on Vercel.",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
