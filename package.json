@@ -27,7 +27,7 @@
     "jwt-decode": "^4.0.0",
     "next": "^15.3.6",
     "preline": "^2.5.1",
-    "react": "19.1.0",
+    "react": "^19.1.2",
     "react-apexcharts": "^1.7.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
