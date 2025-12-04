@@ -1,3 +1,10 @@
+## [2.22.3](https://github.com/carlosrincon17/juntoo/compare/v2.22.2...v2.22.3) (2025-12-04)
+
+
+### Bug Fixes
+
+* updated next JS version by vulnerabilities ([63da6f3](https://github.com/carlosrincon17/juntoo/commit/63da6f30d7c2a639bc04e5c2c8a1bbb15aefe838))
+
 ## [2.22.2](https://github.com/carlosrincon17/juntoo/compare/v2.22.1...v2.22.2) (2025-12-03)
 
 
