@@ -1,3 +1,10 @@
+# [2.25.0](https://github.com/carlosrincon17/juntoo/compare/v2.24.0...v2.25.0) (2025-12-12)
+
+
+### Features
+
+* Added timeline to transactions view ([9af1629](https://github.com/carlosrincon17/juntoo/commit/9af1629b10641c057f4e498cd64ddac400fbb621))
+
 # [2.24.0](https://github.com/carlosrincon17/juntoo/compare/v2.23.0...v2.24.0) (2025-12-12)
 
 
