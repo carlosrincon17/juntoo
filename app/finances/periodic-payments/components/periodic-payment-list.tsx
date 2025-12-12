@@ -1,10 +1,13 @@
 "use client"
 
 import { PeriodicPayment } from "@/app/types/periodic-payment"
-import { Card, CardBody, Chip, Button } from "@heroui/react"
-import { FaTrash } from "react-icons/fa"
+import { Card, CardBody, Chip, Button, useDisclosure } from "@heroui/react"
+import { FaTrash, FaHistory } from "react-icons/fa"
 import { deletePeriodicPayment } from "@/app/actions/periodic-payments"
 import { useRouter } from "next/navigation"
+import ConfirmModal from "@/app/components/confirmModal"
+import { useState } from "react"
+import PaymentHistoryDrawer from "./payment-history-drawer"
 
 const frequencyLabels: Record<string, string> = {
     daily: "Diario",
@@ -32,11 +35,30 @@ const colors: Record<string, string> = {
 
 export default function PeriodicPaymentList({ payments }: { payments: PeriodicPayment[] }) {
     const router = useRouter()
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange } = useDisclosure();
+    const { isOpen: isHistoryOpen, onOpen: onHistoryOpen, onOpenChange: onHistoryOpenChange } = useDisclosure();
 
-    const handleDelete = async (id: number) => {
-        if (confirm("¿Estás seguro de eliminar este pago periódico?")) {
-            await deletePeriodicPayment(id)
-            router.refresh()
+    const [selectedPaymentId, setSelectedPaymentId] = useState<number | null>(null);
+    const [historyPaymentId, setHistoryPaymentId] = useState<number | null>(null);
+    const [historyPaymentName, setHistoryPaymentName] = useState<string>("");
+
+    const handleDeleteClick = (id: number) => {
+        setSelectedPaymentId(id);
+        onDeleteOpen();
+    }
+
+    const handleHistoryClick = (id: number, name: string) => {
+        setHistoryPaymentId(id);
+        setHistoryPaymentName(name);
+        onHistoryOpen();
+    }
+
+    const onConfirmDelete = async (onClose: () => void) => {
+        if (selectedPaymentId) {
+            await deletePeriodicPayment(selectedPaymentId);
+            router.refresh();
+            onClose();
+            setSelectedPaymentId(null);
         }
     }
 
@@ -73,13 +95,38 @@ export default function PeriodicPaymentList({ payments }: { payments: PeriodicPa
                             <span className="text-xs text-gray-400">
                                 Inicia: {new Date(payment.startDate).toLocaleDateString()}
                             </span>
+                            {payment.lastApplied && (
+                                <span className="text-xs text-green-600 font-medium">
+                                    Último pago: {new Date(payment.lastApplied).toLocaleDateString()}
+                                </span>
+                            )}
                         </div>
-                        <Button isIconOnly color="danger" variant="light" onPress={() => payment.id && handleDelete(payment.id)}>
-                            <FaTrash />
-                        </Button>
+                        <div className="flex gap-2">
+                            <Button isIconOnly color="primary" variant="light" onPress={() => payment.id && handleHistoryClick(payment.id, payment.name)}>
+                                <FaHistory />
+                            </Button>
+                            <Button isIconOnly color="danger" variant="light" onPress={() => payment.id && handleDeleteClick(payment.id)}>
+                                <FaTrash />
+                            </Button>
+                        </div>
                     </CardBody>
                 </Card>
             ))}
+            <ConfirmModal
+                isOpen={isDeleteOpen}
+                onOpenChange={onDeleteOpenChange}
+                title="Eliminar pago periódico"
+                message="¿Estás seguro de eliminar este pago periódico? Esta acción no se puede deshacer."
+                onConfirm={onConfirmDelete}
+            />
+            {historyPaymentId && (
+                <PaymentHistoryDrawer
+                    isOpen={isHistoryOpen}
+                    onOpenChange={onHistoryOpenChange}
+                    periodicPaymentId={historyPaymentId}
+                    paymentName={historyPaymentName}
+                />
+            )}
         </div>
     )
 }

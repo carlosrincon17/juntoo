@@ -1,6 +1,6 @@
 'use server'
 
-import { PeriodicPaymentsTable } from "@/drizzle/schema";
+import { PeriodicPaymentsTable, CategoryTable, UserTable, ExpensesTable } from "@/drizzle/schema";
 import { db } from "@/utils/storage/db";
 import { PeriodicPayment } from "../types/periodic-payment";
 import { and, desc, eq } from "drizzle-orm";
@@ -20,19 +20,29 @@ export async function addPeriodicPayment(payment: PeriodicPayment) {
         userId: user.id,
         familyId: user.familyId,
         transactionType: payment.transactionType,
+        lastApplied: payment.lastApplied,
     });
 }
 
 export async function getPeriodicPayments(): Promise<PeriodicPayment[]> {
     const user = await getUser();
-    return await db.query.PeriodicPaymentsTable.findMany({
-        where: eq(PeriodicPaymentsTable.familyId, user.familyId),
-        with: {
-            category: true,
-            user: true
-        },
-        orderBy: desc(PeriodicPaymentsTable.id),
-    }) as PeriodicPayment[];
+
+    const rows = await db.select({
+        payment: PeriodicPaymentsTable,
+        category: CategoryTable,
+        user: UserTable
+    })
+        .from(PeriodicPaymentsTable)
+        .leftJoin(CategoryTable, eq(PeriodicPaymentsTable.category_id, CategoryTable.id))
+        .leftJoin(UserTable, eq(PeriodicPaymentsTable.userId, UserTable.id))
+        .where(eq(PeriodicPaymentsTable.familyId, user.familyId))
+        .orderBy(desc(PeriodicPaymentsTable.id));
+
+    return rows.map(row => ({
+        ...row.payment,
+        category: row.category,
+        user: row.user
+    })) as PeriodicPayment[];
 }
 
 export async function deletePeriodicPayment(id: number) {
@@ -43,4 +53,31 @@ export async function deletePeriodicPayment(id: number) {
             eq(PeriodicPaymentsTable.familyId, user.familyId)
         )
     );
+}
+
+export async function getPeriodicPaymentExpenses(periodicPaymentId: number) {
+    const user = await getUser();
+
+    // Verify ownership
+    const payment = await db.query.PeriodicPaymentsTable.findFirst({
+        where: and(
+            eq(PeriodicPaymentsTable.id, periodicPaymentId),
+            eq(PeriodicPaymentsTable.familyId, user.familyId)
+        )
+    });
+
+    if (!payment) {
+        throw new Error("Periodic payment not found or access denied");
+    }
+
+    // Fetch expenses
+    const expenses = await db.query.ExpensesTable.findMany({
+        where: eq(ExpensesTable.periodicPaymentId, periodicPaymentId),
+        orderBy: desc(ExpensesTable.createdAt),
+        with: {
+            category: true
+        }
+    });
+
+    return expenses;
 }

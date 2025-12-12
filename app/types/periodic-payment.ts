@@ -15,4 +15,5 @@ export type PeriodicPayment = {
     user?: User | null;
     familyId: number;
     transactionType: string;
+    lastApplied?: Date | null;
 }

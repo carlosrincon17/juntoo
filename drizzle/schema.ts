@@ -42,6 +42,7 @@ export const ExpensesTable = pgTable(
         transactionType: text('transaction_type').notNull(),
         budgetId: integer("budget_id").references(() => BudgetsTable.id),
         familyId: integer("family_id").references(() => FamilyTable.id),
+        periodicPaymentId: integer("periodic_payment_id").references(() => PeriodicPaymentsTable.id),
     }
 );
 
@@ -155,6 +156,7 @@ export const PeriodicPaymentsTable = pgTable(
         userId: integer("user_id").references(() => UserTable.id).notNull(),
         familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
         transactionType: text('transaction_type').notNull(),
+        lastApplied: date('last_applied', { mode: 'date' }),
     }
 );
 

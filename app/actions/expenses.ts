@@ -538,3 +538,37 @@ export async function getExpensesGroupedByCategory(filters?: ExpensesFilters): P
         count: e.count
     }));
 }
+
+export async function getCategoryExpensesDetail(categoryName: string, filters: ExpensesFilters): Promise<Expense[]> {
+    const user = await getUser();
+
+    const whereConditions = [
+        eq(ExpensesTable.familyId, user.familyId)
+    ];
+
+    if (filters) {
+        whereConditions.push(gte(ExpensesTable.createdAt, filters.startDate));
+        whereConditions.push(lte(ExpensesTable.createdAt, filters.endDate));
+        if (filters.transactionType) {
+            whereConditions.push(eq(ExpensesTable.transactionType, filters.transactionType));
+        }
+    }
+
+    // Join with CategoryTable to filter by name
+    const expenses = await db.select({
+        expense: ExpensesTable,
+        category: CategoryTable
+    })
+        .from(ExpensesTable)
+        .innerJoin(CategoryTable, eq(ExpensesTable.category_id, CategoryTable.id))
+        .where(and(
+            ...whereConditions,
+            eq(CategoryTable.name, categoryName)
+        ))
+        .orderBy(desc(ExpensesTable.createdAt));
+
+    return expenses.map(e => ({
+        ...e.expense,
+        category: e.category
+    }));
+}

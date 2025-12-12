@@ -220,7 +220,15 @@ export default function TransactionsPage() {
             ) : (
                 <>
                     {isGrouped ? (
-                        <TransactionsGroupedList data={groupedExpenses} />
+                        <TransactionsGroupedList
+                            data={groupedExpenses}
+                            filters={{
+                                startDate: dateRange.start.toDate(getLocalTimeZone()),
+                                endDate: dateRange.end.toDate(getLocalTimeZone()),
+                                transactionType: transactionType || undefined,
+                                parentCategory: parentCategory || undefined
+                            }}
+                        />
                     ) : (
                         <Card className="shadow-md flex flex-col gap-4">
                             <CardBody className="space-y-2 relative mt-3">
