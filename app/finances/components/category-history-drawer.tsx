@@ -108,7 +108,8 @@ export default function CategoryHistoryDrawer({ isOpen, onOpenChange, categoryNa
                                                         weekday: 'long',
                                                         year: 'numeric',
                                                         month: 'long',
-                                                        day: 'numeric'
+                                                        day: 'numeric',
+                                                        timeZone: 'UTC'
                                                     })}
                                                 </span>
                                                 <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">

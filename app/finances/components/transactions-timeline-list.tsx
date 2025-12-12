@@ -20,7 +20,8 @@ export default function TransactionsTimelineList({ data }: TransactionsTimelineL
 
     // Group expenses by date
     const groupedExpenses = data.reduce((groups, expense) => {
-        const dateKey = expense.createdAt ? new Date(expense.createdAt).toDateString() : 'Unknown';
+        // Use UTC date string to avoid timezone shifts
+        const dateKey = expense.createdAt ? new Date(expense.createdAt).toISOString().split('T')[0] : 'Unknown';
         if (!groups[dateKey]) {
             groups[dateKey] = [];
         }
@@ -28,12 +29,8 @@ export default function TransactionsTimelineList({ data }: TransactionsTimelineL
         return groups;
     }, {} as Record<string, Expense[]>);
 
-    // Sort dates descending (assuming data is already sorted, but to be safe/explicit)
-    // Actually, relying on data order is safer if it's paginated. 
-    // But Object.keys order isn't guaranteed. 
-    // Let's use a Map or just iterate unique dates from the sorted array to preserve order.
-
-    const uniqueDates = Array.from(new Set(data.map(e => e.createdAt ? new Date(e.createdAt).toDateString() : 'Unknown')));
+    // Sort dates descending
+    const uniqueDates = Array.from(new Set(data.map(e => e.createdAt ? new Date(e.createdAt).toISOString().split('T')[0] : 'Unknown')));
 
     return (
         <Card className="shadow-md">
@@ -44,11 +41,12 @@ export default function TransactionsTimelineList({ data }: TransactionsTimelineL
                             {/* Date Header */}
                             <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-gray-400 border-2 border-white dark:border-gray-900"></div>
                             <span className="text-sm font-bold text-gray-600 uppercase tracking-wide mb-4 block">
-                                {dateKey === 'Unknown' ? 'Fecha desconocida' : new Date(groupedExpenses[dateKey][0].createdAt!).toLocaleDateString('es-ES', {
+                                {dateKey === 'Unknown' ? 'Fecha desconocida' : new Date(dateKey).toLocaleDateString('es-ES', {
                                     weekday: 'long',
                                     year: 'numeric',
                                     month: 'long',
-                                    day: 'numeric'
+                                    day: 'numeric',
+                                    timeZone: 'UTC'
                                 })}
                             </span>
 

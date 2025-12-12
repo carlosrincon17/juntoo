@@ -4,7 +4,6 @@ import { getExpenses, removeExpense } from "@/app/actions/expenses";
 import ConfirmModal from "@/app/components/confirmModal";
 import { CustomLoading } from "@/app/components/customLoading";
 import { formatCurrency } from "@/app/lib/currency";
-import { formateSimpleDate } from "@/app/lib/dates";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { addToast, Button, ButtonGroup, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
@@ -114,61 +113,66 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
                     </Button>
                 </ButtonGroup>
             </div>
-            <div className="space-y-2 relative mt-3">
-                {transactions.map((transaction) => (
-                    <Dropdown
-                        key={transaction.id}
-                    >
-                        <DropdownTrigger className="w-full">
-                            <div
-                                key={transaction.id}
-                                className="group flex items-center justify-between p-2 rounded-xl bg-gradient-to-r from-white to-[#f9faff] border border-[#f0f4ff] hover:shadow-md hover:border-[#e4e9ff] transition-all duration-200"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${transaction.transactionType === TransactionType.Income ? 'from-[#2dd4bf] to-[#34d399]' : 'from-[#f97066] to-[#fb7185]'} flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110`}>
-                                        {
-                                            transaction.transactionType === TransactionType.Income ?
-                                                <FaAngleDoubleUp className="h-3 w-3 text-white" /> :
-                                                <FaAngleDoubleDown className="h-3 w-3 text-white" />
-                                        }
-                                    </div>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <h5 className="text-sm font-medium text-[#121432]">{transaction.category?.name}</h5>
-                                        </div>
-                                        <div className="flex items-center gap-3 mt-0.5">
-                                            <span className="text-xs font-light text-[#121432]/60">{formateSimpleDate(transaction.createdAt as Date)}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col items-end">
-                                    <span
-                                        className={`text-base font-medium ${transaction.transactionType === TransactionType.Income
-                                            ? 'bg-gradient-to-r from-[#2dd4bf] to-[#34d399] bg-clip-text text-transparent'
-                                            : 'bg-gradient-to-r from-[#f97066] to-[#fb7185] bg-clip-text text-transparent'
-                                        }`}
-                                    >
-                                        {transaction.transactionType === TransactionType.Income ? '+' : '-'} {formatCurrency(transaction.value || 0)}
-                                    </span>
-                                    <div
-                                        className="text-[10px] font-light text-white px-2 py-0.5 rounded-full bg-[#121432]/70"
-                                    >
-                                        {transaction.category?.parent}
-                                    </div>
-                                </div>
-                            </div>
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="Transaction options" className="w-full" onAction={(action) => { executeTransactionAction(action, transaction) }}>
-                            <DropdownItem
-                                key="delete"
-                                startContent={<FaTimesCircle className="text-danger" />}
+            <div className="space-y-8 relative mt-6 pl-4 border-l-2 border-gray-200 dark:border-gray-700 my-2">
+                {Array.from(new Set(transactions.map(e => e.createdAt ? new Date(e.createdAt).toISOString().split('T')[0] : 'Unknown'))).map((dateKey) => {
+                    const dateTransactions = transactions.filter(t => (t.createdAt ? new Date(t.createdAt).toISOString().split('T')[0] : 'Unknown') === dateKey);
 
-                            >
-                                Eliminar movimiento
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                ))}
+                    return (
+                        <div key={dateKey} className="relative">
+                            {/* Date Header */}
+                            <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-gray-400 border-2 border-white dark:border-gray-900"></div>
+                            <span className="text-sm font-bold text-gray-600 uppercase tracking-wide mb-4 block">
+                                {dateKey === 'Unknown' ? 'Fecha desconocida' : new Date(dateKey).toLocaleDateString('es-ES', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    timeZone: 'UTC'
+                                })}
+                            </span>
+
+                            <div className="flex flex-col gap-3">
+                                {dateTransactions.map((transaction) => (
+                                    <Dropdown key={transaction.id}>
+                                        <DropdownTrigger className="w-full">
+                                            <div className="flex items-center justify-between bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer">
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${transaction.transactionType === TransactionType.Income ? 'from-[#2dd4bf] to-[#34d399]' : 'from-[#f97066] to-[#fb7185]'} flex items-center justify-center shadow-sm`}>
+                                                        {transaction.transactionType === TransactionType.Income ?
+                                                            <FaAngleDoubleUp className="h-4 w-4 text-white" /> :
+                                                            <FaAngleDoubleDown className="h-4 w-4 text-white" />
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-semibold text-gray-900">
+                                                            {transaction.category?.name || 'Sin categoría'}
+                                                        </p>
+                                                        <p className="text-xs text-gray-500">
+                                                            {transaction.category?.parent || 'General'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col items-end">
+                                                    <span className={`text-lg font-bold ${transaction.transactionType === TransactionType.Income ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                                        {transaction.transactionType === TransactionType.Income ? '+' : '-'} {formatCurrency(transaction.value || 0)}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </DropdownTrigger>
+                                        <DropdownMenu aria-label="Transaction options" className="w-full" onAction={(action) => { executeTransactionAction(action, transaction) }}>
+                                            <DropdownItem
+                                                key="delete"
+                                                startContent={<FaTimesCircle className="text-danger" />}
+                                            >
+                                                Eliminar movimiento
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
             <ConfirmModal
                 isOpen={isDeleteModalOpen}
