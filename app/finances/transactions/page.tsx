@@ -30,6 +30,8 @@ import { FaAngleDoubleDown, FaAngleDoubleUp, FaCheck, FaTimesCircle } from "reac
 import ConfirmModal from "@/app/components/confirmModal";
 import TransactionsSummaryCard from "@/app/finances/components/transactions-summary-card";
 import TransactionsGroupedList from "@/app/finances/components/transactions-grouped-list";
+import TransactionsTimelineList from "@/app/finances/components/transactions-timeline-list";
+import { FaListUl, FaStream } from "react-icons/fa";
 
 
 const ITEMS_PER_PAGE = 20;
@@ -52,6 +54,7 @@ export default function TransactionsPage() {
     const [transactionType, setTransactionType] = useState<string>(TransactionType.Outcome);
     const [parentCategory, setParentCategory] = useState<string>("");
     const [isGrouped, setIsGrouped] = useState(false);
+    const [viewMode, setViewMode] = useState<'list' | 'timeline'>('timeline');
 
     const defaultEnd = today(getLocalTimeZone());
     const defaultStart = new CalendarDate(defaultEnd.year, defaultEnd.month, 1);
@@ -203,9 +206,27 @@ export default function TransactionsPage() {
                             className="md:max-w-xs"
                         />
 
-                        <div className="flex items-center gap-2 ml-auto">
-                            <span className="text-sm text-gray-600">Agrupar por categoría</span>
-                            <Switch isSelected={isGrouped} onValueChange={setIsGrouped} />
+                        <div className="flex items-center gap-4 ml-auto">
+                            <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg">
+                                <button
+                                    onClick={() => setViewMode('list')}
+                                    className={`p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white shadow-sm text-primary' : 'text-gray-500 hover:text-gray-700'}`}
+                                    title="Vista de lista"
+                                >
+                                    <FaListUl />
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('timeline')}
+                                    className={`p-2 rounded-md transition-all ${viewMode === 'timeline' ? 'bg-white shadow-sm text-primary' : 'text-gray-500 hover:text-gray-700'}`}
+                                    title="Vista de línea de tiempo"
+                                >
+                                    <FaStream />
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-2 border-l pl-4 border-gray-200">
+                                <span className="text-sm text-gray-600">Agrupar</span>
+                                <Switch isSelected={isGrouped} onValueChange={setIsGrouped} size="sm" />
+                            </div>
                         </div>
                     </CardBody>
                 </Card>
@@ -229,6 +250,8 @@ export default function TransactionsPage() {
                                 parentCategory: parentCategory || undefined
                             }}
                         />
+                    ) : viewMode === 'timeline' ? (
+                        <TransactionsTimelineList data={expenses} />
                     ) : (
                         <Card className="shadow-md flex flex-col gap-4">
                             <CardBody className="space-y-2 relative mt-3">
@@ -268,7 +291,7 @@ export default function TransactionsPage() {
                                                             className={`text-base font-medium ${transaction.transactionType === TransactionType.Income
                                                                 ? 'bg-gradient-to-r from-[#2dd4bf] to-[#34d399] bg-clip-text text-transparent'
                                                                 : 'bg-gradient-to-r from-[#f97066] to-[#fb7185] bg-clip-text text-transparent'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             {transaction.transactionType === TransactionType.Income ? '+' : '-'} {formatCurrency(transaction.value || 0)}
                                                         </span>
