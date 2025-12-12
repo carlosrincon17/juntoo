@@ -1,3 +1,10 @@
+# [2.23.0](https://github.com/carlosrincon17/juntoo/compare/v2.22.3...v2.23.0) (2025-12-12)
+
+
+### Features
+
+* Improved all periodic payments experience ([2cdf474](https://github.com/carlosrincon17/juntoo/commit/2cdf4744cec357f05b9b04ef7900325a49248db1))
+
 ## [2.22.3](https://github.com/carlosrincon17/juntoo/compare/v2.22.2...v2.22.3) (2025-12-04)
 
 
