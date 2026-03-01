@@ -59,6 +59,9 @@ export const SavingsTable = pgTable(
         isInvestment: boolean('is_investment').notNull().default(false),
         annualInterestRate: real('annual_interest_rate'),
         goalId: integer("goal_id").references(() => FinancialGoalsTable.id),
+        trmValue: real('trm_value'),
+        copValue: bigint('cop_value', { mode: 'number' }),
+        lastTrmUpdated: timestamp('last_trm_updated'),
     }
 );
 

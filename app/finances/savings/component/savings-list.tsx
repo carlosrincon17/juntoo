@@ -75,6 +75,9 @@ export default function SavingsList({
                         goalName={saving.goal?.name}
                         isInvestment={saving.isInvestment}
                         annualInterestRate={saving.annualInterestRate}
+                        currency={saving.currency}
+                        copValue={saving.copValue}
+                        trmValue={saving.trmValue}
                     />
                 ))}
                 <Card

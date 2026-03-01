@@ -1,7 +1,7 @@
 'use client'
 
 import { Savings } from "@/app/types/saving";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getSavings } from "./actions/savings";
 import { CustomLoading } from "@/app/components/customLoading";
 import SummarySection from "./component/summary-section";
@@ -36,64 +36,45 @@ export default function Page() {
     });
 
 
-    const loadSummaryData = async () => {
-        const savingsSum = savings.reduce((total, saving) => total + saving.value, 0);
-        const assetsSum = patrimonies.reduce((total, saving) => total + saving.value, 0);
-        const debtsSum = debts.reduce((total, saving) => total + saving.value, 0);
-        const balanceSum = savingsSum + assetsSum - debtsSum
+    const loadInitialData = async () => {
+        setLoading(true);
+        const [savingsData, patrimoniesData, debtsData] = await Promise.all([
+            getSavings(),
+            getPatrimonies(),
+            getDebts(),
+        ]);
+        setSavings(savingsData);
+        setPatrimonies(patrimoniesData);
+        setDebts(debtsData);
+
+        const savingsSum = savingsData.reduce((t, s) => t + (s.copValue ?? s.value), 0);
+        const assetsSum = patrimoniesData.reduce((t, p) => t + p.value, 0);
+        const debtsSum = debtsData.reduce((t, d) => t + d.value, 0);
         setSummaryData({
             savings: savingsSum,
             assets: assetsSum,
             debts: debtsSum,
-            balance: balanceSum,
+            balance: savingsSum + assetsSum - debtsSum,
             loading: false,
         });
         setLoading(false);
-    }
-
-    const getSavingsData = async () => {
-        const savingsData = await getSavings();
-        setSavings(savingsData);
-    }
-
-    const getPatrimoniesData = async () => {
-        const patrimoniesData = await getPatrimonies();
-        setPatrimonies(patrimoniesData);
-    }
-
-    const getDebtsData = async () => {
-        const debtsData = await getDebts();
-        setDebts(debtsData);
-    }
-
-    const loadInitialData = async () => {
-        setLoading(true);
-        await getSavingsData();
-        await getPatrimoniesData();
-        await getDebtsData();
-        loadSummaryData();
     }
 
     useEffect(() => {
         loadInitialData();
     }, []);
 
-    useEffect(() => {
-        if(debts.length > 0 && patrimonies.length > 0 && savings.length > 0) {
-            loadSummaryData();
-        }
-    }, [debts, patrimonies, savings]);
     return (
         <div>
             {
-                loading  ?
+                loading ?
                     <CustomLoading /> :
                     <div className="flex flex-col gap-6 w-full">
-                        <SummarySection 
-                            savings={summaryData.savings} 
-                            assets={summaryData.assets} 
-                            debts={summaryData.debts} 
-                            balance={summaryData.balance} 
+                        <SummarySection
+                            savings={summaryData.savings}
+                            assets={summaryData.assets}
+                            debts={summaryData.debts}
+                            balance={summaryData.balance}
                             financialCounter={{
                                 savings: savings.length,
                                 assets: patrimonies.length,
@@ -101,25 +82,25 @@ export default function Page() {
                             }}
                         />
                         <Card className="p-4 shadow-md">
-                            <Tabs 
-                                aria-label="Tabs colors" 
+                            <Tabs
+                                aria-label="Tabs colors"
                                 radius="md"
                                 variant="underlined"
                                 size="md"
-                                color="primary" 
+                                color="primary"
                                 classNames={{
                                     base: "w-full",
                                     tabList: "w-full"
                                 }}
                             >
                                 <Tab key="savings" title="Ahorro">
-                                    <SavingsList savings={savings} afterSaveSavings={getSavingsData} />
+                                    <SavingsList savings={savings} afterSaveSavings={loadInitialData} />
                                 </Tab>
                                 <Tab key="debts" title="Deudas">
-                                    <DebtsList debts={debts} afterDebtsChange={getDebtsData} />
+                                    <DebtsList debts={debts} afterDebtsChange={loadInitialData} />
                                 </Tab>
                                 <Tab key="patrimonies" title="Patrimonio">
-                                    <PatrimoniesList patrimonies={patrimonies} afterPatrimoniesChange={getPatrimoniesData} />
+                                    <PatrimoniesList patrimonies={patrimonies} afterPatrimoniesChange={loadInitialData} />
                                 </Tab>
                             </Tabs>
                         </Card>

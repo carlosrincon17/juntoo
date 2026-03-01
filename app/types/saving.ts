@@ -14,4 +14,7 @@ export type Savings = {
     annualInterestRate?: number | null;
     goalId?: number | null;
     goal?: FinancialGoal | null;
+    trmValue?: number | null;
+    copValue?: number | null;
+    lastTrmUpdated?: Date | null;
 }

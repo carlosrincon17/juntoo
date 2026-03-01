@@ -13,6 +13,9 @@ interface AccountCardProps {
     goalName?: string
     isInvestment?: boolean
     annualInterestRate?: number | null
+    currency?: string
+    copValue?: number | null
+    trmValue?: number | null
 }
 
 export default function AccountCard({
@@ -25,9 +28,12 @@ export default function AccountCard({
     owner,
     goalName,
     isInvestment,
-    annualInterestRate
+    annualInterestRate,
+    currency,
+    copValue,
+    trmValue,
 }: AccountCardProps) {
-
+    const isUsd = currency === 'USD'
     return (
         <Card className={`overflow-hidden border-none shadow-md rounded-2xl bg-gradient-to-br ${gradient} h-full`}>
             <div className="p-6 relative h-full flex flex-col">
@@ -37,7 +43,17 @@ export default function AccountCard({
                 <div className="flex justify-between items-start mb-4 relative z-10">
                     <div>
                         <h3 className={`font-light text-sm ${textColor}/90`}>{name}</h3>
-                        <p className={`text-2xl font-extralight mt-1 ${textColor}`}>{formatCurrency(value)}</p>
+                        <p className={`text-2xl font-extralight mt-1 ${textColor}`}>
+                            {isUsd ? `$${value.toLocaleString('en-US')} USD` : formatCurrency(value)}
+                        </p>
+                        {isUsd && copValue != null && (
+                            <p className={`text-xs font-light mt-0.5 ${textColor}/70`}>
+                                ≈ {formatCurrency(copValue)} COP
+                                {trmValue != null && (
+                                    <span className="ml-1 opacity-60">(TRM {trmValue.toLocaleString('es-CO', { maximumFractionDigits: 0 })})</span>
+                                )}
+                            </p>
+                        )}
                     </div>
                     <div className={`px-2 py-1 rounded-full bg-white/10 flex items-center gap-1 ${textColor}`}>
                         <span className="text-xs font-light">{owner}</span>

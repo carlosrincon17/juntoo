@@ -5,10 +5,12 @@ import { db } from "@/utils/storage/db";
 import { FinancialGoalsTable } from "@/drizzle/schema";
 import { getUser } from "@/app/actions/auth";
 import { desc, eq } from "drizzle-orm";
+import { refreshUsdSavingsTrm } from "@/app/finances/savings/actions/savings";
 
 
 export async function getFinancialGoals(): Promise<FinancialGoal[]> {
     const user = await getUser();
+    await refreshUsdSavingsTrm(user.familyId);
     const financialGoals = await db.query.FinancialGoalsTable.findMany({
         where: eq(FinancialGoalsTable.familyId, user.familyId),
         with: {
@@ -19,7 +21,7 @@ export async function getFinancialGoals(): Promise<FinancialGoal[]> {
 
     return financialGoals.map(goal => ({
         ...goal,
-        currentAmount: goal.savings.reduce((sum, saving) => sum + saving.value, 0)
+        currentAmount: goal.savings.reduce((sum, saving) => sum + (saving.copValue ?? saving.value), 0)
     }));
 }
 
