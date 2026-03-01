@@ -1,3 +1,10 @@
+## [2.25.1](https://github.com/carlosrincon17/juntoo/compare/v2.25.0...v2.25.1) (2026-03-01)
+
+
+### Bug Fixes
+
+* added support to usd currencies ([92489e9](https://github.com/carlosrincon17/juntoo/commit/92489e9558a5a20a7f3ea12b8731ce227933b2f4))
+
 # [2.25.0](https://github.com/carlosrincon17/juntoo/compare/v2.24.0...v2.25.0) (2025-12-12)
 
 
