@@ -1,5 +1,6 @@
 import { FinancialGoal } from "@/app/types/financial-goal";
-import { useEffect, useState } from "react";
+import { useEffect, useTransition } from "react";
+import { useState } from "react";
 import { getFinancialGoals } from "../actions/financial-goals";
 import { Card, CardBody, CardHeader, Progress } from "@heroui/react";
 import { FaTrophy } from "react-icons/fa";
@@ -9,16 +10,13 @@ import AnimatedNumber from "@/app/components/animated-number";
 export default function FinancialGoals({ date }: { date?: Date }) {
 
     const [financialGoals, setFinancialGoals] = useState<FinancialGoal[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    const loadFinancialGoals = async () => {
-        const financialGoalsData = await getFinancialGoals();
-        setFinancialGoals(financialGoalsData);
-        setLoading(false);
-    }
+    const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
-        loadFinancialGoals();
+        startTransition(async () => {
+            const data = await getFinancialGoals();
+            setFinancialGoals(data);
+        });
     }, [date]);
 
     const isCurrentMonth = () => {
@@ -52,7 +50,7 @@ export default function FinancialGoals({ date }: { date?: Date }) {
             <CardBody className="px-2 pb-2 pt-2 z-10">
                 <div className="space-y-4 mt-2">
                     {
-                        loading ?
+                        isPending ?
                             <div className="flex justify-center py-12">
                                 <CustomLoading />
                             </div> :

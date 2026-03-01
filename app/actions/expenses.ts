@@ -51,6 +51,7 @@ export async function getExpenses(page: number, perPage: number, transactionType
 }
 
 export async function removeExpense(expense: Expense): Promise<void> {
+    await getUser(); // ensure caller is authenticated
     if (!expense.id) {
         return;
     }
@@ -445,9 +446,6 @@ export async function getTransactionsSummary(filters?: ExpensesFilters): Promise
                 eq(CategoryTable.parent, filters.parentCategory)
             ));
 
-        const result = await queryWithCategory;
-
-        // For top category, we query within the filtered set
         const topCategoryQuery = db.select({
             name: CategoryTable.name,
             total: sql<number>`sum(${ExpensesTable.value})`,
@@ -463,7 +461,8 @@ export async function getTransactionsSummary(filters?: ExpensesFilters): Promise
             .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
             .limit(1);
 
-        const topCategoryResult = await topCategoryQuery;
+        // Run both queries in parallel
+        const [result, topCategoryResult] = await Promise.all([queryWithCategory, topCategoryQuery]);
 
         return {
             count: result[0]?.count || 0,
@@ -473,8 +472,6 @@ export async function getTransactionsSummary(filters?: ExpensesFilters): Promise
             topCategoryTotal: topCategoryResult[0]?.total || 0
         };
     }
-
-    const result = await baseQuery;
 
     // Top category for general filter
     const topCategoryQuery = db.select({
@@ -489,7 +486,8 @@ export async function getTransactionsSummary(filters?: ExpensesFilters): Promise
         .orderBy(desc(sql<number>`sum(${ExpensesTable.value})`))
         .limit(1);
 
-    const topCategoryResult = await topCategoryQuery;
+    // Run both queries in parallel
+    const [result, topCategoryResult] = await Promise.all([baseQuery, topCategoryQuery]);
 
     return {
         count: result[0]?.count || 0,

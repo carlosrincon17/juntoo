@@ -4,7 +4,7 @@ import { Card } from "@heroui/react";
 import { formatCurrency } from "@/app/lib/currency";
 import { FinancialMetrics } from "@/app/types/financial";
 import FinancialGoals from "./financial-goals";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { getFinancialMetrics } from "../actions/financial-metrics";
 import FinancialVariation from "./financial-variaton";
 import { CustomLoading } from "@/app/components/customLoading";
@@ -35,21 +35,17 @@ const emptyFinancialMetrics: FinancialMetrics = {
 export default function FinancialSummary({ date }: { date: Date }) {
 
     const [financialMetrics, setFinancialMetrics] = useState<FinancialMetrics>(emptyFinancialMetrics);
-    const [isLoading, setIsLoading] = useState(true);
-
-    const loadFinancialMetrics = async () => {
-        setIsLoading(true);
-        const financialMetricsData = await getFinancialMetrics(date);
-        setFinancialMetrics(financialMetricsData);
-        setIsLoading(false);
-    }
+    const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
-        loadFinancialMetrics();
+        startTransition(async () => {
+            const data = await getFinancialMetrics(date);
+            setFinancialMetrics(data);
+        });
     }, [date]);
 
     return (
-        isLoading ? (
+        isPending ? (
             <CustomLoading />
         ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

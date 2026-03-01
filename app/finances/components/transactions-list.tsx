@@ -7,7 +7,7 @@ import { formatCurrency } from "@/app/lib/currency";
 import { Expense } from "@/app/types/expense";
 import { TransactionType } from "@/utils/enums/transaction-type";
 import { addToast, Button, ButtonGroup, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
-import { Key, useEffect, useState } from "react";
+import { Key, useEffect, useRef, useState } from "react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaCheck, FaChevronRight, FaTimesCircle } from "react-icons/fa";
 
 import { ExpensesFilters } from "@/app/types/filters";
@@ -19,23 +19,16 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
     const [loading, setLoading] = useState(true);
     const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalChange } = useDisclosure();
     const [selectedTransaction, setSelectedTransaction] = useState<Expense | null>(null);
-
-    const getTransactionsData = async () => {
-        const transactionsData = await getExpenses(currentTransactionsPage, 7, transactionTypeSelected, filter);
-        if (currentTransactionsPage == 1) {
-            setTransactions(transactionsData);
-        } else {
-            setTransactions([...transactions, ...transactionsData]);
-        }
-        setLoading(false);
-    }
+    // Track whether we're appending (load-more) or replacing (filter/type reset)
+    const isAppendingRef = useRef(false);
 
     const getColorByTransactionType = (transactionType: TransactionType) => {
         return transactionType === transactionTypeSelected ? 'primary' : 'default';
     }
 
-    const onLoadMoreTransactions = async () => {
-        setCurrentTransactionsPage(currentTransactionsPage + 1);
+    const onLoadMoreTransactions = () => {
+        isAppendingRef.current = true;
+        setCurrentTransactionsPage(p => p + 1);
     }
 
     const executeTransactionAction = async (action: Key, transaction: Expense) => {
@@ -48,7 +41,8 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
     const onConfirmDeleteTransaction = async (onClose: () => void) => {
         if (selectedTransaction) {
             await removeExpense(selectedTransaction);
-            setTransactions(transactions.filter(t => t.id !== selectedTransaction.id));
+            // Functional setState — avoids stale closure over `transactions`
+            setTransactions(prev => prev.filter(t => t.id !== selectedTransaction.id));
             addToast({
                 title: 'Transacción eliminada',
                 description: 'La transacción ha sido eliminada correctamente.',
@@ -59,22 +53,29 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
         }
     }
 
+    // Reset page to 1 whenever filter or type changes (not on load-more)
     useEffect(() => {
-        getTransactionsData();
-    }, [currentTransactionsPage]);
-
-    useEffect(() => {
-        getTransactionsData();
-    }, [filter]);
-
-    useEffect(() => {
+        isAppendingRef.current = false;
         setCurrentTransactionsPage(1);
-        getTransactionsData();
-    }, [transactionTypeSelected]);
+    }, [filter, transactionTypeSelected]);
 
+    // Fetch whenever page, filter, or type changes
     useEffect(() => {
-        setCurrentTransactionsPage(1);
-    }, [transactionTypeSelected]);
+        let cancelled = false;
+        const fetchData = async () => {
+            setLoading(true);
+            const data = await getExpenses(currentTransactionsPage, 7, transactionTypeSelected, filter);
+            if (cancelled) return;
+            if (isAppendingRef.current) {
+                setTransactions(prev => [...prev, ...data]);
+            } else {
+                setTransactions(data);
+            }
+            setLoading(false);
+        };
+        fetchData();
+        return () => { cancelled = true; };
+    }, [currentTransactionsPage, transactionTypeSelected, filter]);
 
     if (loading) {
         return (

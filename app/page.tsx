@@ -2,17 +2,18 @@
 
 import { signIn } from "./actions/auth";
 import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode';
-import { getGoogleApiKey } from "./actions/keys";
+import { jwtDecode } from 'jwt-decode';
 import { Suspense, useEffect, useState } from "react";
 import { GoogleUsers } from "./types/google-user";
 import { useSearchParams } from 'next/navigation';
 import { Family } from './types/family';
 import { getFamilyByReferenceCode } from './actions/family';
+import Image from "next/image";
+
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID!;
 
 function Home() {
-    
-    const [googleClientId, setGoogleClientId] = useState<string>();
+
     const [family, setFamily] = useState<Family>();
     const searchParams = useSearchParams()
 
@@ -25,11 +26,6 @@ function Home() {
         if (family) localStorage.setItem("family", JSON.stringify(family));
         const credentialData: GoogleUsers = jwtDecode(credential);
         signIn(credentialData.email);
-    }
-
-    const getGoogleApiKeyData = async () => {
-        const googleClientId = await getGoogleApiKey();
-        setGoogleClientId(googleClientId);
     }
 
     const getFamilyByReference = async () => {
@@ -45,7 +41,6 @@ function Home() {
         localStorage.removeItem("family");
         localStorage.removeItem("credentials");
         getFamilyByReference();
-        getGoogleApiKeyData();
     }, []);
 
     const getLoginText = () => {
@@ -53,8 +48,8 @@ function Home() {
             return (
                 <div className='flex flex-col items-center  text-gray-900'>
                     <span className='text-xl font-extralight'>
-                        Fuiste invitado a la familia 
-                    </span> 
+                        Fuiste invitado a la familia
+                    </span>
                     <span className='text-xl font-bold'> {family.name} </span>
                     <br />
                     <span className='font-extralight'>
@@ -72,35 +67,38 @@ function Home() {
 
     return (
         <>
-            {
-                googleClientId && 
-                <GoogleOAuthProvider clientId={googleClientId}>
-                    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white px-4">
-                        <div className="mb-8 text-center">
-                            <img src="/juntoo.webp" alt="juntoo" />
-                            <p className="text-sm text-gray-500 mt-2">Porque todo es mejor con tu familia cuando están juntos</p>
-                        </div>
-        
-                        <div className='mb-10'>
-                            {getLoginText()}    
-                        </div>
-                        <GoogleLogin
-                            onSuccess={(credentialResponse) => {
-                                selectUser(credentialResponse)
-                            }}
-                            onError={() => {
-                                console.log('Login Failed');
-                            }}
+            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white px-4">
+                    <div className="mb-8 text-center">
+                        <Image
+                            src="/juntoo.webp"
+                            alt="Juntoo"
+                            width={200}
+                            height={60}
+                            priority
                         />
-        
-                        <p className="mt-8 text-xs text-center text-gray-500">
-                    Conoce cómo se comporta y se mueve tu dinero... <br />
-                    Establece metas financieras que sean realistas y alcanzables... <br />
-                    Siempre ten un ahorro para cualquier gasto imprevisto...
-                        </p>
+                        <p className="text-sm text-gray-500 mt-2">Porque todo es mejor con tu familia cuando están juntos</p>
                     </div>
-                </GoogleOAuthProvider>
-            }
+
+                    <div className='mb-10'>
+                        {getLoginText()}
+                    </div>
+                    <GoogleLogin
+                        onSuccess={(credentialResponse) => {
+                            selectUser(credentialResponse)
+                        }}
+                        onError={() => {
+                            console.log('Login Failed');
+                        }}
+                    />
+
+                    <p className="mt-8 text-xs text-center text-gray-500">
+                        Conoce cómo se comporta y se mueve tu dinero... <br />
+                        Establece metas financieras que sean realistas y alcanzables... <br />
+                        Siempre ten un ahorro para cualquier gasto imprevisto...
+                    </p>
+                </div>
+            </GoogleOAuthProvider>
         </>
     );
 }

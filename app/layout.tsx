@@ -1,6 +1,7 @@
 import { PrelineScript } from "./components/preline";
 import "./globals.css";
 import { Providers } from "./providers";
+import type { Metadata, Viewport } from "next";
 
 import { Outfit } from 'next/font/google';
 
@@ -10,6 +11,20 @@ const outfit = Outfit({
     weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
+export const metadata: Metadata = {
+    title: {
+        default: "Juntoo - La app para tu familia",
+        template: "%s | Juntoo",
+    },
+    description: "Gestiona las finanzas de tu familia con Juntoo. Controla gastos, ingresos y metas financieras en un solo lugar.",
+    icons: { icon: "/favicon.ico" },
+};
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+};
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -17,12 +32,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" data-theme="light" className={`${outfit.variable}`}>
-            <head>
-                <title>Juntoo - La app para tu familia</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
-            </head>
-            <body className="font-outfit">
+            <body className="font-outfit" suppressHydrationWarning>
                 <Providers>
                     <main>
                         {children}
