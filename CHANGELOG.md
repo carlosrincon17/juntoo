@@ -1,3 +1,10 @@
+# [2.26.0](https://github.com/carlosrincon17/juntoo/compare/v2.25.1...v2.26.0) (2026-03-02)
+
+
+### Features
+
+* improved ui ([e2f7b02](https://github.com/carlosrincon17/juntoo/commit/e2f7b0287ffc868e36dca9feeae527490dba9947))
+
 ## [2.25.1](https://github.com/carlosrincon17/juntoo/compare/v2.25.0...v2.25.1) (2026-03-01)
 
 
