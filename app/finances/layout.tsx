@@ -25,11 +25,13 @@ export default function Layout({
     }
 
     return (
-        <>
-            <div className="min-h-screen  bg-gray-50">
-                <Sidebar />
-                <div className="flex-1 p-6 md:p-8">
-                    <div className="max-w-screen-2xl mx-auto">
+        <div className="bg-gray-50 min-h-screen">
+            <Sidebar />
+
+            {/* Main Content Wrapper - Push right on desktop */}
+            <div className="w-full lg:ps-64">
+                <div className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
+                    <div className="max-w-[85rem] mx-auto">
                         <Breadcrumbs underline="hover" color="primary" className="mb-6">
                             {parentRoute &&
                                 <BreadcrumbItem href={parentRoute?.path}>
@@ -42,6 +44,6 @@ export default function Layout({
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

@@ -1,37 +1,93 @@
 import { Routes, ROUTES_LIST } from "@/utils/navigation/routes-constants";
+import { usePathname } from 'next/navigation';
+import { FaChartPie, FaBullseye, FaTasks } from 'react-icons/fa';
+
+// Map labels to icons for a richer sidebar experience
+const getIconForRoute = (label: string) => {
+    switch (label) {
+    case "Finanzas": return <FaChartPie className="w-4 h-4" />;
+    case "Metas": return <FaBullseye className="w-4 h-4" />;
+    case "Planificación": return <FaTasks className="w-4 h-4" />;
+    default: return <div className="w-4 h-4" />;
+    }
+}
 
 export const NavMenuItems = () => {
+    const pathname = usePathname();
 
     const renderSingleItem = (item: Routes) => {
+        const isActive = pathname === item.path || pathname?.startsWith(`${item.path}/`);
+
         return (
-            <a className="p-2 flex items-center text-sm bg-gray-100 text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" href="#" aria-current="page">
-                <svg className="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                {item.label}
-            </a>
+            <div key={item.path} className="mb-1">
+                <a
+                    className={`flex items-center gap-x-3.5 py-2.5 px-3 rounded-xl text-sm font-medium transition-colors ${isActive
+                        ? 'bg-blue-50 text-blue-600'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    }`}
+                    href={item.path}
+                >
+                    {getIconForRoute(item.label)}
+                    {item.label}
+                </a>
+            </div>
         )
     }
 
     const renderDropdownItem = (item: Routes) => {
+        const isActiveOrChildActive = item.subItems?.some(subItem =>
+            pathname === subItem.path || pathname?.startsWith(`${subItem.path}/`)
+        ) || pathname === item.path;
+
         return (
-            <div className="hs-dropdown [--strategy:static] md:[--strategy:fixed] [--adaptive:none] [--is-collapse:true] md:[--is-collapse:false]" key={item.path}>
-                <button id="hs-header-base-dropdown" type="button" className="hs-dropdown-toggle w-full p-2 flex items-center text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
-                    <svg className="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 10 2.5-2.5L3 5"/><path d="m3 19 2.5-2.5L3 14"/><path d="M10 6h11"/><path d="M10 12h11"/><     path d="M10 18h11"/></svg>
+            <div className={`hs-accordion mb-1 ${isActiveOrChildActive ? 'active' : ''}`} id={`accordion-${item.label.replace(/\s+/g, '-')}`} key={item.label}>
+                <button
+                    type="button"
+                    className={`hs-accordion-toggle w-full flex items-center gap-x-3.5 py-2.5 px-3 mb-1 rounded-xl text-sm font-medium transition-colors ${isActiveOrChildActive
+                        ? 'text-blue-600 bg-blue-50/50'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    }`}
+                    aria-expanded={isActiveOrChildActive ? "true" : "false"}
+                    aria-controls={`accordion-collapse-${item.label.replace(/\s+/g, '-')}`}
+                >
+                    {getIconForRoute(item.label)}
                     {item.label}
-                    <svg className="hs-dropdown-open:-rotate-180 md:hs-dropdown-open:rotate-0 duration-300 shrink-0 size-4 ms-auto md:ms-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+
+                    <svg className="hs-accordion-active:block ms-auto hidden w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6" /></svg>
+                    <svg className="hs-accordion-active:hidden ms-auto block w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                 </button>
-    
-                <div className="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 relative w-full md:w-52 hidden z-50 top-full ps-7 md:ps-0 md:bg-white md:rounded-lg md:shadow-md before:absolute before:-top-4 before:start-0 before:w-full before:h-5 md:after:hidden after:absolute after:top-1 after:start-[18px] after:w-0.5 after:h-[calc(100%-0.25rem)] after:bg-gray-100 dark:md:bg-neutral-800 dark:after:bg-neutral-700" role="menu" aria-orientation="vertical" aria-labelledby="hs-header-base-dropdown">
-                    <div className="py-1 md:px-1 space-y-0.5">
-                        {item.subItems?.map((subItem) => (    
-                            <a className="p-2 md:px-3 flex items-center text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300" href={subItem.path} key={subItem.path}>
-                                {subItem.label}
-                            </a>
-                        ))}
+
+                <div
+                    id={`accordion-collapse-${item.label.replace(/\s+/g, '-')}`}
+                    className={`hs-accordion-content w-full overflow-hidden transition-[height] duration-300 ${isActiveOrChildActive ? 'block' : 'hidden'}`}
+                >
+                    <div className="pt-1 pb-2 ps-10 relative">
+                        {/* Decorative line to connect subitems */}
+                        <div className="absolute left-6 top-1 bottom-3 w-px bg-gray-200"></div>
+
+                        <div className="flex flex-col space-y-1">
+                            {item.subItems?.map((subItem) => {
+                                const isSubActive = pathname === subItem.path;
+                                return (
+                                    <a
+                                        className={`relative py-1.5 px-3 flex items-center text-sm rounded-lg transition-colors ${isSubActive
+                                            ? 'text-blue-600 font-medium'
+                                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                                        }`}
+                                        href={subItem.path}
+                                        key={subItem.path}
+                                    >
+                                        <div className={`absolute -left-5 w-2 h-2 rounded-full border-[1.5px] ${isSubActive ? 'border-blue-600 bg-white' : 'border-gray-200 bg-gray-50'}`}></div>
+                                        {subItem.label}
+                                    </a>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
         )
-    }   
+    }
 
     const renderItems = () => {
         return ROUTES_LIST.map((item) => {
@@ -39,13 +95,12 @@ export const NavMenuItems = () => {
                 return renderDropdownItem(item);
             }
             return renderSingleItem(item);
-        }
-        )}
+        })
+    }
+
     return (
-        <div className="grow">
-            <div className="flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1">
-                {renderItems()}
-            </div>
+        <div className="w-full flex flex-col">
+            {renderItems()}
         </div>
     )
 };

@@ -81,17 +81,17 @@ export default function SavingsList({
                     />
                 ))}
                 <Card
-                    className={`overflow-hidden border-none shadow-sm rounded-2xl cursor-pointer bg-gradient-to-br  from-[#5a6bff]/5 via-[#6875f5]/5 to-[#818cf8]/5 hover:shadow-md transition-shadow duration-300`}
+                    className="overflow-hidden border border-dashed border-gray-300 shadow-none bg-gray-50/50 hover:bg-gray-50 rounded-2xl cursor-pointer hover:border-blue-400 hover:shadow-sm transition-all duration-300 group"
                     onPress={onCreateNewSavingClick}
                     isPressable
                 >
-                    <div className="p-6 h-full flex flex-col items-center justify-center min-h-[140px]">
+                    <div className="p-6 h-full flex flex-col items-center justify-center min-h-[160px]">
                         <div
-                            className={`rounded-full bg-gradient-to-r ${gradient} flex items-center justify-center p-3 mb-3 shadow-sm`}
+                            className="rounded-full bg-white border border-gray-100 flex items-center justify-center p-3.5 mb-3 shadow-sm group-hover:scale-110 group-hover:text-blue-600 transition-transform duration-300"
                         >
-                            <FaPlus className="h-5 w-5 text-white" />
+                            <FaPlus className="h-5 w-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
                         </div>
-                        <p className="text-sm font-light text-[#121432]/70">Nuevo ahorro</p>
+                        <p className="text-sm font-medium text-gray-500 group-hover:text-blue-600 transition-colors">Nuevo Ahorro</p>
                     </div>
                 </Card>
             </div>

@@ -81,7 +81,7 @@ export default function Page() {
                                 debts: debts.length
                             }}
                         />
-                        <Card className="p-4 shadow-md">
+                        <Card className="p-2 sm:p-4 shadow-sm border border-gray-100 bg-white rounded-2xl">
                             <Tabs
                                 aria-label="Tabs colors"
                                 radius="md"
@@ -89,18 +89,26 @@ export default function Page() {
                                 size="md"
                                 color="primary"
                                 classNames={{
-                                    base: "w-full",
-                                    tabList: "w-full"
+                                    base: "w-full mb-2",
+                                    tabList: "w-full",
+                                    tab: "font-medium text-gray-500",
+                                    tabContent: "group-data-[selected=true]:text-blue-600"
                                 }}
                             >
                                 <Tab key="savings" title="Ahorro">
-                                    <SavingsList savings={savings} afterSaveSavings={loadInitialData} />
+                                    <div className="pt-2">
+                                        <SavingsList savings={savings} afterSaveSavings={loadInitialData} />
+                                    </div>
                                 </Tab>
                                 <Tab key="debts" title="Deudas">
-                                    <DebtsList debts={debts} afterDebtsChange={loadInitialData} />
+                                    <div className="pt-2">
+                                        <DebtsList debts={debts} afterDebtsChange={loadInitialData} />
+                                    </div>
                                 </Tab>
                                 <Tab key="patrimonies" title="Patrimonio">
-                                    <PatrimoniesList patrimonies={patrimonies} afterPatrimoniesChange={loadInitialData} />
+                                    <div className="pt-2">
+                                        <PatrimoniesList patrimonies={patrimonies} afterPatrimoniesChange={loadInitialData} />
+                                    </div>
                                 </Tab>
                             </Tabs>
                         </Card>

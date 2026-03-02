@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" data-theme="light" className={`${outfit.variable}`}>
-            <body className="font-outfit" suppressHydrationWarning>
+            <body className="font-sans antialiased" suppressHydrationWarning>
                 <Providers>
                     <main>
                         {children}
