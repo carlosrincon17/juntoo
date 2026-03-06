@@ -36,30 +36,30 @@ export default function TransactionsSummaryCard() {
     }, []);
 
     return (
-        <Card className="h-full shadow-md bg-gradient-to-r from-[#8b5cf6] via-[#9333ea] to-[#a78bfa] xl:col-span-1">
-            <div className="p-4 relative overflow-hidden h-full">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
+        <Card className="h-full shadow-lg border-none bg-gradient-to-br from-[#1e1b4b] via-[#312e81] to-[#4c1d95] xl:col-span-1 group overflow-hidden relative">
+            <div className="p-6 relative h-full flex flex-col justify-between">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-16 translate-x-16 group-hover:bg-white/10 transition-colors duration-700"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#6366f1]/20 rounded-full blur-2xl translate-y-16 -translate-x-12"></div>
 
-                <div className="flex items-center justify-between mb-1 relative">
-                    <div className="flex items-center gap-2">
-                        <h3 className="font-light text-lg tracking-wide text-white/90 uppercase">Balance Global</h3>
+                <div>
+                    <div className="flex items-center justify-between mb-2 relative z-10">
+                        <h3 className="font-medium text-sm tracking-wide text-white/70 uppercase">Balance Global</h3>
+                    </div>
+
+                    <div className="flex items-end gap-3 mb-6 relative z-10 mt-2">
+                        <p className="text-4xl font-semibold text-white tracking-tight">{formatCurrency(yearExpenses.totalIncomes - yearExpenses.totalExpenses)}</p>
                     </div>
                 </div>
 
-                <div className="flex items-end gap-3 mb-2">
-                    <p className="text-3xl font-thin text-white">{formatCurrency(yearExpenses.totalIncomes - yearExpenses.totalExpenses)}</p>
-                </div>
-
-                <div className="mt-2 pt-6 border-t border-white/10 block">
-                    <div className="block md:flex justify-between items-center">
+                <div className="pt-6 border-t border-white/10 relative z-10">
+                    <div className="flex justify-between items-center">
                         <div>
-                            <p className="text-md font-light text-white/70">Gastos Totales</p>
-                            <p className="text-2xl font-extralight text-white">{formatCurrency(yearExpenses.totalExpenses)}</p>
+                            <p className="text-sm font-medium text-white/60 mb-1">Gastos Totales</p>
+                            <p className="text-xl font-medium text-white tracking-tight">{formatCurrency(yearExpenses.totalExpenses)}</p>
                         </div>
-                        <div className="mt-4 md:mt-0">
-                            <p className="text-md font-light text-white/70">Ingresos Totales</p>
-                            <p className="text-2xl font-extralight text-white">{formatCurrency(yearExpenses.totalIncomes)}</p>
+                        <div className="text-right">
+                            <p className="text-sm font-medium text-white/60 mb-1">Ingresos Totales</p>
+                            <p className="text-xl font-medium text-white tracking-tight">{formatCurrency(yearExpenses.totalIncomes)}</p>
                         </div>
                     </div>
                 </div>

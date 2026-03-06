@@ -7,7 +7,7 @@ import { useState } from "react";
 import { TransactionType } from "@/utils/enums/transaction-type";
 
 
-export default function FloatingManageButton () {
+export default function FloatingManageButton ({ onExpenseAdded }: { onExpenseAdded?: () => void }) {
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [selectedTransactionType, setSelectedTransactionType] = useState<TransactionType>(TransactionType.Outcome);
@@ -20,7 +20,7 @@ export default function FloatingManageButton () {
 
     return (
         <>
-            <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} />
+            <NewExpensePanel isOpen={isOpen} onOpenChange={onOpenChange} transactionType={selectedTransactionType} onExpenseAdded={onExpenseAdded} />
             <div className="fixed bottom-6 right-6 z-20 opacity-100 space-x-2">
                 <Button
                     className="h-14 w-14 md:h-16 md:w-16 rounded-full bg-green-500 hover:bg-green-600 shadow-lg justify-center p-0 text-white "

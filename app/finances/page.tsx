@@ -16,6 +16,7 @@ export default function Page() {
     const [showFilter, setShowFilter] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [hasData, setHasData] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         const checkData = async () => {
@@ -26,11 +27,11 @@ export default function Page() {
             setIsLoading(false);
         };
         checkData();
-    }, [date]);
+    }, [date, refreshKey]);
 
     return (
         <div>
-            <FloatingManageButton />
+            <FloatingManageButton onExpenseAdded={() => setRefreshKey(k => k + 1)} />
             <div className="w-full max-w-8xl mx-auto space-y-6">
                 <div className="flex justify-end w-full">
                     {showFilter ? (
@@ -72,8 +73,8 @@ export default function Page() {
                     </div>
                 ) : (
                     <>
-                        <FinancialSummary date={date} />
-                        <TransactionsSummary date={date} />
+                        <FinancialSummary key={`fs-${refreshKey}`} date={date} />
+                        <TransactionsSummary key={`ts-${refreshKey}`} date={date} />
                     </>
                 )}
             </div>

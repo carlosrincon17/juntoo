@@ -83,8 +83,9 @@ export default function NewExpensePanel(props: {
     isOpen: boolean
     onOpenChange: () => void
     transactionType: TransactionType
+    onExpenseAdded?: () => void
 }) {
-    const { isOpen, onOpenChange, transactionType } = props
+    const { isOpen, onOpenChange, transactionType, onExpenseAdded } = props
 
     const [date, setDate] = useState(new Date().toISOString().split('T')[0])
     const [categories, setCategories] = useState<Category[]>([])
@@ -171,6 +172,7 @@ export default function NewExpensePanel(props: {
             icon: <FaCheck size={24} />,
         });
         setIsLoadingSaveExpense(false)
+        onExpenseAdded?.()
         onOpenChange()
     }
 

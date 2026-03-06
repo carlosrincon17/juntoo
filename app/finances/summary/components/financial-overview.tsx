@@ -63,90 +63,78 @@ const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
             {isLoading ?
                 <GraphEskeleton /> :
                 <div className="grid grid-cols-1">
-                    <Card className="shadow-md">
-                        <CardHeader className="pb-0 pt-4 grid grid-cols-1">
+                    <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white overflow-hidden">
+                        <CardHeader className="pb-0 pt-4 px-6 grid grid-cols-1 border-b border-gray-50/80">
                             <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-semibold text-lg text-[#121432] tracking-tight">Resumen Financiero</h3>
-                                <div className="p-2 rounded-full bg-gradient-to-r from-[#5a6bff]/10 to-[#a78bfa]/10">
-                                    <FaChartPie className="h-4 w-4 text-[#5a6bff]" />
+                                <h3 className="font-semibold text-lg text-gray-900 tracking-tight">Resumen Financiero</h3>
+                                <div className="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                                    <FaChartPie className="h-4 w-4 text-gray-500" />
                                 </div>
                             </div>
-                            <p className="text-sm font-light text-[#121432]/60">Promedio anual de gastos, ingresos y ahorros</p>
+                            <p className="text-sm font-medium text-gray-500 pb-4">Promedio anual de gastos, ingresos y ahorros</p>
                         </CardHeader>
 
-                        <CardBody className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden">
+                        <CardBody className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden bg-gray-50/30 p-6">
                             <div className="space-y-4">
-
-                                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#5a6bff]/5 to-[#818cf8]/5 rounded-xl">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#5a6bff] to-[#818cf8] flex items-center justify-center">
-                                            <FaWallet className="h-5 w-5 text-white" />
+                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                            <FaWallet className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h5 className="text-sm font-medium text-[#121432]">Ingresos</h5>
-                                            <p className="text-xs font-light text-[#121432]/60">Promedio de ingresos mensuales</p>
+                                            <h5 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Ingresos</h5>
+                                            <p className="text-xs font-medium text-gray-500">Promedio de ingresos mensuales</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-lg font-light text-[#121432]">{formatCurrency(stats.avgIncome)}</p>
-                                        <div className="flex items-center justify-end gap-1">
-                                            <p className="text-xs font-normal text-[#5a6bff]"></p>
-                                        </div>
+                                        <p className="text-lg font-semibold text-gray-900 tracking-tight">{formatCurrency(stats.avgIncome)}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#2dd4bf]/5 to-[#34d399]/5 rounded-xl">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#2dd4bf] to-[#34d399] flex items-center justify-center">
-                                            <FaBuilding className="h-5 w-5 text-white" />
+                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-rose-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                            <FaBuilding className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h5 className="text-sm font-medium text-[#121432]">Gastos</h5>
-                                            <p className="text-xs font-light text-[#121432]/60">Promedio de gastos por mes</p>
+                                            <h5 className="text-sm font-semibold text-gray-900 group-hover:text-rose-600 transition-colors">Gastos</h5>
+                                            <p className="text-xs font-medium text-gray-500">Promedio de gastos por mes</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-lg font-light text-[#121432]">{formatCurrency(stats.avgExpenses)}</p>
-                                        <div className="flex items-center justify-end gap-1">
-                                            <p className="text-xs font-normal text-[#2dd4bf]"></p>
-                                        </div>
+                                        <p className="text-lg font-semibold text-gray-900 tracking-tight">{formatCurrency(stats.avgExpenses)}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#f97066]/5 to-[#fb7185]/5 rounded-xl">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f97066] to-[#fb7185] flex items-center justify-center">
-                                            <FaCreditCard className="h-5 w-5 text-white" />
+                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-emerald-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                            <FaCreditCard className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h5 className="text-sm font-medium text-[#121432]">Ahorro</h5>
-                                            <p className="text-xs font-light text-[#121432]/60">Promedio de ahorros por mes</p>
+                                            <h5 className="text-sm font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">Ahorro</h5>
+                                            <p className="text-xs font-medium text-gray-500">Promedio de ahorros por mes</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-lg font-light text-[#121432]">{formatCurrency(stats.avgSavings)}</p>
-                                        <div className="flex items-center justify-end gap-1">
-                                            <p className="text-xs font-normal text-[#f97066]"></p>
-                                        </div>
+                                        <p className="text-lg font-semibold text-gray-900 tracking-tight">{formatCurrency(stats.avgSavings)}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-[#f97066]/5 to-[#fb7185]/5 rounded-xl">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f97066] to-[#fb7185] flex items-center justify-center">
-                                            <FaCreditCard className="h-5 w-5 text-white" />
+
+                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-purple-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                            <FaCreditCard className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h5 className="text-sm font-medium text-[#121432]">Pocentaje ahorrado</h5>
-                                            <p className="text-xs font-light text-[#121432]/60">Promedio de porcentaje de ahorros por mes</p>
+                                            <h5 className="text-sm font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">Porcentaje ahorrado</h5>
+                                            <p className="text-xs font-medium text-gray-500">Promedio de % de ahorros por mes</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-lg font-light text-[#121432]">{stats.avgSavingsPercentage} %</p>
-                                        <div className="flex items-center justify-end gap-1">
-                                            <p className="text-xs font-normal text-[#f97066]"></p>
-                                        </div>
+                                        <p className="text-lg font-semibold text-gray-900 tracking-tight">{stats.avgSavingsPercentage}%</p>
                                     </div>
                                 </div>
                             </div>

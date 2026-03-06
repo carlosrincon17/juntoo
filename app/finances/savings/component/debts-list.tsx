@@ -63,15 +63,13 @@ export default function DebtsList({ debts, afterDebtsChange }: DebtsListProps) {
                 <Card
                     isPressable
                     onPress={onClickAddDebt}
-                    className={`overflow-hidden border-none shadow-sm rounded-2xl cursor-pointer bg-gradient-to-br from-[#f97066]/5 via-[#f43f5e]/5 to-[#fb7185]/5 hover:shadow-md transition-shadow duration-300`}
+                    className="overflow-hidden border border-dashed border-gray-300 shadow-none bg-gray-50/50 hover:bg-gray-50 rounded-2xl cursor-pointer hover:border-red-400 hover:shadow-sm transition-all duration-300 group"
                 >
-                    <div className="p-6 h-full flex flex-col items-center justify-center min-h-[140px] w-full">
-                        <div
-                            className={`rounded-full bg-gradient-to-r ${gradient} flex items-center justify-center p-3 mb-3 shadow-sm`}
-                        >
-                            <FaPlus className="h-5 w-5 text-white" />
+                    <div className="p-6 h-full flex flex-col items-center justify-center min-h-[160px]">
+                        <div className="rounded-full bg-white border border-gray-100 flex items-center justify-center p-3.5 mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            <FaPlus className="h-5 w-5 text-gray-400 group-hover:text-red-500 transition-colors" />
                         </div>
-                        <p className="text-sm font-light text-[#121432]/70">Nueva deuda</p>
+                        <p className="text-sm font-medium text-gray-500 group-hover:text-red-600 transition-colors">Nueva deuda</p>
                     </div>
                 </Card>
             </div>

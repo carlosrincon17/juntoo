@@ -21,64 +21,57 @@ export default function DebtCard({
     onEdit,
     onDelete,
     gradient,
-    textColor,
 }: DebtCardProps) {
 
     const paidAmount = initialAmount - value;
     const progress = initialAmount > 0 ? (paidAmount / initialAmount) * 100 : 0;
 
     return (
-        <Card className={`overflow-hidden border-none shadow-md rounded-2xl bg-gradient-to-br ${gradient} h-full`}>
-            <div className="p-6 relative h-full flex flex-col">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
+        <Card className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl bg-white h-full group relative">
+            <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${gradient}`}></div>
 
-                <div className="flex justify-between items-start mb-4 relative">
-                    <div className="w-full grid gap-2">
-                        <h3 className={`font-light text-sm ${textColor}/90`}>{name}</h3>
-                        <div>
-                            <p className={`text-2xl font-extralight ${textColor}`}>{formatCurrency(value)}</p>
-                            <p className={`text-xs font-light ${textColor}/80`}>Inicial: {formatCurrency(initialAmount)}</p>
-                        </div>
-
-                        <div className="mt-3">
-                            <div className="flex justify-between text-xs text-white/80 mb-1">
-                                <span>Progreso</span>
-                                <span>{progress.toFixed(0)}%</span>
-                            </div>
-                            <Progress
-                                aria-label="Progreso de pago"
-                                value={progress}
-                                className="max-w-md"
-                                color="default"
-                                size="sm"
-                                classNames={{
-                                    track: "bg-white/20",
-                                    indicator: "bg-white",
-                                }}
-                            />
-                        </div>
-                    </div>
+            <div className="p-5 h-full flex flex-col pt-6 relative z-10">
+                <div className="mb-4">
+                    <h3 className="font-medium text-sm text-gray-500 mb-1">{name}</h3>
+                    <p className="text-2xl font-semibold text-gray-900 tracking-tight">{formatCurrency(value)}</p>
+                    <p className="text-xs font-medium text-gray-400 mt-1">Inicial: {formatCurrency(initialAmount)}</p>
                 </div>
 
-                <div className="flex justify-end mt-auto gap-2 relative">
+                <div className="mt-2 mb-5">
+                    <div className="flex justify-between text-xs text-gray-400 mb-1.5">
+                        <span>Progreso de pago</span>
+                        <span className="font-medium text-gray-600">{progress.toFixed(0)}%</span>
+                    </div>
+                    <Progress
+                        aria-label="Progreso de pago"
+                        value={progress}
+                        className="max-w-md"
+                        size="sm"
+                        classNames={{
+                            track: "bg-gray-100",
+                            indicator: "bg-gradient-to-r from-[#f97066] to-[#fb7185]",
+                        }}
+                    />
+                </div>
+
+                <div className="flex justify-end mt-auto gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button
-                        variant="light"
+                        variant="flat"
                         isIconOnly
                         size="sm"
-                        className={`h-8 w-8 rounded-full bg-white/20 hover:bg-white/30`}
+                        className="h-8 w-8 rounded-full bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600 data-[hover=true]:bg-blue-100 data-[hover=true]:text-blue-600 transition-colors"
                         onPress={onEdit}
                     >
-                        <FaPencilAlt className="h-4 w-4 text-white" />
+                        <FaPencilAlt className="h-3.5 w-3.5" />
                     </Button>
                     <Button
-                        variant="light"
+                        variant="flat"
                         isIconOnly
                         size="sm"
-                        className={`h-8 w-8 rounded-full bg-white/20 hover:bg-white/30`}
+                        className="h-8 w-8 rounded-full bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-600 data-[hover=true]:bg-red-100 data-[hover=true]:text-red-600 transition-colors"
                         onPress={onDelete}
                     >
-                        <FaTrashAlt className="h-4 w-4 text-white" />
+                        <FaTrashAlt className="h-3.5 w-3.5" />
                     </Button>
                 </div>
             </div>

@@ -141,10 +141,10 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                 </div> :
                 <div className="w-full mx-auto space-y-6">
                     <div className="grid grid-cols-1 gap-6">
-                        <Card className="shadow-md">
-                            <CardHeader className="pb-0 pt-4 flex-col items-start">
-                                <h4 className="text-lg font-medium">Vista de mes a mes</h4>
-                                <small className="text-default-500">Ingresos, gastos y ahorros de los últimos 12 meses</small>
+                        <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white">
+                            <CardHeader className="pb-0 pt-4 px-6 flex-col items-start border-b border-gray-50/80">
+                                <h4 className="text-lg font-semibold text-gray-900 tracking-tight">Vista de mes a mes</h4>
+                                <small className="text-gray-500 font-medium pb-4">Ingresos, gastos y ahorros de los últimos 12 meses</small>
                             </CardHeader>
                             <CardBody className="overflow-hidden">
                                 <div className="w-full h-[300px]">
@@ -155,11 +155,11 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                             </CardBody>
                         </Card>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <Card className="shadow-md">
-                                <CardHeader className="pb-0 pt-4 flex-row justify-between items-start">
-                                    <div>
-                                        <h4 className="text-lg font-medium">Gastos por Categoria</h4>
-                                        <small className="text-default-500">Gastos por categoria de los ultimos 12 meses</small>
+                            <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white">
+                                <CardHeader className="pb-0 pt-4 px-6 flex-row justify-between items-start border-b border-gray-50/80">
+                                    <div className="pb-4">
+                                        <h4 className="text-lg font-semibold text-gray-900 tracking-tight">Gastos por Categoría</h4>
+                                        <small className="text-gray-500 font-medium">Gastos por categoría de los últimos 12 meses</small>
                                     </div>
                                     <div className="flex max-w-s">
                                         <Select
@@ -185,10 +185,10 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                                 </CardBody>
                             </Card>
 
-                            <Card className="shadow-md">
-                                <CardHeader className="pb-0 pt-4 flex-col items-start">
-                                    <h4 className="text-lg font-medium">Porcentaje ahorrado</h4>
-                                    <small className="text-default-500">Porcentaje de los ingresos no gastados</small>
+                            <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white">
+                                <CardHeader className="pb-0 pt-4 px-6 flex-col items-start border-b border-gray-50/80">
+                                    <h4 className="text-lg font-semibold text-gray-900 tracking-tight">Porcentaje ahorrado</h4>
+                                    <small className="text-gray-500 font-medium pb-4">Porcentaje de los ingresos no gastados</small>
                                 </CardHeader>
                                 <CardBody className="overflow-hidden">
                                     <div className="w-full h-[300px]">
@@ -201,31 +201,30 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                         </div>
                     </div>
 
-                    {/* Monthly Data Table */}
-                    <Card className="shadow-md mt-6">
-                        <CardHeader className="pb-0 pt-4 px-4">
-                            <h4 className="text-lg font-medium">Breakdown mensual</h4>
+                    <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white mt-6">
+                        <CardHeader className="pb-0 pt-4 px-6 border-b border-gray-50/80">
+                            <h4 className="text-lg font-semibold text-gray-900 tracking-tight pb-4">Breakdown mensual</h4>
                         </CardHeader>
                         <CardBody>
                             <div className="overflow-x-auto">
                                 <table className="min-w-full text-sm">
                                     <thead>
-                                        <tr className="border-b">
-                                            <th className="text-left py-3 px-4">Mes</th>
-                                            <th className="text-right py-3 px-4">Ingresos</th>
-                                            <th className="text-right py-3 px-4">Gastos</th>
-                                            <th className="text-right py-3 px-4">Ahorros</th>
-                                            <th className="text-right py-3 px-4">% Ahorrado</th>
+                                        <tr className="border-b border-gray-100">
+                                            <th className="text-left py-3 px-4 font-semibold text-gray-500">Mes</th>
+                                            <th className="text-right py-3 px-4 font-semibold text-gray-500">Ingresos</th>
+                                            <th className="text-right py-3 px-4 font-semibold text-gray-500">Gastos</th>
+                                            <th className="text-right py-3 px-4 font-semibold text-gray-500">Ahorros</th>
+                                            <th className="text-right py-3 px-4 font-semibold text-gray-500">% Ahorrado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {stats.dataWithPercentage.map((month, index) => (
-                                            <tr key={index} className="border-b last:border-0 hover:bg-gray-50">
-                                                <td className="py-3 px-4">{month.month}</td>
-                                                <td className="text-right py-3 px-4 text-green-600">{formatCurrency(month.income)}</td>
-                                                <td className="text-right py-3 px-4 text-red-600">{formatCurrency(month.expenses)}</td>
-                                                <td className="text-right py-3 px-4 text-blue-600">{formatCurrency(month.savings)}</td>
-                                                <td className="text-right py-3 px-4 text-purple-600">{month.savingsPercentage}%</td>
+                                            <tr key={index} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50">
+                                                <td className="py-3 px-4 font-medium text-gray-700">{month.month}</td>
+                                                <td className="text-right py-3 px-4 font-medium text-green-600">{formatCurrency(month.income)}</td>
+                                                <td className="text-right py-3 px-4 font-medium text-rose-600">{formatCurrency(month.expenses)}</td>
+                                                <td className="text-right py-3 px-4 font-medium text-blue-600">{formatCurrency(month.savings)}</td>
+                                                <td className="text-right py-3 px-4 font-medium text-purple-600">{month.savingsPercentage}%</td>
                                             </tr>
                                         ))}
                                     </tbody>
