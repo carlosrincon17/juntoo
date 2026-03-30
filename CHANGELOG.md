@@ -1,3 +1,10 @@
+## [2.27.1](https://github.com/carlosrincon17/juntoo/compare/v2.27.0...v2.27.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* recalculate COP value when updating a USD saving ([766ea29](https://github.com/carlosrincon17/juntoo/commit/766ea294b5f26ed73c492321a14d4ff568b6e6c8))
+
 # [2.27.0](https://github.com/carlosrincon17/juntoo/compare/v2.26.0...v2.27.0) (2026-03-06)
 
 
