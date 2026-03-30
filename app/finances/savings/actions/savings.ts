@@ -94,10 +94,15 @@ export async function getTotalSavings(): Promise<number> {
 export async function updateSavings(savings: Savings): Promise<void> {
     const trmClear = savings.currency === 'COP'
         ? { trmValue: null, copValue: savings.value, lastTrmUpdated: null }
-        : {};
+        : { lastTrmUpdated: null };
     await db.update(SavingsTable)
         .set({ ...savings, ...trmClear })
         .where(eq(SavingsTable.id, savings.id));
+
+    if (savings.currency === 'USD') {
+        const user = await getUser();
+        await refreshUsdSavingsTrm(user.familyId);
+    }
 }
 
 export async function createSavings(savings: Savings): Promise<void> {
