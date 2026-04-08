@@ -130,13 +130,13 @@ export default function AiFinancialAssistant({ metrics, date }: AiFinancialAssis
 
     const healthColor = 
         feedback.globalHealth === 'positive' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' :
-        feedback.globalHealth === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-800' :
-        'bg-rose-50 border-rose-200 text-rose-800';
+            feedback.globalHealth === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-800' :
+                'bg-rose-50 border-rose-200 text-rose-800';
 
     const HealthIcon = 
         feedback.globalHealth === 'positive' ? FaCheckCircle :
-        feedback.globalHealth === 'warning' ? FaExclamationTriangle :
-        FaExclamationTriangle;
+            feedback.globalHealth === 'warning' ? FaExclamationTriangle :
+                FaExclamationTriangle;
 
     return (
         <Card className={`shadow-md border ${healthColor} overflow-hidden relative group`}>

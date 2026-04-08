@@ -3,7 +3,7 @@
 import { Button, Input, ScrollShadow, Textarea } from "@heroui/react";
 import { useState, useEffect } from "react";
 import { FaIdCard, FaTimes } from "react-icons/fa";
-import { createImportantId, deleteImportantId } from "../actions/ids";
+import { createImportantId } from "../actions/ids";
 
 interface ImportantIdDrawerProps {
     isOpen: boolean;

@@ -1,6 +1,7 @@
 import { heroui } from "@heroui/theme";
 import type { Config } from "tailwindcss";
-import withPreline from "preline/plugin"
+import withPreline from "preline/plugin";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
     theme: {
@@ -21,7 +22,7 @@ const config: Config = {
     plugins: [
         heroui(),
         withPreline,
-        require("tailwindcss-animate")
+        tailwindcssAnimate
     ]
 };
 export default config;

@@ -42,10 +42,14 @@ export async function generateAdvancedDashboardFeedback(context: DashboardAiCont
     try {
         const result = await model.generateContent(prompt);
         return extractJson(result.response.text());
-    } catch (error: any) {
-        console.error("Gemini AI API Error:", error.message);
-        if (error.message?.includes("429") || error.message?.includes("Quota")) {
-            return JSON.stringify({ error: "QUOTA_EXCEEDED" });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("Gemini AI API Error:", error.message);
+            if (error.message.includes("429") || error.message.includes("Quota")) {
+                return JSON.stringify({ error: "QUOTA_EXCEEDED" });
+            }
+        } else {
+            console.error("Gemini AI API Error:", error);
         }
         return JSON.stringify({ error: "UNKNOWN_ERROR" });
     }
@@ -88,10 +92,14 @@ export async function generateConsolidatedAiFeedback(context: ConsolidatedAiCont
     try {
         const result = await model.generateContent(prompt);
         return extractJson(result.response.text());
-    } catch (error: any) {
-        console.error("Gemini AI API Error:", error.message);
-        if (error.message?.includes("429") || error.message?.includes("Quota")) {
-            return JSON.stringify({ error: "QUOTA_EXCEEDED" });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("Gemini AI API Error:", error.message);
+            if (error.message.includes("429") || error.message.includes("Quota")) {
+                return JSON.stringify({ error: "QUOTA_EXCEEDED" });
+            }
+        } else {
+            console.error("Gemini AI API Error:", error);
         }
         return JSON.stringify({ error: "UNKNOWN_ERROR" });
     }
