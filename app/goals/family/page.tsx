@@ -10,6 +10,7 @@ import { Button, useDisclosure, Card } from "@heroui/react";
 import { FaPlus, FaRocket } from "react-icons/fa";
 import { CustomLoading } from "@/app/components/customLoading";
 import ConfirmModal from "@/app/components/confirmModal";
+import confetti from "canvas-confetti";
 
 export default function FamilyGoalsPage() {
     const [year, setYear] = useState(new Date().getFullYear());
@@ -61,6 +62,13 @@ export default function FamilyGoalsPage() {
             isCompleted: !goal.isCompleted,
             progress: !goal.isCompleted ? 100 : goal.progress // Auto-set progress to 100 if completing
         };
+        if (!goal.isCompleted) {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
         await updateFamilyGoal(updatedGoal);
         loadGoals();
     };
@@ -69,11 +77,22 @@ export default function FamilyGoalsPage() {
         if (goal.type !== 'ITEMIZED' || !goal.targetAmount) return;
 
         const newAmount = (goal.currentAmount || 0) + 1;
+        const progress = Math.min(Math.round((newAmount / goal.targetAmount) * 100), 100);
+        const isCompleted = newAmount >= goal.targetAmount;
+        
+        if (isCompleted && !goal.isCompleted) {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
         const updatedGoal = {
             ...goal,
             currentAmount: newAmount,
-            progress: Math.min(Math.round((newAmount / goal.targetAmount) * 100), 100),
-            isCompleted: newAmount >= goal.targetAmount
+            progress,
+            isCompleted
         };
         await updateFamilyGoal(updatedGoal);
         loadGoals();

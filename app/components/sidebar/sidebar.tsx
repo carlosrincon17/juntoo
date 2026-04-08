@@ -34,10 +34,10 @@ export const Sidebar = () => {
                     </div>
                 </nav>
 
-                <div className="absolute bottom-0 w-full p-4 bg-white border-t border-gray-100">
+                <div className="absolute bottom-0 w-full p-4 bg-white border-t border-gray-100 flex items-center justify-between gap-2">
                     <button
                         onClick={onLogoutClick}
-                        className="w-full flex items-center gap-x-3.5 py-2.5 px-3 rounded-xl text-sm font-medium text-gray-700 bg-gray-50 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                        className="flex-1 flex justify-center items-center gap-x-2 py-2.5 px-3 rounded-xl text-sm font-medium text-gray-700 bg-gray-50 hover:bg-rose-50 hover:text-rose-600 transition-colors"
                     >
                         <FaSignOutAlt className="w-4 h-4" />
                         Cerrar Sesión

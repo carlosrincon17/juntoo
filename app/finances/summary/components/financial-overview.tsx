@@ -63,7 +63,7 @@ const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
             {isLoading ?
                 <GraphEskeleton /> :
                 <div className="grid grid-cols-1">
-                    <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white overflow-hidden">
+                    <Card className="shadow-sm border border-gray-100 dark:border-gray-800 rounded-2xl bg-content1 overflow-hidden">
                         <CardHeader className="pb-0 pt-4 px-6 grid grid-cols-1 border-b border-gray-50/80">
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="font-semibold text-lg text-gray-900 tracking-tight">Resumen Financiero</h3>
@@ -76,7 +76,7 @@ const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
 
                         <CardBody className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-hidden bg-gray-50/30 p-6">
                             <div className="space-y-4">
-                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-blue-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                             <FaWallet className="h-5 w-5" />
@@ -91,7 +91,7 @@ const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
                                     </div>
                                 </div>
 
-                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-rose-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-rose-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                             <FaBuilding className="h-5 w-5" />
@@ -108,7 +108,7 @@ const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
                             </div>
 
                             <div className="space-y-4">
-                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-emerald-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-emerald-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                             <FaCreditCard className="h-5 w-5" />
@@ -123,7 +123,7 @@ const FinancialOverview: React.FC<{ year: number }> = ({ year }) => {
                                     </div>
                                 </div>
 
-                                <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-purple-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                                <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-purple-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                             <FaCreditCard className="h-5 w-5" />

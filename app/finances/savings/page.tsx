@@ -13,6 +13,7 @@ import SavingsList from "./component/savings-list";
 import DebtsList from "./component/debts-list";
 import { Card, Tab, Tabs } from "@heroui/react";
 import PatrimoniesList from "./component/patrimonies-list";
+import AiConsolidatedAdvisor from "./component/ai-consolidated-advisor";
 
 type SummaryData = {
     savings: number,
@@ -80,6 +81,12 @@ export default function Page() {
                                 assets: patrimonies.length,
                                 debts: debts.length
                             }}
+                        />
+                        <AiConsolidatedAdvisor 
+                            savings={savings}
+                            patrimonies={patrimonies}
+                            debts={debts}
+                            summary={summaryData}
                         />
                         <Card className="p-2 sm:p-4 shadow-sm border border-gray-100 bg-white rounded-2xl">
                             <Tabs

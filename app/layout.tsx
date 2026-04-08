@@ -31,8 +31,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" data-theme="light" className={`${outfit.variable}`}>
-            <body className="font-sans antialiased" suppressHydrationWarning>
+        <html lang="en" data-theme="light" className={`${outfit.variable}`} suppressHydrationWarning>
+            <body className="font-sans antialiased text-gray-900 bg-gray-50" suppressHydrationWarning>
                 <Providers>
                     <main>
                         {children}

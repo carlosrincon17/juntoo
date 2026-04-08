@@ -94,7 +94,7 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
     }
     return (
 
-        <Card className="border-none rounded-3xl shadow-md overflow-hidden bg-gradient-to-br from-white to-[#f9faff] p-6 relative">
+        <Card className="border-none rounded-3xl shadow-md overflow-hidden bg-content1 p-6 relative">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#5a6bff]/5 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#5a6bff]/5 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
             <div className="flex items-center justify-between content-center">
@@ -136,7 +136,7 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
                                 {dateTransactions.map((transaction) => (
                                     <Dropdown key={transaction.id}>
                                         <DropdownTrigger className="w-full">
-                                            <div className="flex items-center justify-between bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer">
+                                            <div className="flex items-center justify-between bg-white/80 dark:bg-black/20 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all cursor-pointer">
                                                 <div className="flex items-center gap-4">
                                                     <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${transaction.transactionType === TransactionType.Income ? 'from-[#2dd4bf] to-[#34d399]' : 'from-[#f97066] to-[#fb7185]'} flex items-center justify-center shadow-sm`}>
                                                         {transaction.transactionType === TransactionType.Income ?
@@ -145,7 +145,7 @@ export default function TransactionsList({ filter }: { filter?: ExpensesFilters 
                                                         }
                                                     </div>
                                                     <div>
-                                                        <p className="font-semibold text-gray-900">
+                                                        <p className="font-semibold text-gray-900 dark:text-gray-100">
                                                             {transaction.category?.name || 'Sin categoría'}
                                                         </p>
                                                         <p className="text-xs text-gray-500">

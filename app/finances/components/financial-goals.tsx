@@ -30,7 +30,7 @@ export default function FinancialGoals({ date }: { date?: Date }) {
     }
 
     return (
-        <Card className="shadow-sm border border-gray-100 p-1 bg-white overflow-hidden relative rounded-2xl">
+        <Card className="shadow-sm border border-gray-100 dark:border-gray-800 p-1 bg-content1 overflow-hidden relative rounded-2xl">
             {/* Minimalist decorative elements */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-blue-50/50 rounded-full blur-3xl -translate-y-24 translate-x-24 pointer-events-none"></div>
 
@@ -40,7 +40,7 @@ export default function FinancialGoals({ date }: { date?: Date }) {
                         <div className="p-2 bg-yellow-50 rounded-xl border border-yellow-100/50">
                             <FaTrophy className="h-4 w-4 text-yellow-500" />
                         </div>
-                        <h2 className="text-lg font-semibold text-gray-900 tracking-tight">Tus metas</h2>
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">Tus metas</h2>
                     </div>
                 </div>
                 <p className="text-sm text-gray-500 font-medium mt-1">
@@ -68,15 +68,15 @@ export default function FinancialGoals({ date }: { date?: Date }) {
                                     return (
                                         <div
                                             key={financialGoal.id}
-                                            className="group relative p-4 rounded-2xl bg-white border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all duration-300"
+                                            className="group relative p-4 rounded-2xl bg-content1 border border-gray-100 dark:border-gray-800 hover:border-blue-200 hover:shadow-md transition-all duration-300"
                                         >
                                             <div className="flex justify-between items-start mb-3">
                                                 <div>
-                                                    <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 transition-colors">
                                                         {financialGoal.name}
                                                     </h3>
                                                     <div className="flex items-baseline gap-1.5 mt-1">
-                                                        <span className="text-lg font-semibold text-gray-900 tracking-tight">
+                                                        <span className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
                                                             <AnimatedNumber value={currentAmount} />
                                                         </span>
                                                         <span className="text-xs text-gray-400 font-medium">

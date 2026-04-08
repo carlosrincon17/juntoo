@@ -10,6 +10,7 @@ import FinancialVariation from "./financial-variaton";
 import { CustomLoading } from "@/app/components/customLoading";
 import TransactionsList from "./transactions-list";
 import { getExpensesFilterByDate } from "@/app/lib/dates";
+import AiFinancialAssistant from "./ai-financial-assistant";
 
 const emptyFinancialMetrics: FinancialMetrics = {
     expenses: {
@@ -97,6 +98,7 @@ export default function FinancialSummary({ date }: { date: Date }) {
                             </div>
                         </div>
                     </Card>
+                    <AiFinancialAssistant metrics={financialMetrics} date={date} />
                     <FinancialGoals date={date} />
                 </div>
                 <div className="col-span-1 md:col-span-2">

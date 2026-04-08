@@ -27,13 +27,13 @@ export default function DebtCard({
     const progress = initialAmount > 0 ? (paidAmount / initialAmount) * 100 : 0;
 
     return (
-        <Card className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl bg-white h-full group relative">
+        <Card className="overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl bg-content1 h-full group relative">
             <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${gradient}`}></div>
 
             <div className="p-5 h-full flex flex-col pt-6 relative z-10">
                 <div className="mb-4">
                     <h3 className="font-medium text-sm text-gray-500 mb-1">{name}</h3>
-                    <p className="text-2xl font-semibold text-gray-900 tracking-tight">{formatCurrency(value)}</p>
+                    <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight">{formatCurrency(value)}</p>
                     <p className="text-xs font-medium text-gray-400 mt-1">Inicial: {formatCurrency(initialAmount)}</p>
                 </div>
 

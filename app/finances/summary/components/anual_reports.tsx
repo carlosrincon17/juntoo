@@ -141,7 +141,7 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                 </div> :
                 <div className="w-full mx-auto space-y-6">
                     <div className="grid grid-cols-1 gap-6">
-                        <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white">
+                        <Card className="shadow-sm border border-gray-100 dark:border-gray-800 rounded-2xl bg-content1">
                             <CardHeader className="pb-0 pt-4 px-6 flex-col items-start border-b border-gray-50/80">
                                 <h4 className="text-lg font-semibold text-gray-900 tracking-tight">Vista de mes a mes</h4>
                                 <small className="text-gray-500 font-medium pb-4">Ingresos, gastos y ahorros de los últimos 12 meses</small>
@@ -155,7 +155,7 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                             </CardBody>
                         </Card>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white">
+                            <Card className="shadow-sm border border-gray-100 dark:border-gray-800 rounded-2xl bg-content1">
                                 <CardHeader className="pb-0 pt-4 px-6 flex-row justify-between items-start border-b border-gray-50/80">
                                     <div className="pb-4">
                                         <h4 className="text-lg font-semibold text-gray-900 tracking-tight">Gastos por Categoría</h4>
@@ -185,7 +185,7 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                                 </CardBody>
                             </Card>
 
-                            <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white">
+                            <Card className="shadow-sm border border-gray-100 dark:border-gray-800 rounded-2xl bg-content1">
                                 <CardHeader className="pb-0 pt-4 px-6 flex-col items-start border-b border-gray-50/80">
                                     <h4 className="text-lg font-semibold text-gray-900 tracking-tight">Porcentaje ahorrado</h4>
                                     <small className="text-gray-500 font-medium pb-4">Porcentaje de los ingresos no gastados</small>
@@ -201,7 +201,7 @@ const YearlyReports: React.FC<{ year: number }> = ({ year }) => {
                         </div>
                     </div>
 
-                    <Card className="shadow-sm border border-gray-100 rounded-2xl bg-white mt-6">
+                    <Card className="shadow-sm border border-gray-100 dark:border-gray-800 rounded-2xl bg-content1 mt-6">
                         <CardHeader className="pb-0 pt-4 px-6 border-b border-gray-50/80">
                             <h4 className="text-lg font-semibold text-gray-900 tracking-tight pb-4">Breakdown mensual</h4>
                         </CardHeader>

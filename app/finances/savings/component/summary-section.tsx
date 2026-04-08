@@ -51,12 +51,12 @@ export default function SummarySection({ savings, assets, debts, balance, financ
                 </div>
             </Card>
 
-            <Card className="shadow-sm border border-gray-100 xl:col-span-2 bg-white rounded-2xl overflow-hidden">
+            <Card className="shadow-sm border border-gray-100 dark:border-gray-800 xl:col-span-2 bg-content1 rounded-2xl overflow-hidden">
                 <div className="flex flex-col h-full">
-                    <div className="p-6 border-b border-gray-50/80">
+                    <div className="p-6 border-b border-gray-50/80 dark:border-gray-800">
                         <div className="flex items-center justify-between mb-1">
-                            <h3 className="font-semibold text-lg text-gray-900 tracking-tight">Resumen Financiero</h3>
-                            <div className="p-2 rounded-xl bg-gray-50 border border-gray-100">
+                            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 tracking-tight">Resumen Financiero</h3>
+                            <div className="p-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
                                 <FaChartPie className="h-4 w-4 text-gray-500" />
                             </div>
                         </div>
@@ -67,38 +67,38 @@ export default function SummarySection({ savings, assets, debts, balance, financ
 
                         {/* Ahorros y Patrimonio */}
                         <div className="space-y-4">
-                            <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                            <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-blue-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                    <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900 text-blue-500 dark:text-blue-200 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                         <FaWallet className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h5 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Ahorros</h5>
+                                        <h5 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 transition-colors">Ahorros</h5>
                                         <p className="text-xs font-medium text-gray-500">Liquidez disponible</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-lg font-semibold text-gray-900 tracking-tight">{formatCurrency(savings)}</p>
+                                    <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">{formatCurrency(savings)}</p>
                                     <div className="mt-0.5">
-                                        <p className="text-xs font-medium text-blue-500 bg-blue-50 inline-block px-2 py-0.5 rounded-full">{financialCounter.savings} cuentas</p>
+                                        <p className="text-xs font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/30 inline-block px-2 py-0.5 rounded-full">{financialCounter.savings} cuentas</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-emerald-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                            <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-emerald-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 dark:text-emerald-300 flex items-center justify-center group-hover:scale-105 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                         <FaBuilding className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h5 className="text-sm font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">Patrimonio</h5>
+                                        <h5 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 transition-colors">Patrimonio</h5>
                                         <p className="text-xs font-medium text-gray-500">Bienes e inversiones</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-lg font-semibold text-gray-900 tracking-tight">{formatCurrency(assets)}</p>
+                                    <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">{formatCurrency(assets)}</p>
                                     <div className="mt-0.5">
-                                        <p className="text-xs font-medium text-emerald-600 bg-emerald-50 inline-block px-2 py-0.5 rounded-full">{financialCounter.assets} activos</p>
+                                        <p className="text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/40 inline-block px-2 py-0.5 rounded-full">{financialCounter.assets} activos</p>
                                     </div>
                                 </div>
                             </div>
@@ -106,20 +106,20 @@ export default function SummarySection({ savings, assets, debts, balance, financ
 
                         {/* Deudas */}
                         <div className="space-y-4">
-                            <div className="group flex items-center justify-between p-4 bg-white border border-gray-100 hover:border-rose-200 hover:shadow-md rounded-2xl transition-all duration-300">
+                            <div className="group flex items-center justify-between p-4 bg-content1 border border-gray-100 dark:border-gray-800 hover:border-rose-200 hover:shadow-md rounded-2xl transition-all duration-300">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center group-hover:scale-105 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                                    <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900 text-rose-500 dark:text-rose-200 flex items-center justify-center group-hover:scale-105 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shadow-sm">
                                         <FaCreditCard className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h5 className="text-sm font-semibold text-gray-900 group-hover:text-rose-600 transition-colors">Deudas</h5>
+                                        <h5 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-rose-600 transition-colors">Deudas</h5>
                                         <p className="text-xs font-medium text-gray-500">Préstamos y créditos</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-lg font-semibold text-gray-900 tracking-tight">{formatCurrency(debts)}</p>
+                                    <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">{formatCurrency(debts)}</p>
                                     <div className="mt-0.5">
-                                        <p className="text-xs font-medium text-rose-600 bg-rose-50 inline-block px-2 py-0.5 rounded-full">{financialCounter.debts} deudas</p>
+                                        <p className="text-xs font-medium text-rose-600 bg-rose-50 dark:bg-rose-900/40 inline-block px-2 py-0.5 rounded-full">{financialCounter.debts} deudas</p>
                                     </div>
                                 </div>
                             </div>

@@ -25,7 +25,7 @@ export default function Layout({
     }
 
     return (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="bg-gray-50 dark:bg-zinc-950 min-h-screen">
             <Sidebar />
 
             {/* Main Content Wrapper - Push right on desktop */}

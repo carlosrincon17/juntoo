@@ -31,7 +31,7 @@ export default function Layout({
 
     return (
         <>
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
                 <Sidebar />
                 <div className="flex-1 md:p-8 p-6">
                     <div className="max-w-screen-2xl mx-auto">

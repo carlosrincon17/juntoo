@@ -34,7 +34,7 @@ export default function AccountCard({
 }: AccountCardProps) {
     const isUsd = currency === 'USD'
     return (
-        <Card className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl bg-white h-full group relative">
+        <Card className="overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl bg-content1 h-full group relative">
             {/* Subtle gradient accent at the top */}
             <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${gradient}`}></div>
 
@@ -42,7 +42,7 @@ export default function AccountCard({
                 <div className="flex justify-between items-start mb-4">
                     <div>
                         <h3 className="font-medium text-sm text-gray-500 mb-1">{name}</h3>
-                        <p className="text-2xl font-semibold text-gray-900 tracking-tight">
+                        <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
                             {isUsd ? `$${value.toLocaleString('en-US')} USD` : formatCurrency(value)}
                         </p>
                         {isUsd && copValue != null && (
@@ -54,7 +54,7 @@ export default function AccountCard({
                             </p>
                         )}
                     </div>
-                    <div className="px-2.5 py-1 rounded-full bg-gray-50 border border-gray-100 flex items-center gap-1 text-gray-600">
+                    <div className="px-2.5 py-1 rounded-full bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800 flex items-center gap-1 text-gray-600 dark:text-gray-400">
                         <span className="text-xs font-medium">{owner}</span>
                     </div>
                 </div>

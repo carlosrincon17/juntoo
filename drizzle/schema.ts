@@ -246,3 +246,22 @@ export const familyGoalRelationship = relations(FamilyGoalsTable, ({ one }) => (
         references: [FamilyTable.id],
     }),
 }));
+
+export const ImportantIdsTable = pgTable(
+    'important_ids',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        description: text('description'),
+        value: text('value').notNull(),
+        familyId: integer("family_id").references(() => FamilyTable.id).notNull(),
+        createdAt: timestamp('createdAt').defaultNow().notNull(),
+    }
+);
+
+export const importantIdFamilyRelationship = relations(ImportantIdsTable, ({ one }) => ({
+    family: one(FamilyTable, {
+        fields: [ImportantIdsTable.familyId],
+        references: [FamilyTable.id],
+    }),
+}));

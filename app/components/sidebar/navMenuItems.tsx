@@ -1,6 +1,7 @@
 import { Routes, ROUTES_LIST } from "@/utils/navigation/routes-constants";
 import { usePathname } from 'next/navigation';
 import { FaChartPie, FaBullseye, FaTasks } from 'react-icons/fa';
+import Link from 'next/link';
 
 // Map labels to icons for a richer sidebar experience
 const getIconForRoute = (label: string) => {
@@ -20,7 +21,7 @@ export const NavMenuItems = () => {
 
         return (
             <div key={item.path} className="mb-1">
-                <a
+                <Link
                     className={`flex items-center gap-x-3.5 py-2.5 px-3 rounded-xl text-sm font-medium transition-colors ${isActive
                         ? 'bg-blue-50 text-blue-600'
                         : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
@@ -29,7 +30,7 @@ export const NavMenuItems = () => {
                 >
                     {getIconForRoute(item.label)}
                     {item.label}
-                </a>
+                </Link>
             </div>
         )
     }
@@ -69,7 +70,7 @@ export const NavMenuItems = () => {
                             {item.subItems?.map((subItem) => {
                                 const isSubActive = pathname === subItem.path;
                                 return (
-                                    <a
+                                    <Link
                                         className={`relative py-1.5 px-3 flex items-center text-sm rounded-lg transition-colors ${isSubActive
                                             ? 'text-blue-600 font-medium'
                                             : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
@@ -79,7 +80,7 @@ export const NavMenuItems = () => {
                                     >
                                         <div className={`absolute -left-5 w-2 h-2 rounded-full border-[1.5px] ${isSubActive ? 'border-blue-600 bg-white' : 'border-gray-200 bg-gray-50'}`}></div>
                                         {subItem.label}
-                                    </a>
+                                    </Link>
                                 )
                             })}
                         </div>

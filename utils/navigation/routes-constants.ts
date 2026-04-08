@@ -63,6 +63,10 @@ const PLANNER_ROUTES = {
         label: "Tareas",
         path: "/planner",
     },
+    IMPORTANT_IDS: {
+        label: "Datos Clave",
+        path: "/planner/ids",
+    }
 }
 
 export const ROUTES_LIST: Routes[] = [
@@ -93,6 +97,7 @@ export const ROUTES_LIST: Routes[] = [
         path: "/planner",
         subItems: [
             PLANNER_ROUTES.TASKS,
+            PLANNER_ROUTES.IMPORTANT_IDS,
         ]
     },
 

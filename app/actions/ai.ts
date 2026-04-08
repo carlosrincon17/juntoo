@@ -8,28 +8,91 @@ function extractJson(textResponse: string): string {
     return match ? match[0] : '{}';
 }
 
-export async function generateFeedback(savings: number, debts: number, patrimonies: number): Promise<string> {
+export interface DashboardAiContext {
+    monthlyExpenses: number;
+    monthlyIncome: number;
+    totalSavings: number;
+    topCategories: { name: string; total: number }[];
+    goals: { title: string; progress: number; target: number }[];
+}
+
+export async function generateAdvancedDashboardFeedback(context: DashboardAiContext): Promise<string> {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `
-            You are a modern financial advisor, I need a concise feedback on my family financial situation based on colombia context.   
-            My current assets include: 
-            ---- ${debts} ----- ${patrimonies}
-            Investments: 
-                 - CDTS: ${savings} COP (invested with 12% of annual interest rate in a account of easy access) it should represent 600000 COP of monthly incomes
-                 - Real state: A house of 390000000 with a mortgage of 80000000 (8.9% of annual interest rate)
+            Eres Juntoo AI, un asesor financiero sumamente avanzado, directo y creativo.
+            Contexto del mes actual de la familia:
+            - Gastos Mensuales Totales: $${context.monthlyExpenses}
+            - Ingresos (Entradas): $${context.monthlyIncome}
+            - Ahorros Acumulados Totales: $${context.totalSavings}
+            - Top Categorias de Gasto: ${JSON.stringify(context.topCategories)}
+            - Metas Activas: ${JSON.stringify(context.goals)}
 
-            Patrimonies:
-                 - A house of 390000000 COP in rent, the familiar house of 300000000 COP and the savings
+            Analiza profundamente estos datos. Relaciona si están gastando demasiado en una categoría comparado con lo que les falta para una meta.
+            Actúa como un experto amigable.
+            
+            Usa ESTRICTAMENTE el siguiente esquema JSON: 
+            {
+                "globalHealth": "positive" | "warning" | "danger",
+                "mainAnalysis": "Un diagnóstico perspicaz de 2 líneas sobre sus ingresos, gastos y categorías.",
+                "savingsOpportunity": "Una sugerencia accionable y creativa de recorte basada en su top de gastos.",
+                "goalEncouragement": "Una frase conectando su salud financiera mensual con el progreso de una de sus metas."
+            }
+            Devuelve ÚNICAMENTE el código JSON válido.`;
+    try {
+        const result = await model.generateContent(prompt);
+        return extractJson(result.response.text());
+    } catch (error: any) {
+        console.error("Gemini AI API Error:", error.message);
+        if (error.message?.includes("429") || error.message?.includes("Quota")) {
+            return JSON.stringify({ error: "QUOTA_EXCEEDED" });
+        }
+        return JSON.stringify({ error: "UNKNOWN_ERROR" });
+    }
+}
 
-            Monthly Incomes:
-                - Salary 20000000 COP
-                - Rent of a house 2000000 COP
-                - Interest of CDT investment 600000 COP
+export interface ConsolidatedAiContext {
+    summary: { totalSavings: number; totalAssets: number; totalDebts: number; netWorth: number };
+    savingsList: { name: string; amount: number }[];
+    debtsList: { name: string; amount: number; interestRate?: number }[];
+    assetsList: { name: string; amount: number }[];
+}
 
-            Please give me a short feedback and a short tip based in the described finances, it should be very briefly (one or two phrases) taking in account the Colombian context and that the salaries in this country, its should be for the family in Spanish:
+export async function generateConsolidatedAiFeedback(context: ConsolidatedAiContext): Promise<string> {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const prompt = `
+            Eres Juntoo AI, un asesor patrimonial sumamente avanzado y analítico.
+            Contexto del "Consolidado Patrimonial" de la familia:
+            - Ahorros Totales Líquidos: $${context.summary.totalSavings}
+            - Activos (Patrimonio No Líquido): $${context.summary.totalAssets}
+            - Deudas Activas: $${context.summary.totalDebts}
+            - Patrimonio Neto (Net Worth): $${context.summary.netWorth}
 
-            Using this JSON schema:Recipe = {'feedback': string, 'tips': string} Return: Recipe`;
-    const result = await model.generateContent(prompt);
-    return extractJson(result.response.text());
+            Detalles:
+            - Lista de Ahorros: ${JSON.stringify(context.savingsList.slice(0, 5))}
+            - Lista de Deudas: ${JSON.stringify(context.debtsList.slice(0, 5))}
+            - Lista de Activos: ${JSON.stringify(context.assetsList.slice(0, 5))}
+
+            Calcula el nivel de apalancamiento (Deudas vs Activos/Ahorros) y la liquidez.
+            Da consejos estratégicos reales: Ej. "Sus deudas superan el 50% de sus ahorros líquidos, prioricen pagar [Deuda más cara] antes de subir activos no líquidos".
+            
+            Usa ESTRICTAMENTE el siguiente esquema JSON: 
+            {
+                "wealthHealth": "positive" | "warning" | "danger",
+                "macroAnalysis": "Un resumen crudo pero empático de 2-3 líneas sobre cómo está su relación Liquidez vs Deuda vs Patrimonio.",
+                "debtStrategy": "Una recomendación clara si tienen deudas (cómo liquidarlas estratégicamente), o qué hacer si no las tienen.",
+                "growthOpportunity": "Sugerencia avanzada para hacer crecer su Net Worth o invertir el ahorro inactivo."
+            }
+            Devuelve ÚNICAMENTE el código JSON.`;
+    try {
+        const result = await model.generateContent(prompt);
+        return extractJson(result.response.text());
+    } catch (error: any) {
+        console.error("Gemini AI API Error:", error.message);
+        if (error.message?.includes("429") || error.message?.includes("Quota")) {
+            return JSON.stringify({ error: "QUOTA_EXCEEDED" });
+        }
+        return JSON.stringify({ error: "UNKNOWN_ERROR" });
+    }
 }
