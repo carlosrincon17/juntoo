@@ -1,3 +1,10 @@
+# [2.28.0](https://github.com/carlosrincon17/juntoo/compare/v2.27.1...v2.28.0) (2026-04-08)
+
+
+### Features
+
+* **ai:** integrate advanced Juntoo Copilot and Consolidated Advisor with lazy loading ([8fa2702](https://github.com/carlosrincon17/juntoo/commit/8fa27021b54f98ef99ef62312fae8481cec921c5))
+
 ## [2.27.1](https://github.com/carlosrincon17/juntoo/compare/v2.27.0...v2.27.1) (2026-03-30)
 
 
