@@ -17,6 +17,10 @@ export interface DashboardAiContext {
 }
 
 export async function generateAdvancedDashboardFeedback(context: DashboardAiContext): Promise<string> {
+    if (!process.env.GEMINI_API_KEY) {
+        console.error("Vercel Env Warning: GEMINI_API_KEY is undefined on the server.");
+        return JSON.stringify({ error: "MISSING_API_KEY" });
+    }
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `
@@ -63,6 +67,10 @@ export interface ConsolidatedAiContext {
 }
 
 export async function generateConsolidatedAiFeedback(context: ConsolidatedAiContext): Promise<string> {
+    if (!process.env.GEMINI_API_KEY) {
+        console.error("Vercel Env Warning: GEMINI_API_KEY is undefined on the server.");
+        return JSON.stringify({ error: "MISSING_API_KEY" });
+    }
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `

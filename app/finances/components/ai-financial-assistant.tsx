@@ -110,9 +110,12 @@ export default function AiFinancialAssistant({ metrics, date }: AiFinancialAssis
     }
 
     if (!feedback || feedback.error) {
-        const errorText = feedback?.error === "QUOTA_EXCEEDED" 
-            ? "Límite de solicitudes de IA excedido (Error 429)." 
-            : "No se pudo conectar con el motor de IA.";
+        let errorText = "No se pudo conectar con el motor de IA.";
+        if (feedback?.error === "QUOTA_EXCEEDED") {
+            errorText = "Límite de solicitudes de IA excedido (Error 429).";
+        } else if (feedback?.error === "MISSING_API_KEY") {
+            errorText = "Vercel no está detectando la variable GEMINI_API_KEY en Producción. ¡Asegúrate de haber redespachado (re-deploy) el proyecto!";
+        }
         
         return (
             <div className="w-full h-full min-h-[140px] flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-gray-200 bg-gray-50/50 rounded-2xl">
