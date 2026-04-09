@@ -1,3 +1,10 @@
+# [2.29.0](https://github.com/carlosrincon17/juntoo/compare/v2.28.0...v2.29.0) (2026-04-09)
+
+
+### Features
+
+* **ai:** add strict missing api key diagnostics for vercel ([2d3c1ff](https://github.com/carlosrincon17/juntoo/commit/2d3c1ffdb5211d50bf8b18d8192a02b8fbfd1d3e))
+
 # [2.28.0](https://github.com/carlosrincon17/juntoo/compare/v2.27.1...v2.28.0) (2026-04-08)
 
 
