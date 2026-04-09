@@ -110,11 +110,11 @@ export default function AiFinancialAssistant({ metrics, date }: AiFinancialAssis
     }
 
     if (!feedback || feedback.error) {
-        let errorText = "No se pudo conectar con el motor de IA.";
+        let errorText = "Ocurrió un error inesperado al conectar con el asistente inteligente.";
         if (feedback?.error === "QUOTA_EXCEEDED") {
-            errorText = "Límite de solicitudes de IA excedido (Error 429).";
+            errorText = "El servicio de Inteligencia Artificial está sumamente ocupado en este momento. Intenta de nuevo más tarde.";
         } else if (feedback?.error === "MISSING_API_KEY") {
-            errorText = "Vercel no está detectando la variable GEMINI_API_KEY en Producción. ¡Asegúrate de haber redespachado (re-deploy) el proyecto!";
+            errorText = "El Copilot está apagado. Falta configurar la llave secreta (API Key) en el servidor para encender la Inteligencia Artificial.";
         }
         
         return (
