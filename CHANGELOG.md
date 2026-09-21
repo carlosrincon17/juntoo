@@ -1,3 +1,10 @@
+# [2.30.0](https://github.com/carlosrincon17/juntoo/compare/v2.29.0...v2.30.0) (2026-09-21)
+
+
+### Features
+
+* **finances:** add consolidated snapshots and net worth history ([8795b30](https://github.com/carlosrincon17/juntoo/commit/8795b30ed0d6ddb05e6e58d78f25a1da104d6a2d))
+
 # [2.29.0](https://github.com/carlosrincon17/juntoo/compare/v2.28.0...v2.29.0) (2026-04-09)
 
 
