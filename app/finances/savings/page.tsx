@@ -11,9 +11,13 @@ import { getPatrimonies } from "../summary/actions/patrimonies";
 import { getDebts } from "../summary/actions/debts";
 import SavingsList from "./component/savings-list";
 import DebtsList from "./component/debts-list";
-import { Card, Tab, Tabs } from "@heroui/react";
+import { Button, Card, Tab, Tabs, useDisclosure } from "@heroui/react";
 import PatrimoniesList from "./component/patrimonies-list";
 import AiConsolidatedAdvisor from "./component/ai-consolidated-advisor";
+import Link from "next/link";
+import { FaCamera, FaChartLine } from "react-icons/fa";
+import TakeSnapshotModal from "../snapshots/components/take-snapshot-modal";
+import { FINANCE_ROUTES } from "@/utils/navigation/routes-constants";
 
 type SummaryData = {
     savings: number,
@@ -35,6 +39,7 @@ export default function Page() {
         balance: 0,
         loading: true,
     });
+    const { isOpen: isSnapshotOpen, onOpen: onSnapshotOpen, onOpenChange: onSnapshotOpenChange } = useDisclosure();
 
 
     const loadInitialData = async () => {
@@ -71,6 +76,23 @@ export default function Page() {
                 loading ?
                     <CustomLoading /> :
                     <div className="flex flex-col gap-6 w-full">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-2">
+                            <Button
+                                as={Link}
+                                href={FINANCE_ROUTES.SNAPSHOTS.path}
+                                variant="flat"
+                                startContent={<FaChartLine />}
+                            >
+                                Ver evolución
+                            </Button>
+                            <Button
+                                color="primary"
+                                onPress={onSnapshotOpen}
+                                startContent={<FaCamera />}
+                            >
+                                Tomar snapshot
+                            </Button>
+                        </div>
                         <SummarySection
                             savings={summaryData.savings}
                             assets={summaryData.assets}
@@ -119,6 +141,7 @@ export default function Page() {
                                 </Tab>
                             </Tabs>
                         </Card>
+                        <TakeSnapshotModal isOpen={isSnapshotOpen} onOpenChange={onSnapshotOpenChange} />
                     </div>
             }
         </div>

@@ -41,6 +41,11 @@ export const FINANCE_ROUTES: Record<string, Routes> = {
         path: "/finances/periodic-payments",
         parent: "/finances",
     },
+    SNAPSHOTS: {
+        label: "Evolución",
+        path: "/finances/snapshots",
+        parent: "/finances",
+    },
 }
 
 const GOAL_ROUTES = {
@@ -76,6 +81,7 @@ export const ROUTES_LIST: Routes[] = [
         subItems: [
             FINANCE_ROUTES.DASHBOARD,
             FINANCE_ROUTES.CONSOLIDATED,
+            FINANCE_ROUTES.SNAPSHOTS,
             FINANCE_ROUTES.SUMMARY,
             FINANCE_ROUTES.CATEGORIES,
             FINANCE_ROUTES.GOALS,

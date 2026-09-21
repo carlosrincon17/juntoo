@@ -197,6 +197,13 @@
       "when": 1775680719847,
       "tag": "0027_important_ids",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1790006122863,
+      "tag": "0028_consolidated_snapshots",
+      "breakpoints": true
     }
   ]
 }

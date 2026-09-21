@@ -33,6 +33,24 @@ export const getUTCDate = (date: Date) => {
     return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0));
 }
 
+export const formatDateTime = (date: Date | string, locale = 'es-CO'): string => {
+    return new Intl.DateTimeFormat(locale, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    }).format(new Date(date));
+}
+
+export const formatChartDate = (date: Date | string, locale = 'es-CO'): string => {
+    return new Intl.DateTimeFormat(locale, {
+        day: '2-digit',
+        month: 'short',
+        year: '2-digit',
+    }).format(new Date(date));
+}
+
 export const formateSimpleDate = (date: Date, locale = 'es-CO'): string => {
     const formatter = new Intl.DateTimeFormat(locale, {
         day: '2-digit',

@@ -9,8 +9,16 @@ import {
     timestamp,
     bigint,
     boolean,
-    real
+    real,
+    jsonb,
+    index
 } from 'drizzle-orm/pg-core';
+import type {
+    SnapshotDebtItem,
+    SnapshotPatrimonyItem,
+    SnapshotSavingItem,
+    SnapshotTotals,
+} from '@/app/types/consolidated-snapshot';
 
 
 export const CategoryTable = pgTable(
@@ -263,5 +271,37 @@ export const importantIdFamilyRelationship = relations(ImportantIdsTable, ({ one
     family: one(FamilyTable, {
         fields: [ImportantIdsTable.familyId],
         references: [FamilyTable.id],
+    }),
+}));
+
+export const ConsolidatedSnapshotsTable = pgTable(
+    'consolidated_snapshots',
+    {
+        id: serial('id').primaryKey(),
+        familyId: integer('family_id').references(() => FamilyTable.id).notNull(),
+        createdBy: integer('created_by').references(() => UserTable.id).notNull(),
+        note: text('note'),
+        savings: jsonb('savings').$type<SnapshotSavingItem[]>().notNull(),
+        patrimonies: jsonb('patrimonies').$type<SnapshotPatrimonyItem[]>().notNull(),
+        debts: jsonb('debts').$type<SnapshotDebtItem[]>().notNull(),
+        totals: jsonb('totals').$type<SnapshotTotals>().notNull(),
+        createdAt: timestamp('createdAt').defaultNow().notNull(),
+    },
+    (snapshots) => ({
+        familyCreatedAtIdx: index('consolidated_snapshots_family_created_idx').on(
+            snapshots.familyId,
+            snapshots.createdAt,
+        ),
+    }),
+);
+
+export const consolidatedSnapshotRelations = relations(ConsolidatedSnapshotsTable, ({ one }) => ({
+    family: one(FamilyTable, {
+        fields: [ConsolidatedSnapshotsTable.familyId],
+        references: [FamilyTable.id],
+    }),
+    createdByUser: one(UserTable, {
+        fields: [ConsolidatedSnapshotsTable.createdBy],
+        references: [UserTable.id],
     }),
 }));
