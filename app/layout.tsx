@@ -1,4 +1,3 @@
-import { PrelineScript } from "./components/preline";
 import "./globals.css";
 import { Providers } from "./providers";
 import type { Metadata, Viewport } from "next";
@@ -38,7 +37,6 @@ export default function RootLayout({
                         {children}
                     </main>
                 </Providers>
-                <PrelineScript />
             </body>
         </html>
     );
