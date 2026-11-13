@@ -74,6 +74,14 @@ const PLANNER_ROUTES = {
     }
 }
 
+const HEALTH_ROUTES = {
+    NOTEBOOK: {
+        label: "Cuaderno",
+        path: "/health",
+        labelBreadcrumb: "Cuaderno",
+    },
+}
+
 export const ROUTES_LIST: Routes[] = [
     {
         label: "Finanzas",
@@ -104,6 +112,13 @@ export const ROUTES_LIST: Routes[] = [
         subItems: [
             PLANNER_ROUTES.TASKS,
             PLANNER_ROUTES.IMPORTANT_IDS,
+        ]
+    },
+    {
+        label: "Salud",
+        path: "/health",
+        subItems: [
+            HEALTH_ROUTES.NOTEBOOK,
         ]
     },
 
