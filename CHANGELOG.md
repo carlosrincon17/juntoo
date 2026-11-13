@@ -1,3 +1,10 @@
+# [2.31.0](https://github.com/carlosrincon17/juntoo/compare/v2.30.0...v2.31.0) (2026-09-21)
+
+
+### Features
+
+* **ui:** add HeroUI v3 navigation menu with Tailwind 4 ([0ca4bdb](https://github.com/carlosrincon17/juntoo/commit/0ca4bdbc77309704543ecdfd55b750cab7ed0aee))
+
 # [2.30.0](https://github.com/carlosrincon17/juntoo/compare/v2.29.0...v2.30.0) (2026-09-21)
 
 
