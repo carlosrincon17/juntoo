@@ -1,3 +1,10 @@
+# [2.32.0](https://github.com/carlosrincon17/juntoo/compare/v2.31.0...v2.32.0) (2026-11-13)
+
+
+### Features
+
+* **health:** add a notebook for illnesses, fever, and doses ([ca1a37c](https://github.com/carlosrincon17/juntoo/commit/ca1a37c8b90d67f8676a25f4e3bcf68e9356c1a2))
+
 # [2.31.0](https://github.com/carlosrincon17/juntoo/compare/v2.30.0...v2.31.0) (2026-09-21)
 
 
