@@ -12,10 +12,12 @@ import {
     FaChartLine,
     FaChartPie,
     FaExchangeAlt,
+    FaHeartbeat,
     FaIdCard,
     FaRedo,
     FaTags,
     FaTasks,
+    FaThermometerHalf,
     FaUser,
     FaUsers,
     FaWallet,
@@ -25,6 +27,7 @@ const SECTION_ICONS: Record<string, ReactNode> = {
     Finanzas: <FaChartPie className="size-3.5" />,
     Metas: <FaBullseye className="size-3.5" />,
     Planificación: <FaTasks className="size-3.5" />,
+    Salud: <FaHeartbeat className="size-3.5" />,
 };
 
 const ITEM_ICONS: Record<string, ReactNode> = {
@@ -41,6 +44,7 @@ const ITEM_ICONS: Record<string, ReactNode> = {
     "/goals/personal": <FaUser className="size-4" />,
     "/planner": <FaCalendarAlt className="size-4" />,
     "/planner/ids": <FaIdCard className="size-4" />,
+    "/health": <FaThermometerHalf className="size-4" />,
 };
 
 function getSelectedPath(pathname: string): string {

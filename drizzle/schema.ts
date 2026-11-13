@@ -305,3 +305,100 @@ export const consolidatedSnapshotRelations = relations(ConsolidatedSnapshotsTabl
         references: [UserTable.id],
     }),
 }));
+
+export const ChildrenTable = pgTable(
+    'children',
+    {
+        id: serial('id').primaryKey(),
+        name: text('name').notNull(),
+        accent: text('accent').notNull(),
+        sortOrder: integer('sort_order').notNull().default(0),
+        familyId: integer('family_id').references(() => FamilyTable.id).notNull(),
+        createdAt: timestamp('createdAt').defaultNow().notNull(),
+    },
+    (table) => ({
+        familyNameIdx: uniqueIndex('children_family_name_idx').on(table.familyId, table.name),
+    }),
+);
+
+export const IllnessesTable = pgTable(
+    'illnesses',
+    {
+        id: serial('id').primaryKey(),
+        childId: integer('child_id').references(() => ChildrenTable.id).notNull(),
+        familyId: integer('family_id').references(() => FamilyTable.id).notNull(),
+        name: text('name').notNull(),
+        notes: text('notes'),
+        startedAt: timestamp('started_at').defaultNow().notNull(),
+        endedAt: timestamp('ended_at'),
+        createdAt: timestamp('createdAt').defaultNow().notNull(),
+    },
+    (table) => ({
+        childStartedIdx: index('illnesses_child_started_idx').on(table.childId, table.startedAt),
+        familyIdx: index('illnesses_family_idx').on(table.familyId),
+    }),
+);
+
+export const TemperatureReadingsTable = pgTable(
+    'temperature_readings',
+    {
+        id: serial('id').primaryKey(),
+        illnessId: integer('illness_id').references(() => IllnessesTable.id, { onDelete: 'cascade' }).notNull(),
+        celsius: real('celsius').notNull(),
+        takenAt: timestamp('taken_at').defaultNow().notNull(),
+        note: text('note'),
+    },
+    (table) => ({
+        illnessTakenIdx: index('temperature_readings_illness_taken_idx').on(table.illnessId, table.takenAt),
+    }),
+);
+
+export const MedicationDosesTable = pgTable(
+    'medication_doses',
+    {
+        id: serial('id').primaryKey(),
+        illnessId: integer('illness_id').references(() => IllnessesTable.id, { onDelete: 'cascade' }).notNull(),
+        name: text('name').notNull(),
+        dose: text('dose'),
+        givenAt: timestamp('given_at').defaultNow().notNull(),
+        note: text('note'),
+    },
+    (table) => ({
+        illnessGivenIdx: index('medication_doses_illness_given_idx').on(table.illnessId, table.givenAt),
+    }),
+);
+
+export const childrenRelations = relations(ChildrenTable, ({ one, many }) => ({
+    family: one(FamilyTable, {
+        fields: [ChildrenTable.familyId],
+        references: [FamilyTable.id],
+    }),
+    illnesses: many(IllnessesTable),
+}));
+
+export const illnessesRelations = relations(IllnessesTable, ({ one, many }) => ({
+    child: one(ChildrenTable, {
+        fields: [IllnessesTable.childId],
+        references: [ChildrenTable.id],
+    }),
+    family: one(FamilyTable, {
+        fields: [IllnessesTable.familyId],
+        references: [FamilyTable.id],
+    }),
+    temperatures: many(TemperatureReadingsTable),
+    medications: many(MedicationDosesTable),
+}));
+
+export const temperatureReadingsRelations = relations(TemperatureReadingsTable, ({ one }) => ({
+    illness: one(IllnessesTable, {
+        fields: [TemperatureReadingsTable.illnessId],
+        references: [IllnessesTable.id],
+    }),
+}));
+
+export const medicationDosesRelations = relations(MedicationDosesTable, ({ one }) => ({
+    illness: one(IllnessesTable, {
+        fields: [MedicationDosesTable.illnessId],
+        references: [IllnessesTable.id],
+    }),
+}));
